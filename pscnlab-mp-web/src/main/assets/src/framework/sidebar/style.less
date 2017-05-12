@@ -1,0 +1,157 @@
+@import '../less-mixin/variables.less';
+
+/*
+颜色有点多，但是就两个色调 TODO：设置一个基本色，其他颜色通过基本色计算。
+*/
+.admin-sidebar {
+    position: fixed;
+    z-index: 100;
+    top: @headerHeight;
+    bottom: 0;
+    left: 0;
+    width: 200px;
+    background-color: @sidebarBgColor;
+    overflow: hidden;
+    box-sizing: border-box;
+    //box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.admin-sidebar-inner {
+    position: relative;
+    z-index: 99999;
+    height: 100%;
+    overflow-x: visible;
+    overflow-y: auto;
+}
+
+.sidebar-current-position {
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    height: @sidebarTitleHeight;
+    padding-top: 15px;
+    border-bottom: 1px solid #465060;
+    background-color: @sidebarTitleBgColor;
+    text-align: center;
+    font-size: @sidebarTitleFontSize;
+    color: @sidebarTitleFontColor;
+    img {
+        max-width: 100%;
+        width: auto;
+        height: 70px;
+        border-radius: 50%;
+    }
+    .title {
+        padding: 0 25px;
+        width: 100%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    &.min {
+        height: 60px;
+        padding-top:10px;
+        img {
+            height: 40px;
+        }
+        .title {
+            display: none;
+            font-size: 12px;
+        }
+    }
+}
+
+.admin-sidebar {
+    .ant-menu-vertical {
+        margin-left: -8px;
+    }
+    .ant-menu {
+        color: @sidebarMenuFontColor;
+        background-color: @sidebarBgColor;
+        border-right: none;
+    }
+    .ant-menu-item {
+        height: 45px;
+        line-height: 45px;
+        border: 0;
+        left: 0;
+        margin-left: 0;
+        padding-right: 0; /*扩大Link可点击区域*/
+        font-size: @sidebarMenuFontSize;
+        a {
+            color: @sidebarMenuFontColor;
+            & > i {
+                margin-right: 5px;
+                font-size: @sidebarMenuIconFontSize;
+            }
+        }
+        &.ant-menu-item-active {
+            transition: 0ms;
+            border-right: 0;
+            background-color: @sidebarMenuActiveBgColor;
+            a {
+                color: @sidebarMenuActiveFontColor;
+            }
+        }
+
+        &.ant-menu-item-selected {
+            transition: 0ms;
+            border-right: 0;
+            border-left: 4px solid @sidebarMenuActiveBorderColor;
+            background-color: @sidebarMenuActiveBgColor;
+            a {
+                margin-left: -4px;
+                color: @sidebarMenuActiveFontColor;
+            }
+        }
+    }
+    .ant-menu-submenu {
+        background-color: @sidebarSubMenuBgColor;
+        .ant-menu-submenu-title {
+            height: 45px;
+            line-height: 45px;
+            font-size: @sidebarMenuFontSize;
+            color: @sidebarSubMenuFontColor;
+            i {
+                margin-right: 5px;
+                font-size: @sidebarMenuIconFontSize;
+            }
+        }
+        &.ant-menu-submenu-open {
+            background-color: @sidebarSubMenuOpenBgColor;
+            & > .ant-menu-submenu-title {
+                background-color: @sidebarSubMenuOpenBgColor;
+                color: @sidebarSubMenuOpenFontColor;
+            }
+
+        }
+        &.hover,
+        &.ant-menu-submenu-active {
+            background-color: @sidebarSubMenuActiveBgColor;
+            & > .ant-menu-submenu-title {
+                background-color: @sidebarSubMenuActiveBgColor;
+                color: @sidebarSubMenuActiveFontColor;
+            }
+
+        }
+
+    }
+}
+
+/*
+修复菜单展开/折叠状态切换bug
+*/
+.ant-menu-vertical {
+    display: block !important;
+    .ant-menu-submenu-vertical > .ant-menu-submenu-title:after {
+        right: 5px;
+    }
+}
+
+.admin-sidebar .ant-menu-vertical.ant-menu-hidden {
+    display: none !important;
+}
+
+
+
+

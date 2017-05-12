@@ -1,0 +1,42 @@
+@import '../less-mixin/variables.less';
+
+.admin-page {
+    padding-bottom: 50px;
+    .admin-page-header {
+        width: 100%;
+        background-color: #fff;
+        margin-bottom: 20px;
+        .admin-page-header-title {
+            font-weight: 100;
+            font-size: @pageTitleFontSize;
+            padding-left: 10px;
+            padding-bottom: 9px;
+            border-bottom: 1px solid #eee;
+        }
+        .ant-breadcrumb {
+            float: right;
+            margin-top: -37px;
+            margin-right: 10px;
+        }
+
+    }
+    .admin-page-content {
+        z-index: 88;
+        width: 100%;
+        background-color: #fff;
+        min-width: 768px;
+        padding: 20px 12px 52px 12px;
+        & > .ant-spin-nested-loading > .ant-spin,
+        .deal-transition-fixed-bug > .ant-spin-nested-loading > .ant-spin {
+            position: fixed;
+        }
+
+        .deal-transition-fixed-bug {
+            display: inline;
+        }
+    }
+
+    .admin-page-content-merchant {
+        padding: 20px 12px 12px 12px;
+    }
+}

@@ -1,0 +1,183 @@
+@import '../less-mixin/variables.less';
+
+.admin-header {
+    position: fixed;
+    z-index: 8888;
+    width: 100%;
+    height: @headerHeight;
+    background-color: @headerLogoBgColor;
+    box-sizing: border-box;
+    //box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.admin-logo {
+    display: inline-block;
+    width: @headerWidth;
+    height: @headerHeight;
+    float: left;
+    vertical-align: middle;
+    line-height: @headerHeight;
+    background-color: @headerLogoBgColor;
+    text-align: center;
+    font-size: @headerLogoFontSize;
+    color: @headerLogoFontColor;
+}
+
+.admin-logo-min {
+    width: @headerWidthMin;
+    font-size: @headerLogoFontSizeMin;
+    line-height: 18px;
+    padding-top: 7px;
+}
+
+.admin-logo > a,
+.admin-logo > a:visited,
+.admin-logo > a:active,
+.admin-logo > a:hover {
+    display: block;
+    color: @headerLogoFontColor;
+}
+
+.admin-nav {
+    position: absolute;
+    left: 200px;
+    right: 0;
+}
+
+.admin-sidebar-toggle {
+    display: inline-block;
+    padding: 0 15px;
+    height: 100%;
+    line-height: @headerHeight;
+    font-size: 18px;
+    color: @headerToggleSidebarButtonColor;
+    vertical-align: middle;
+    float: left;
+}
+
+.admin-sidebar-toggle:hover,
+.admin-sidebar-toggle:visited,
+.admin-sidebar-toggle:active {
+    color: @headerToggleSidebarButtonColor;
+}
+
+.admin-sidebar-toggle:hover {
+    background-color: @headerNavHoverBgColor;
+    color: @headerToggleSidebarButtonColor;
+}
+
+.admin-header-sys {
+    line-height: @headerHeight;
+    &.ant-menu {
+        display: inline-block;
+        box-sizing: border-box;
+        height: 100%;
+        float: left;
+        background: none;
+        border: none;
+        font-size: @headerNavFontSize;
+        color: @headerNavFontColor;
+        .ant-menu-item {
+            height: @headerHeight;
+        }
+        i.anticon-down {
+            font-size: 10px;
+            transition: transform 300ms;
+        }
+
+    }
+    .admin-header-sys-menu-text {
+        padding-left: 10px;
+    }
+    .ant-menu-item {
+        a {
+            color: @headerNavFontColor;
+        }
+        border: 0;
+    }
+    .ant-menu-item-selected.ant-menu-item,
+    .ant-menu-item-active.ant-menu-item {
+        background-color: @headerNavHoverBgColor;
+        border-bottom: 0 solid @headerNavHoverFontColor;
+        & > div,
+        a,
+        a:hover {
+            color: @headerNavHoverFontColor;
+            i.anticon-down {
+                transform: rotate(180deg);
+            }
+        }
+    }
+}
+
+.admin-header-menu {
+    float: right;
+    display: inline-block;
+}
+
+.admin-header-menu-item {
+    display: inline-block;
+}
+
+.admin-header-menu-item a {
+    display: inline-block;
+    padding: 0 15px;
+    height: @headerHeight;
+    line-height: @headerHeight;
+    color: @headerNavFontColor;
+    font-size: @headerNavFontSize;
+    i {
+        margin-right: 10px;
+    }
+}
+
+.admin-header-menu-item a:hover {
+    background: @headerNavHoverBgColor;
+    color: @headerNavHoverFontColor;
+
+}
+
+.admin-user-avatar {
+    margin-right: 5px;
+    margin-top: -2px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.stores-list-container {
+    position: absolute;
+    left: 0;
+    top: @headerHeight;
+    width: 100%;
+    overflow-y: auto;
+    height: 226px;
+    z-index: 1000;
+    background-color: #fff;
+    transition: .3s;
+    //box-sizing: border-box;
+    //box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    .stores-list-item {
+        display: inline-block;
+        margin: 12px 12px 0 12px;
+        width: 150px;
+        height: 55px;
+        border: 1px solid #CCCCCC;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+            color: #28a5dd;
+            border-color: #28a5dd;
+            background-color: #ecf9ff;
+        }
+    }
+
+    .active {
+        color: #28a5dd;
+        border-color: #28a5dd;
+        background-color: #ecf9ff;
+    }
+}
