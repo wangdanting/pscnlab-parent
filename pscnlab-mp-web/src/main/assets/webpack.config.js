@@ -76,12 +76,12 @@ const cfg = ((process.env.NODE_ENV === 'production') ? configs[DEPLOY_PROFILE][p
  * */
 const entry = {
     // "index": ["./src/home/home.jsx", "./src/home/home-content.jsx"],//会合并成一个index.js
-    index: './src/entry/index.jsx',
+    // index: './src/entry/index.jsx',
     login: './src/entry/Login.jsx',
-    register: './src/entry/Register.jsx',
-    merchant: './src/entry/Merchant.jsx',
-    findpsw: './src/entry/FindPsw.jsx',
-    addinvite: './src/entry/AddInvite.jsx',
+    // register: './src/entry/Register.jsx',
+    // merchant: './src/entry/Merchant.jsx',
+    // findpsw: './src/entry/FindPsw.jsx',
+    // addinvite: './src/entry/AddInvite.jsx',
 };
 
 const alias = {
@@ -215,10 +215,10 @@ const webpackConfig = {
         ],
     },
     plugins: [
-        new webpack.DllReferencePlugin({
-            context: '.',
-            manifest: require('./dll/vendor-manifest.json'),
-        }),
+        // new webpack.DllReferencePlugin({
+        //     context: '.',
+        //     manifest: require('./dll/vendor-manifest.json'),
+        // }),
 
         /*
          * 公共文件配置
