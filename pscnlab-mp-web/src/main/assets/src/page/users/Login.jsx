@@ -416,7 +416,7 @@ class Login extends React.Component {
                     </div>
                     <div className="admin-login-row admin-login-title">
                         <span className="meicanyun-logo-font admin-login-title-font">
-                            {CONTEXT.MERCHANT.platformName}
+                            {/*{CONTEXT.MERCHANT.platformName}*/}
                         </span>
                     </div>
                     <div className="admin-login-row admin-login-padding-left-right admin-login-subtitle">
