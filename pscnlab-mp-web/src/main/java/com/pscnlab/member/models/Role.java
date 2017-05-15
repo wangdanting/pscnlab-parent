@@ -11,10 +11,7 @@
 
 package com.pscnlab.member.models;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by xiong on 2017/5/15 .
@@ -27,6 +24,7 @@ public class Role {
 
     @Id
     @Column(name = "uuid_role")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getUuidRole() {
         return uuidRole;
     }
