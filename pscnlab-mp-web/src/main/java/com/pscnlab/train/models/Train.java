@@ -21,7 +21,7 @@ public class Train {
     private Integer uuidTrain;
     private String title;
     private String speaker;
-    private String time;
+    private Long time;
     private String place;
     private String number;
 
@@ -58,11 +58,11 @@ public class Train {
 
     @Basic
     @Column(name = "time")
-    public String getTime() {
+    public Long getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Long time) {
         this.time = time;
     }
 

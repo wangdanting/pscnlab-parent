@@ -13,20 +13,19 @@ package com.pscnlab.train.daos.impls;
 
 import com.jiabangou.guice.persist.jpa.BaseDao;
 import com.jiabangou.guice.persist.jpa.util.FilterMap;
-import com.jiabangou.guice.persist.jpa.util.Page;
-import com.pscnlab.train.daos.TrainDao;
-import com.pscnlab.train.models.Train;
+import com.pscnlab.train.daos.TrainPeopleDao;
+import com.pscnlab.train.models.TrainPeople;
 
 /**
  * Created by xiong on 2017/5/15 .
  */
-public class TrainDaoImpl  extends BaseDao<Integer,Train> implements TrainDao {
+public class TrainPeopleDaoImpl  extends BaseDao<Integer,TrainPeople> implements TrainPeopleDao {
+
     @Override
-    public Page<Train> findPage(Long  startTime,Long endTime, Integer offset, Integer size) {
+    public TrainPeople findOneByUuidTrainAndUuidMember(String uuidTrain, String uuidMember) {
         FilterMap filterMap=new FilterMap();
-        if(startTime!=null&&startTime!=null) {
-            filterMap.between("time",startTime,endTime);
-        }
-        return super.page(filterMap,offset,size);
+        filterMap.eq("uuidTrain",uuidTrain);
+        filterMap.eq("uuidMember",uuidMember);
+        return super.findOne(filterMap);
     }
 }
