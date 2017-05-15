@@ -5,8 +5,6 @@ import com.pscnlab.member.services.MemberSevice;
 import com.pscnlab.member.services.RoleService;
 import com.pscnlab.member.services.impl.MemberSeviceImpl;
 import com.pscnlab.member.services.impl.RoleServiceImpl;
-import com.pscnlab.user.services.UserService;
-import com.pscnlab.user.services.impls.UserServiceImpl;
 
 
 /**
@@ -16,7 +14,6 @@ public class ServiceModule extends AbstractModule {
 
 
     protected void configure() {
-        bind(UserService.class).to(UserServiceImpl.class);
         bind(MemberSevice.class).to(MemberSeviceImpl.class);
         bind(RoleService.class).to(RoleServiceImpl.class);
 
