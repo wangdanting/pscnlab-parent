@@ -26,4 +26,6 @@ public interface MemberDao extends IBaseDao<Integer,Member> {
     Long countMemberByUuidRole(Integer uuidRole);
 
     Page<Member> findPage(MemberPageQueryDTO query, Integer offset, Integer size);
+
+    Member findOneByTelephone(String telephone);
 }

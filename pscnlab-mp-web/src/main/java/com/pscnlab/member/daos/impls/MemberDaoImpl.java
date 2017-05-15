@@ -45,4 +45,11 @@ public class MemberDaoImpl extends BaseDao<Integer,Member> implements MemberDao 
         }
         return super.page(filterMap,offset,size);
     }
+
+    @Override
+    public Member findOneByTelephone(String telephone) {
+        FilterMap filterMap=new FilterMap();
+        filterMap.eq("telephone",telephone);
+        return super.findOne(filterMap);
+    }
 }

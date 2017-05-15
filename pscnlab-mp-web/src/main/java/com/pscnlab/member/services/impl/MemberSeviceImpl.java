@@ -11,6 +11,7 @@
 
 package com.pscnlab.member.services.impl;
 
+import com.jiabangou.core.exceptions.ServiceException;
 import com.jiabangou.guice.persist.jpa.IBaseDao;
 import com.jiabangou.guice.persist.jpa.util.Page;
 import com.pscnlab.base.services.impls.BaseServiceImpl;
@@ -45,8 +46,23 @@ public class MemberSeviceImpl extends BaseServiceImpl<Integer,Member> implements
     }
 
     @Override
+    public void save(Member var1) {
+        Member oneByTelephone = this.findOneByTelephone(var1.getTelephone());
+        if(oneByTelephone!=null){
+            throw ServiceException.build(1000,"手机号已存在，添加失败！");
+        }
+        var1.setPassword("123456");
+        super.save(var1);
+    }
+
+    @Override
     public Long countMemberByUuidRole(Integer uuidRole) {
         return memberDao.countMemberByUuidRole(uuidRole);
+    }
+
+    @Override
+    public Member findOneByTelephone(String telephone) {
+        return memberDao.findOneByTelephone(telephone);
     }
 
     @Override
