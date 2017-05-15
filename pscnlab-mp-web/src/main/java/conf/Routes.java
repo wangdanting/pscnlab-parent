@@ -13,9 +13,9 @@ package conf;
 
 
 import com.google.inject.Inject;
+import com.jiabangou.ninja.extentions.AssetsController;
 import controllers.apis.LoginApiController;
 import controllers.pages.LoginController;
-import ninja.AssetsController;
 import ninja.Router;
 import ninja.application.ApplicationRoutes;
 import ninja.utils.NinjaProperties;
