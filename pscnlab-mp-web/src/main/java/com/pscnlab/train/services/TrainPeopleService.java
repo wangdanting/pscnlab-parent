@@ -9,18 +9,13 @@
  *  with meicanyun.com.
  */
 
-package com.pscnlab.train.daos;
+package com.pscnlab.train.services;
 
-import com.google.inject.ImplementedBy;
-import com.jiabangou.guice.persist.jpa.IBaseDao;
-import com.jiabangou.guice.persist.jpa.util.Page;
-import com.pscnlab.train.daos.impls.TrainDaoImpl;
-import com.pscnlab.train.models.Train;
+import com.pscnlab.base.services.BaseService;
+import com.pscnlab.train.models.TrainPeople;
 
 /**
  * Created by xiong on 2017/5/15 .
  */
-@ImplementedBy(TrainDaoImpl.class)
-public interface TrainDao extends IBaseDao<Integer,Train>{
-    Page<Train> findPage(Long  startTime,Long endTime, Integer offset, Integer size);
+public interface TrainPeopleService  extends BaseService<Integer,TrainPeople> {
 }
