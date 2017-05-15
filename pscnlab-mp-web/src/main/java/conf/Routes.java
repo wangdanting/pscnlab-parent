@@ -13,7 +13,9 @@ package conf;
 
 
 import com.google.inject.Inject;
-import controllers.apis.Test;
+import controllers.apis.LoginApiController;
+import controllers.pages.LoginController;
+import ninja.AssetsController;
 import ninja.Router;
 import ninja.application.ApplicationRoutes;
 import ninja.utils.NinjaProperties;
@@ -26,29 +28,12 @@ public class Routes implements ApplicationRoutes {
     @Override
     public void init(Router router) {
 
-        /*
-         参照Ruby On Rails中提供的命名和规范，见下表：
+        router.GET().route("/assets/webjars/{fileName: .*}").with(AssetsController.class, "serveWebJars");
+        router.GET().route("/assets/{fileName: .*}").with(AssetsController.class, "serveStatic");
 
-         HTTP Verb	Path	Controller#Action	Used for
-         GET	/photos	photos#index	display a list of all photos
-         GET	/photos/new	photos#newForm	return an HTML form for creating a new photo
-         POST	/photos	photos#create	create a new photo
-         GET	/photos/:id	photos#show	display a specific photo
-         GET	/photos/:id/edit	photos#editForm	return an HTML form for editing a photo
-         PATCH/PUT	/photos/:id	photos#update	update a specific photo
-         DELETE	/photos/:id	photos#destroy	delete a specific photo
+        router.GET().route("/login").with(LoginController.class, "index");
+        router.POST().route("/login").with(LoginApiController.class, "login");
 
-         */
-
-        ///////////////////////////////////////////////////////////////////////
-        // Assets (pictures / javascript)
-        ///////////////////////////////////////////////////////////////////////
-
-      /*  router.GET().route("/photos/:id").with(ControllerMethods.of(ActivityApiController::countUseAbleCoupon));
-        router.PUT().route("/photos/:id").with(ActivityApiController::put);
-        router.DELETE().route("/photos/:id").with(ActivityApiController.class,"delete");*/
-
-
-        router.GET().route("/.*").with(Test::test); //登录后并且选择商户
+        router.GET().route("/.*").with(LoginController.class, "index"); //登录后并且选择商户
     }
 }

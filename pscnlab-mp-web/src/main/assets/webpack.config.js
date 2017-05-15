@@ -1,28 +1,22 @@
-'use strict'
+'use strict';
 const join = require('path').join;
 const path = require('path');
 const PACKAGE = require('./package.json');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
-// const ManifestPlugin = require('webpack-manifest-plugin');
-// const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
-// const WebpackMd5Hash = require('webpack-md5-hash');
 
 if (!process.env.NODE_ENV) {
     process.env.NODE_ENV = 'dev';
-} else if (process.env.NODE_ENV === 'prod') {
-    process.env.NODE_ENV = 'production';
 }
+// else if (process.env.NODE_ENV === 'prod') {
+//     process.env.NODE_ENV = 'production';
+// }
 
-/*
- * xyg: 小鸭哥
- * jbg: 加班狗
- */
 const DEPLOY_PROFILE = process.env.DEPLOY_PROFILE;
 
-if (process.env.NODE_ENV === 'production' && DEPLOY_PROFILE !== 'xyg' && DEPLOY_PROFILE !== 'jbg') {
-    throw '未获取到平台(小鸭哥或者加班狗)';
-}
+// if (process.env.NODE_ENV === 'production' && DEPLOY_PROFILE !== 'xyg' && DEPLOY_PROFILE !== 'jbg') {
+//     throw '未获取到平台(小鸭哥或者加班狗)';
+// }
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 

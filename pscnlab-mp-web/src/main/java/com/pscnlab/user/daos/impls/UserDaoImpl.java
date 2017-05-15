@@ -27,4 +27,12 @@ public class UserDaoImpl extends BaseDao<Long,User> implements UserDao {
         filterMap.eq("id",id);
         return super.findOne(filterMap);
     }
+
+    @Override
+    public User findOneByUserNameAndPssword(String userName, String password) {
+        FilterMap filterMap=new FilterMap();
+        filterMap.eq("name",userName);
+        filterMap.eq("password",password);
+        return super.findOne(filterMap);
+    }
 }

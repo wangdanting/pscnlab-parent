@@ -21,6 +21,8 @@ import com.pscnlab.user.models.User;
  */
 @ImplementedBy(UserDaoImpl.class)
 public interface UserDao extends IBaseDao<Long,User>{
+    User findOneByUserNameAndPssword(final String userName, final String password);
+
     User findOneById(Long id);
     //save
     //update

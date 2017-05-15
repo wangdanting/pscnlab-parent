@@ -1,8 +1,12 @@
-import './style.css';
+import './style.less';
+import 'component/logo-font/style.css';
 import React from 'react';
 import request from '../../common/request/request.jsx';
 import storage from '../../framework/common/storage.js';
 import Common from '../../common/common.jsx';
+
+// import LoginImg from './LoginImg';
+// import UserFooter from './UserFooter.jsx';
 
 class Login extends React.Component {
     constructor(props) {
@@ -405,7 +409,7 @@ class Login extends React.Component {
 
         return (
             <div className="full-screen-container admin-login">
-                <LoginImg />
+                {/*<LoginImg />*/}
                 <div className="admin-login-content">
                     <div className="admin-login-loading" style={{display: this.state.loading ? 'block' : 'none'}}>
 
@@ -444,7 +448,7 @@ class Login extends React.Component {
                         <button className="admin-login-button" onClick={this::this.login}>登录</button>
                     </div>
                 </div>
-                <UserFooter />
+                {/*<UserFooter />*/}
             </div>
         );
     }

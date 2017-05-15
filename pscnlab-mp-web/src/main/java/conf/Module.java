@@ -33,10 +33,6 @@ public class Module extends AbstractModule {
         // bind services
         install(new ServiceModule());
 
-        // bind producers
-        //install(new ProducerModule("com.meicanyun"));
-
-
         // bind param parser
         //Multibinder<ParamParser> paramParserMultibinder = Multibinder.newSetBinder(binder(), ParamParser.class);
         //paramParserMultibinder.addBinding().to(DishItemParamParser.class);

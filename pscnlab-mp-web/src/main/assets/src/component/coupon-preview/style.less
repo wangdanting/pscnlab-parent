@@ -1,0 +1,66 @@
+.coupon-pre-view {
+    width: 400px;
+    height: 200px;
+    .coupon {
+        width: 100%;
+        border: 1px solid #d9d9d9;
+        padding: 15px 0;
+        background-repeat: repeat-x;
+        border-radius: 3px;
+        .money {
+            text-align: center;
+            color: #ff4434;
+            .money-icon {
+                font-size: 20px;
+            }
+            .money-number {
+                font-size: 35px;
+            }
+        }
+        .use-role {
+            text-align: center;
+        }
+        .view-content {
+            padding-left: 20px;
+            .title {
+                font-size: 16px;
+                span {
+                    color: #ff4434;
+                    border: 1px solid #f4665c;
+                    border-radius: 3px;
+                    font-size: 14px;
+                    margin-left: 5px;
+                }
+            }
+            .expire {
+                color: #999;
+                margin-bottom: 10px;
+            }
+            .role {
+                cursor: pointer;
+                i {
+                    transition: 300ms;
+                }
+                &.opened {
+                    i {
+                        transform: rotate(180deg);
+                    }
+                }
+            }
+        }
+    }
+    .role-list {
+        color: #999;
+        height: 0;
+        transition: 300ms;
+        overflow: hidden;
+        &.opened {
+            height: 75px;
+            border: 1px solid #d9d9d9;
+            border-top: 0;
+        }
+        ul {
+            margin: 10px;
+        }
+    }
+}
