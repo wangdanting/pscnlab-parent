@@ -12,11 +12,26 @@
 package com.pscnlab.member.daos.impls;
 
 import com.jiabangou.guice.persist.jpa.BaseDao;
+import com.jiabangou.guice.persist.jpa.util.FilterMap;
 import com.pscnlab.member.daos.RoleDao;
 import com.pscnlab.member.models.Role;
+
+import java.util.List;
 
 /**
  * Created by xiong on 2017/5/15 .
  */
 public class RoleDaoImpl extends BaseDao<Integer,Role> implements RoleDao {
+    @Override
+    public List<Role> findAll() {
+        return super.list(new FilterMap());
+    }
+
+    @Override
+    public Role findByRoleAndPosition(String role, String position) {
+        FilterMap filterMap=new FilterMap();
+        filterMap.eq("role",role);
+        filterMap.eq("position",position);
+        return super.findOne(filterMap);
+    }
 }

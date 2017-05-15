@@ -9,17 +9,33 @@
  *  with meicanyun.com.
  */
 
-package com.pscnlab.member.services;
+package com.pscnlab.member.services.dtos;
 
-import com.pscnlab.base.services.BaseService;
+import com.pscnlab.member.models.Member;
 import com.pscnlab.member.models.Role;
 
-import java.util.List;
+import java.io.Serializable;
 
 /**
  * Created by xiong on 2017/5/15 .
  */
-public interface RoleService extends BaseService<Integer,Role> {
-    List<Role> findAll();
-    Role findByRoleAndPosition(String role,String position);
+public class MemberPageDTO implements Serializable {
+    private Member member;
+    private Role role;
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }

@@ -11,11 +11,16 @@
 
 package com.pscnlab.member.services;
 
+import com.jiabangou.guice.persist.jpa.util.Page;
 import com.pscnlab.base.services.BaseService;
-import com.pscnlab.member.models.Role;
+import com.pscnlab.member.models.Member;
+import com.pscnlab.member.services.dtos.MemberPageDTO;
+import com.pscnlab.member.services.dtos.MemberPageQueryDTO;
 
 /**
  * Created by xiong on 2017/5/15 .
  */
-public interface MemberSevice extends BaseService<Integer,Role> {
+public interface MemberSevice extends BaseService<Integer,Member> {
+    Long countMemberByUuidRole(Integer uuidRole);
+    Page<MemberPageDTO> findPage(MemberPageQueryDTO query, Integer offset, Integer size);
 }

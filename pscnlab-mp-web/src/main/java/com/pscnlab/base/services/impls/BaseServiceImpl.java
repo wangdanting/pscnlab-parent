@@ -44,18 +44,22 @@ public abstract class BaseServiceImpl<ID, T> implements BaseService<ID, T>  {
         this.getBaseDao().save(var1);
     }
 
-    @Override
-    public void saveAll(List<T> var1) {
-        this.getBaseDao().saveAll(var1);
-    }
+
 
     @Override
     public void update(T var1) {
         this.getBaseDao().update(var1);
     }
 
+
+
     @Override
-    public void updateAll(List<T> var1) {
-        this.getBaseDao().updateAll(var1);
+    public void delete(T var1) {
+        this.getBaseDao().delete(var1);
+    }
+
+    @Override
+    public void deleteById(ID var1) {
+        this.getBaseDao().deleteById(var1);
     }
 }

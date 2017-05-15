@@ -16,9 +16,14 @@ import com.jiabangou.guice.persist.jpa.IBaseDao;
 import com.pscnlab.member.daos.impls.RoleDaoImpl;
 import com.pscnlab.member.models.Role;
 
+import java.util.List;
+
 /**
  * Created by xiong on 2017/5/15 .
  */
 @ImplementedBy(RoleDaoImpl.class)
 public interface RoleDao extends IBaseDao<Integer,Role> {
+    List<Role> findAll();
+
+    Role findByRoleAndPosition(String role, String position);
 }

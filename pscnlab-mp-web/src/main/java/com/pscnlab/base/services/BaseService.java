@@ -26,9 +26,9 @@ public interface BaseService<ID, T> {
 
     void save(T var1);
 
-    void saveAll(List<T> var1);
-
     void update(T var1);
 
-    void updateAll(List<T> var1);
+    void delete(T var1);
+
+    void deleteById(ID var1);
 }

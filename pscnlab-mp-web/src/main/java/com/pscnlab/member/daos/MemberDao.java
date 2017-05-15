@@ -13,12 +13,17 @@ package com.pscnlab.member.daos;
 
 import com.google.inject.ImplementedBy;
 import com.jiabangou.guice.persist.jpa.IBaseDao;
+import com.jiabangou.guice.persist.jpa.util.Page;
 import com.pscnlab.member.daos.impls.MemberDaoImpl;
 import com.pscnlab.member.models.Member;
+import com.pscnlab.member.services.dtos.MemberPageQueryDTO;
 
 /**
  * Created by xiong on 2017/5/15 .
  */
 @ImplementedBy(MemberDaoImpl.class)
 public interface MemberDao extends IBaseDao<Integer,Member> {
+    Long countMemberByUuidRole(Integer uuidRole);
+
+    Page<Member> findPage(MemberPageQueryDTO query, Integer offset, Integer size);
 }
