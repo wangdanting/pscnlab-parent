@@ -5,6 +5,8 @@ import PubSubMsg from '../common/pubsubmsg';
 import Settings from '../settings/Settings';
 import Common from '../../common/common.jsx';
 
+import touxiang from './touxiang.jpg';
+
 export default class Sidebar extends React.Component {
     constructor(props) {
         super(props);
@@ -39,20 +41,20 @@ export default class Sidebar extends React.Component {
             openKeys: info.openKeys,
         });
     };
-    getSidebarImage = () => {
-        const isStore = Common.currentPosition.isStore();
-        if (isStore) {
-            // 获取门店图片
-            const currentStore = Common.getStoreID.byUrl();
-            const stores = Common.getStores() || [];
-            const currentStoreInfo = stores.filter((store) => {
-                return parseInt(store.id) === parseInt(currentStore);
-            });
-
-            return `${(currentStoreInfo[0]).storeLogoUrl}?x-oss-process=image/resize,h_70`;
-        }
-        return Common.getMerchant().logo;
-    };
+    // getSidebarImage = () => {
+    //     const isStore = Common.currentPosition.isStore();
+    //     if (isStore) {
+    //         // 获取门店图片
+    //         const currentStore = Common.getStoreID.byUrl();
+    //         const stores = Common.getStores() || [];
+    //         const currentStoreInfo = stores.filter((store) => {
+    //             return parseInt(store.id) === parseInt(currentStore);
+    //         });
+    //
+    //         return `${(currentStoreInfo[0]).storeLogoUrl}?x-oss-process=image/resize,h_70`;
+    //     }
+    //     return Common.getMerchant().logo;
+    // };
 
     componentWillMount() {
         if (Common.getStoreID.byUrl() != null) {
@@ -110,7 +112,8 @@ export default class Sidebar extends React.Component {
                 <div className="admin-sidebar-inner" style={sidebarInnerStyle}>
                     <div className={this.state.collapseSidebar ? 'sidebar-current-position min' : 'sidebar-current-position'}>
                         <img
-                            src={this.getSidebarImage()}
+                            {/*src={this.getSidebarImage()}*/}
+                            src={touxiang}
                             onError={(e) => { e.target.src = Common.getPlatform.logo('default', 80, 80); e.target.error = null; }}
                             title=""
                             alt=""

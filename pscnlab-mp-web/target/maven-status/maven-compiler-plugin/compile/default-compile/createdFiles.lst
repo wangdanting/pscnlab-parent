@@ -1,6 +1,0 @@
-com/pscnlab/train/models/TrainPeople.class
-com/pscnlab/train/services/impls/TrainDaoServiceImpl.class
-com/pscnlab/train/daos/impls/TrainDaoImpl.class
-com/pscnlab/train/services/TrainDaoService.class
-com/pscnlab/train/models/Train.class
-com/pscnlab/train/daos/TrainDao.class
