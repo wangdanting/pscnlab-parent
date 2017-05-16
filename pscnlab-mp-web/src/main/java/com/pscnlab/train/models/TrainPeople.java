@@ -17,11 +17,11 @@ import javax.persistence.*;
  * Created by xiong on 2017/5/15 .
  */
 @Entity
-@Table(name = "train_people", schema = "pscnlab", catalog = "")
+@Table(name = "train_people")
 public class TrainPeople {
     private Integer uuid;
-    private String uuidMember;
-    private String uuidTrain;
+    private Integer uuidMember;
+    private Integer uuidTrain;
 
     @Id
     @Column(name = "uuid")
@@ -36,21 +36,21 @@ public class TrainPeople {
 
     @Basic
     @Column(name = "uuid_member")
-    public String getUuidMember() {
+    public Integer getUuidMember() {
         return uuidMember;
     }
 
-    public void setUuidMember(String uuidMember) {
+    public void setUuidMember(Integer uuidMember) {
         this.uuidMember = uuidMember;
     }
 
     @Basic
     @Column(name = "uuid_train")
-    public String getUuidTrain() {
+    public Integer getUuidTrain() {
         return uuidTrain;
     }
 
-    public void setUuidTrain(String uuidTrain) {
+    public void setUuidTrain(Integer uuidTrain) {
         this.uuidTrain = uuidTrain;
     }
 

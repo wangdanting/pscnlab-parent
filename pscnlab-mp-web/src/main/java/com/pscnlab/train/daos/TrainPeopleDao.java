@@ -16,11 +16,15 @@ import com.jiabangou.guice.persist.jpa.IBaseDao;
 import com.pscnlab.train.daos.impls.TrainPeopleDaoImpl;
 import com.pscnlab.train.models.TrainPeople;
 
+import java.util.List;
+
 /**
  * Created by xiong on 2017/5/15 .
  */
 @ImplementedBy(TrainPeopleDaoImpl.class)
 public interface TrainPeopleDao extends IBaseDao<Integer,TrainPeople> {
 
-    TrainPeople findOneByUuidTrainAndUuidMember(String uuidTrain, String uuidMember);
+    TrainPeople findOneByUuidTrainAndUuidMember(Integer uuidTrain, Integer uuidMember);
+
+    List<TrainPeople> findListByTrainIds(List<Integer> es);
 }

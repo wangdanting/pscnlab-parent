@@ -14,10 +14,11 @@ package com.pscnlab.train.services;
 import com.jiabangou.guice.persist.jpa.util.Page;
 import com.pscnlab.base.services.BaseService;
 import com.pscnlab.train.models.Train;
+import com.pscnlab.train.services.dtos.TrainPageDTO;
 
 /**
  * Created by xiong on 2017/5/15 .
  */
 public interface TrainService extends BaseService<Integer,Train>{
-    Page<Train> findPage(String time, Integer offset, Integer size);
+    Page<TrainPageDTO> findPage(String time, Integer offset, Integer size);
 }
