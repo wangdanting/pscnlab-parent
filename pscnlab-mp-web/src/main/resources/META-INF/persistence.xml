@@ -19,7 +19,7 @@
     <!-- Database settings for development and for tests -->
     <persistence-unit name="dev_unit" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-
+        <mapping-file>META-INF/orm.xml</mapping-file>
         <properties>
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL57InnoDBDialect" />
