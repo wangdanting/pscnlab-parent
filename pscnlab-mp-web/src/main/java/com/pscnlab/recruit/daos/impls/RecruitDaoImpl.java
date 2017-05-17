@@ -9,16 +9,14 @@
  *  with meicanyun.com.
  */
 
-package com.pscnlab.train.services;
+package com.pscnlab.recruit.daos.impls;
 
-import com.jiabangou.guice.persist.jpa.util.Page;
-import com.pscnlab.base.services.BaseService;
-import com.pscnlab.train.models.Train;
-import com.pscnlab.train.services.dtos.TrainPageDTO;
+import com.jiabangou.guice.persist.jpa.BaseDao;
+import com.pscnlab.recruit.daos.RecruitDao;
+import com.pscnlab.recruit.models.Recruit;
 
 /**
- * Created by xiong on 2017/5/15 .
+ * Created by xiong on 2017/5/16 .
  */
-public interface TrainService extends BaseService<Integer,Train>{
-    Page<TrainPageDTO> findPage(String time, Integer offset, Integer size);
+public class RecruitDaoImpl extends BaseDao<Integer,Recruit> implements RecruitDao {
 }

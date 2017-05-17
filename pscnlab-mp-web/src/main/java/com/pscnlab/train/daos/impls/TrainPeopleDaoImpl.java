@@ -16,16 +16,25 @@ import com.jiabangou.guice.persist.jpa.util.FilterMap;
 import com.pscnlab.train.daos.TrainPeopleDao;
 import com.pscnlab.train.models.TrainPeople;
 
+import java.util.List;
+
 /**
  * Created by xiong on 2017/5/15 .
  */
 public class TrainPeopleDaoImpl  extends BaseDao<Integer,TrainPeople> implements TrainPeopleDao {
 
     @Override
-    public TrainPeople findOneByUuidTrainAndUuidMember(String uuidTrain, String uuidMember) {
+    public TrainPeople findOneByUuidTrainAndUuidMember(Integer uuidTrain, Integer uuidMember) {
         FilterMap filterMap=new FilterMap();
         filterMap.eq("uuidTrain",uuidTrain);
         filterMap.eq("uuidMember",uuidMember);
         return super.findOne(filterMap);
+    }
+
+    @Override
+    public List<TrainPeople> findListByTrainIds(List<Integer> es) {
+        FilterMap filterMap=new FilterMap();
+        filterMap.in("uuidTrain",es);
+        return super.list(filterMap);
     }
 }

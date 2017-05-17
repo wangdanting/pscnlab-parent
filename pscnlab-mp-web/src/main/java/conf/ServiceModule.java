@@ -5,10 +5,12 @@ import com.pscnlab.member.services.MemberSevice;
 import com.pscnlab.member.services.RoleService;
 import com.pscnlab.member.services.impl.MemberSeviceImpl;
 import com.pscnlab.member.services.impl.RoleServiceImpl;
-import com.pscnlab.train.services.TrainService;
+import com.pscnlab.recruit.services.RecruitService;
+import com.pscnlab.recruit.services.impls.RecruitServiceImpl;
 import com.pscnlab.train.services.TrainPeopleService;
-import com.pscnlab.train.services.impls.TrainServiceImpl;
+import com.pscnlab.train.services.TrainService;
 import com.pscnlab.train.services.impls.TrainPeopleServiceImpl;
+import com.pscnlab.train.services.impls.TrainServiceImpl;
 
 
 /**
@@ -22,6 +24,7 @@ public class ServiceModule extends AbstractModule {
         bind(RoleService.class).to(RoleServiceImpl.class);
         bind(TrainService.class).to(TrainServiceImpl.class);
         bind(TrainPeopleService.class).to(TrainPeopleServiceImpl.class);
+        bind(RecruitService.class).to(RecruitServiceImpl.class);
 
 
     }

@@ -9,22 +9,16 @@
  *  with meicanyun.com.
  */
 
-package com.pscnlab.train.daos;
+package com.pscnlab.recruit.daos;
 
 import com.google.inject.ImplementedBy;
 import com.jiabangou.guice.persist.jpa.IBaseDao;
-import com.pscnlab.train.daos.impls.TrainPeopleDaoImpl;
-import com.pscnlab.train.models.TrainPeople;
-
-import java.util.List;
+import com.pscnlab.recruit.daos.impls.RecruitDaoImpl;
+import com.pscnlab.recruit.models.Recruit;
 
 /**
- * Created by xiong on 2017/5/15 .
+ * Created by xiong on 2017/5/16 .
  */
-@ImplementedBy(TrainPeopleDaoImpl.class)
-public interface TrainPeopleDao extends IBaseDao<Integer,TrainPeople> {
-
-    TrainPeople findOneByUuidTrainAndUuidMember(Integer uuidTrain, Integer uuidMember);
-
-    List<TrainPeople> findListByTrainIds(List<Integer> es);
+@ImplementedBy(RecruitDaoImpl.class)
+public interface RecruitDao extends IBaseDao<Integer,Recruit>{
 }

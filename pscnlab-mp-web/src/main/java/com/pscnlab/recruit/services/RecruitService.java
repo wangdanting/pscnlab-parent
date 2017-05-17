@@ -9,19 +9,13 @@
  *  with meicanyun.com.
  */
 
-package com.pscnlab.train.services;
+package com.pscnlab.recruit.services;
 
 import com.pscnlab.base.services.BaseService;
-import com.pscnlab.train.models.TrainPeople;
-
-import java.util.List;
-import java.util.Map;
+import com.pscnlab.recruit.models.Recruit;
 
 /**
- * Created by xiong on 2017/5/15 .
+ * Created by xiong on 2017/5/16 .
  */
-public interface TrainPeopleService  extends BaseService<Integer,TrainPeople> {
-
-    List<TrainPeople> findListByTrainIds(List<Integer> es);
-    Map<Integer, List<TrainPeople>>  findMapByTrainIds(List<Integer> es);
+public interface RecruitService extends BaseService<Integer,Recruit> {
 }

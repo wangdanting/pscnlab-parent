@@ -17,15 +17,10 @@
 <@xsrfForm/>
 <div id="framework" class="admin-framework"></div>
 <script>
-    var CONTEXT = {
-            MERCHANT: <#noescape>${platformContextJSON?if_exists}</#noescape>
-    };
-
-//    document.title = ((CONTEXT || {}).MERCHANT || {}).platformTitle;
 </script>
 <script charset="utf-8" src="${assetsAt('react.min.js')}"></script>
 <script charset="utf-8" src="${assetsAt('react-dom.min.js')}"></script>
-<script charset="utf-8" src="${assetsAt('dll.min.js')}"></script>
+<!--<script charset="utf-8" src="${assetsAt('dll.min.js')}"></script>-->
 <script charset="utf-8" src="${assetsAt('common.js')}"></script>
 <script charset="utf-8" src="${assetsAt('login.js')}"></script>
 

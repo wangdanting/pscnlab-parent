@@ -23,7 +23,7 @@ public class Train {
     private String speaker;
     private Long time;
     private String place;
-    private String number;
+    private Integer number;
 
     @Id
     @Column(name = "uuid_train")
@@ -78,11 +78,11 @@ public class Train {
 
     @Basic
     @Column(name = "number")
-    public String getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 
