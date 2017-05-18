@@ -1,0 +1,141 @@
+
+/* override antd styles */
+.admin-framework .ant-btn,
+.admin-framework .ant-input,
+.admin-framework .ant-input-number,
+.admin-framework .ant-select-selection,
+.admin-framework .ant-alert,
+.admin-framework .ant-tag,
+.admin-framework .ant-table table,
+.admin-framework .ant-pagination-item,
+.admin-framework .ant-pagination-prev,
+.admin-framework .ant-pagination-next,
+.admin-framework .ant-pagination-options-quick-jumper input,
+body .ant-calendar,
+body .ant-timepicker-panel-inner,
+body .ant-select-dropdown,
+body .ant-message-notice-content,
+body .ant-modal-content,
+body .ant-btn-lg,
+body .ant-btn-sm,
+body .ant-notification-notice,
+body .ant-popover-inner,
+body .ant-tooltip-inner
+{
+    border-radius: 3px;
+}
+
+.admin-framework .ant-table th:first-child {
+    border-top-left-radius: 2px;
+}
+
+.admin-framework .ant-table th:last-child {
+    border-top-right-radius: 2px;
+}
+
+.admin-framework .ant-btn,
+.admin-framework .ant-calendar-picker,
+.admin-framework .ant-timepicker
+{
+    vertical-align: middle;
+}
+
+.admin-framework .ant-table th,
+.admin-framework .ant-table td {
+    padding: 10px;
+}
+
+
+.ant-form-item {
+    margin-bottom: 12px;
+}
+.ant-checkbox-group {
+    line-height: 18px;
+}
+.ant-message {
+    z-index: 9999;
+}
+/*
+*处理滚动条开始
+*/
+/*
+.admin-page-content::-webkit-scrollbar {
+    height: 20px;
+    width: 2px;
+    background-color: rgb(255, 255, 255);
+}
+
+.admin-page-content::-webkit-scrollbar-thumb {
+    background-color: #28a5dd;
+}
+
+.stores-list-container::-webkit-scrollbar {
+    height: 20px;
+    width: 2px;
+    background-color: rgb(255, 255, 255);
+}
+
+.stores-list-container::-webkit-scrollbar-thumb {
+    background-color: #28a5dd;
+}
+*/
+
+/*
+* 处理表单的input高度统一为28
+*//*
+form .ant-input:not([type="textarea"]) {
+    margin-top: 1px;
+    height: 28px !important;
+    line-height: 1 !important;
+    padding: 7px !important;
+}
+
+form .ant-input:focus:not([type="textarea"]) {
+    line-height: 1 !important;
+}
+
+.ant-form-horizontal label {
+    padding-top: 5px;
+}
+
+.ant-form-item {
+    margin-bottom: 12px !important;
+}
+.ant-form-item div > div > div {
+    margin-top: 0 !important;
+}
+
+.ant-form-text {
+    padding-top: 5px !important;
+}
+
+.ant-modal-footer button {
+    height: 28px !important;
+    line-height: 18px;
+    font-size: 12px;
+}
+
+!*
+* 处理分隔符的间距
+*!
+.ant-divider {
+    margin: 0 12px;
+}
+
+.ant-form-item .ant-form-item-control {
+    line-height: 28px !important;
+}
+
+.ant-form-item .ant-form-item-control button {
+    height: 28px !important;
+    line-height: 18px;
+}
+
+.ant-table-empty {
+    margin-bottom: 0 !important;
+}
+
+.ant-menu, .ant-notification-notice {
+    box-shadow: none;
+}*/
+

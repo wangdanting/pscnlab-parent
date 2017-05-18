@@ -1,4 +1,4 @@
-import './style.css';
+import './style.less';
 import React from 'react';
 import { Button, Form, Input, message, Spin } from 'antd';
 const FormItem = Form.Item;
@@ -138,7 +138,6 @@ class FindPsw extends React.Component {
                         <Button onClick={this::this.returnLogin} style={{width: 280}}>返回登录</Button>
                     </Spin>
                 </Form>
-                <UserFooter />
                 <ForgetPassword sendAccount={this.props.form.getFieldValue('account')} isShowRegister={this.state.isShowRegister}/>
             </div>
         );

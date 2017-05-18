@@ -1,26 +1,20 @@
 package controllers.apis;
 
-import com.google.inject.Singleton;
 import com.jiabangou.core.vos.ResultVO;
 import ninja.Result;
 import ninja.Results;
 
 /**
- * Created by wangdanting on 17/5/15.
+ * Created by wangdanting on 17/5/18.
  */
-@Singleton
-public class LoginApiController {
-
-
-
+public class RoleApiController {
     /**
-     * 登录逻辑
+     * 角色
      * @param
      * @return
      */
-    public Result login(){
+    public Result role(){
 
         return Results.ok().render(ResultVO.build(true));
     }
-
 }

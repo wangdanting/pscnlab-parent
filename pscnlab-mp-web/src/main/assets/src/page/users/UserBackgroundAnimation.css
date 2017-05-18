@@ -1,0 +1,11 @@
+.canvas-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 1024px !important;
+    height: 668px !important;
+    margin-left: -512px;
+    margin-top: -334px;
+    transition: 3s;
+}

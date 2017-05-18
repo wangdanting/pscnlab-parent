@@ -1,0 +1,42 @@
+<#macro mainLayout title="Layout example">
+    <!DOCTYPE html>
+    <html lang="zh-cmn-Hans">
+    <head>
+        <link rel="dns-prefetch" href="//s.mp.xygcdn.com">
+        <link rel="dns-prefetch" href="//s.mp.jbgcdn.com">
+        <meta charset="utf-8">
+        <title></title>
+        <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+        <link rel="stylesheet" href="${assetsAt('antd.min.css')}"/>
+        <link rel="stylesheet" href="${assetsAt('index.css')}"/>
+        <link rel="icon" href="${assetsAt('favicon.ico')}" type="image/x-icon">
+        <script src="//localhost:8443/CLodopfuncs.js?priority=3"></script>
+        <!--[if lt IE 10]>
+        <script src="//as.alipayobjects.com/component/??console-polyfill/0.2.2/index.js,es5-shim/4.1.14/es5-shim.js,es5-shim/4.1.14/es5-sham.js,html5shiv/3.7.2/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+    <#nested/>
+    <@xsrfForm/>
+    <div>sdfsd</div>
+    <script>
+    </script>
+    <script charset="utf-8" src="${assetsAt('jquery.min.js')}"></script>
+    <script charset="utf-8" src="${assetsAt('react.min.js')}"></script>
+    <script charset="utf-8" src="${assetsAt('react-dom.min.js')}"></script>
+    <script charset="utf-8" src="${assetsAt('react-update.min.js')}"></script>
+    <script charset="utf-8" src="${assetsAt('antd.min.js')}"></script>
+    <script charset="utf-8" src="${assetsAt('dll.min.js')}"></script>
+    <script charset="utf-8" src="${assetsAt('react-router.min.js')}"></script>
+    <script charset="utf-8" src="${assetsAt('common.js')}"></script>
+    <script charset="utf-8" src="${assetsAt('index.js')}"></script>
+    <script charset="utf-8" src="${assetsAt('moment.min.js')}"></script>
+    <script charset="utf-8" src="${assetsAt('react-dnd.min.js')}"></script>
+    <script charset="utf-8" type="text/javascript"
+            src="//webapi.amap.com/maps?v=1.3&key=1828872a0f8456006de3b60e66587b67&plugin=AMap.Geocoder,AMap.LngLat"></script>
+
+    </body>
+    </html>
+</#macro>
