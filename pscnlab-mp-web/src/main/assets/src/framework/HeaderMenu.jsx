@@ -2,13 +2,13 @@ import React from 'react';
 import IconFont from '../component/icon-font/IconFont';
 import {Link} from 'react-router';
 import {Menu, Icon} from 'antd';
-import {getHeaderMenusData} from './menus';
+// import {getHeaderMenusData} from './menus';
 import PubSubMsg from './common/pubsubmsg';
 import Common from '../common/common.jsx';
 import storage from 'framework/common/storage.js';
 import request from '../common/request/request.jsx';
 
-let headerMenuData = getHeaderMenusData();
+// let headerMenuData = getHeaderMenusData();
 
 /**
  * 根据地址栏url 获取 头部菜单对应的key
@@ -123,22 +123,22 @@ function buildHeaderMenu(menuData) {
  */
 function getHeaderMenus(isSystemMenu) {
     let headerMenuCurrent = getCurrentKey(isSystemMenu);
-    let headerMenu = buildHeaderMenu(headerMenuData);
-    return [headerMenu, headerMenuCurrent];
+    // let headerMenu = buildHeaderMenu(headerMenuData);
+    return [headerMenuCurrent];
 }
 
 /**
  * 获取头部需要设为当前状态的菜单数据.
  * @returns {*}
  */
-function getCurrentHeaderMenu() {
-    let headerMenuCurrent = getCurrentKey();
-    for (let i = 0; i < headerMenuData.length; i++) {
-        if (headerMenuCurrent === headerMenuData[i].key) {
-            return headerMenuData[i];
-        }
-    }
-    return null;
-}
+// function getCurrentHeaderMenu() {
+//     let headerMenuCurrent = getCurrentKey();
+//     for (let i = 0; i < headerMenuData.length; i++) {
+//         if (headerMenuCurrent === headerMenuData[i].key) {
+//             return headerMenuData[i];
+//         }
+//     }
+//     return null;
+// }
 
-export {getHeaderMenus, getCurrentHeaderMenu};
+export {getHeaderMenus};

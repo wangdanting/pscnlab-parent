@@ -12,7 +12,6 @@ import request from '../../common/request/request.jsx';
 import storage from '../../framework/common/storage.js';
 import Common from '../../common/common.jsx';
 import UserDefaultImage from '../../page/system/user-default-image/UserDefaultImage.jsx';
-import StoresList from './StoresList';
 
 const logoMaxWidth = 200;
 const logoMinWidth = 60;
@@ -103,25 +102,15 @@ class Header extends React.Component {
 
         return (
             <header className="admin-header">
-                <div className={adminLogoMaxClass} title={CONTEXT.MERCHANT.platformName}>
-                    {CONTEXT.MERCHANT.platformName}
-                </div>
-                <div className={adminLogoMinClass} title={CONTEXT.MERCHANT.platformName}>
-                    <p>{CONTEXT.MERCHANT.platformName.slice(0, 3)}</p>
-                    <p>{CONTEXT.MERCHANT.platformName.slice(3)}</p>
+                <div className={adminLogoMaxClass} title="" style={{fontSize: 10}}>
+                    人格与社会认知神经科学实验室
                 </div>
                 <div className="admin-nav" style={{left: this.state.collapseSidebar ? logoMinWidth : logoMaxWidth}}>
                     <a className="admin-sidebar-toggle" onClick={this.handleSwitchMenu}><IconFont type="qiehuancaidanzhuangtai"/></a>
-                    <Menu
-                        className="admin-header-sys"
-                        selectedKeys={[this.state.current]}
-                        mode="horizontal">
-                        {this.state.menu}
-                    </Menu>
 
                     <ul className="admin-header-menu">
                         <li className="admin-header-menu-item">
-                            <Link to={`/m/${Common.getMerchantID.byUrl()}/system/profile/password`} style={{height: '48px'}}>
+                            <Link to={``} style={{height: '48px'}}>
                                 <UserDefaultImage imageUrl={this.state.userInfo.avatar}/>
                                 <span>{this.state.userInfo.userName}</span>
                             </Link>
@@ -146,7 +135,6 @@ class Header extends React.Component {
                             </Popconfirm>
                         </li>
                     </ul>
-                    <StoresList/>
                 </div>
             </header>
         );

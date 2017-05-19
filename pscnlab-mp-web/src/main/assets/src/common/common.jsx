@@ -125,8 +125,6 @@ const goToLogin = exports.goToLogin = (message) => {
     };
 
     storage.local.set('goToLoginMessage', outMessage);
-
-    window.location.href = '/sessions/new';
 };
 
 /*

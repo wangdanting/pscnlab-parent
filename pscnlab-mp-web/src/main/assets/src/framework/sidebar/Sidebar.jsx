@@ -1,9 +1,10 @@
 import './style.less';
 import React from 'react';
-import { Menu } from 'antd';
+import { Menu, Icon } from 'antd';
 import PubSubMsg from '../common/pubsubmsg';
 import Settings from '../settings/Settings';
 import Common from '../../common/common.jsx';
+const SubMenu = Menu.SubMenu;
 
 import touxiang from './touxiang.jpg';
 
@@ -24,15 +25,7 @@ export default class Sidebar extends React.Component {
     }
 
     handleClick = () => {
-        // console.log('click menu', e);
-        /*
-         * 点击Link会改变地址栏，地址栏改变会同步菜单状态，这里就不用再改变菜单状态了，重复了。
-         * 这里改变状态会导致没有点击到Link，但是点击到了菜单，菜单状态会改变，但是页面并没有跳转的bug。
-         * */
-        // this.setState({
-        //    current: e.key,
-        //    openKeys: e.keyPath.slice(1) // 点击是会关闭其他菜单,如果不需要改变其他菜单状态,注释掉这里即可.
-        // });
+
     };
 
     onToggle = (info) => {
@@ -57,11 +50,11 @@ export default class Sidebar extends React.Component {
     // };
 
     componentWillMount() {
-        if (Common.getStoreID.byUrl() != null) {
-            this.setState({
-                currentPosition: Common.getCurrentStore().name,
-            });
-        }
+        // if (Common.getStoreID.byUrl() != null) {
+        //     this.setState({
+        //         currentPosition: Common.getCurrentStore().name,
+        //     });
+        // }
 
         PubSubMsg.subscribeAcceptOldMsg('sidebar-menu', (data) => {
             if (data.menu && data.menu.length > 0) {
@@ -77,6 +70,20 @@ export default class Sidebar extends React.Component {
                 });
             }
         });
+
+        // console.log(sidebarData.menu, 'sidebarData.menu');
+        // if (sidebarData.menu && sidebarData.menu.length > 0) {
+        //     this.setState({
+        //         hidden: false,
+        //         menu: sidebarData.menu,
+        //         current: sidebarData.current,
+        //         openKeys: sidebarData.openKeys || this.state.openKeys,
+        //     });
+        // } else {
+        //     this.setState({
+        //         hidden: true,
+        //     });
+        // }
 
         PubSubMsg.subscribeAcceptOldMsg('switch-sidebar', (data) => {
             this.setState({
@@ -128,6 +135,7 @@ export default class Sidebar extends React.Component {
                         mode={this.state.collapseSidebar ? 'vertical' : 'inline'}>
                         {this.state.menu}
                     </Menu>
+
                 </div>
             </div>
         );

@@ -1,7 +1,7 @@
 export default [
-    // 增加角色
+    // 角色信息
     {
-        path: `addRole`,
+        path: `role`,
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
                 cb(null, require('./role/Role.jsx'));

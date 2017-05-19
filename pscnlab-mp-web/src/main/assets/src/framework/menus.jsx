@@ -1,6 +1,6 @@
 import Common from '../common/common.jsx';
 import storage from './common/storage.js';
-var MENUS = Common.menu.get();
+import { MENUS } from './sidebarData'
 var merchantId = Common.getMerchantID.byUrl();
 
 function getMenusFirstUrl(menu) {
@@ -11,29 +11,30 @@ function getMenusFirstUrl(menu) {
     }
 }
 
-export function getHeaderMenusData() {
-    var headerMenus = [];
-    for (var i = 0; i < MENUS.length; i++) {
-        var oriHm = MENUS[i];
-        var path = getHeaderMenuPath(oriHm);
-        headerMenus.push({
-            'key': oriHm.menuKey,
-            'text': oriHm.menuName,
-            'target': oriHm.menuTarget,
-            'children': oriHm.children,
-            'icon': oriHm.menuPic || 'fa-windows',
-            'merchantPath': '/m/'+ merchantId +'/',
-            'path': '/m/'+ merchantId + path
-        });
-        if(MENUS[i].menuTarget == 'list') {//处理门店的点击跳转path
-            MENUS[i].children.forEach(function(value) {
-                value.storePath = ('/m/' + merchantId + '/s/' + value.id + '/' + getMenusFirstUrl(value));
-            });
-            storage.session.set('stores', MENUS[i].children);
-        }
-    }
-    return headerMenus
-}
+// export function getHeaderMenusData() {
+//     var headerMenus = [];
+//     for (var i = 0; i < MENUS.length; i++) {
+//         var oriHm = MENUS[i];
+//         var path = getHeaderMenuPath(oriHm);
+//         headerMenus.push({
+//             'key': oriHm.menuKey,
+//             'text': oriHm.menuName,
+//             'target': oriHm.menuTarget,
+//             'children': oriHm.children,
+//             'icon': oriHm.menuPic || 'fa-windows',
+//             'merchantPath': '/m/'+ merchantId +'/',
+//             'path': '/m/'+ merchantId + path
+//         });
+//         if(MENUS[i].menuTarget == 'list') {//处理门店的点击跳转path
+//             MENUS[i].children.forEach(function(value) {
+//                 value.storePath = ('/m/' + merchantId + '/s/' + value.id + '/' + getMenusFirstUrl(value));
+//             });
+//             storage.session.set('stores', MENUS[i].children);
+//         }
+//     }
+//     console.log(headerMenus, 'headerMenus');
+//     return headerMenus
+// }
 export function getSidebarMenusData() {
     var sideBarMenus = {};
     for (var i = 0; i < MENUS.length; i++) {
