@@ -15,10 +15,9 @@ package conf;
 import com.google.inject.Inject;
 import com.jiabangou.ninja.extentions.AssetsController;
 import controllers.apis.LoginApiController;
-import controllers.pages.LoginController;
 import controllers.apis.PasswordApiController;
+import controllers.pages.LoginController;
 import controllers.pages.PasswordController;
-import controllers.apis.RoleApiController;
 import controllers.pages.RoleController;
 import ninja.Router;
 import ninja.application.ApplicationRoutes;
@@ -46,7 +45,10 @@ public class Routes implements ApplicationRoutes {
         //主页 就是角色管理
         router.GET().route("/role").with(RoleController.class,"index");
         router.GET().route("/role/add-role").with(RoleController.class,"index");
-        router.POST().route("/role").with(RoleApiController.class,"role");
+
+        //成员
+        router.GET().route("/member").with(RoleController.class,"index");
+        router.GET().route("/member/add-member").with(RoleController.class,"index");
 
         router.GET().route("/.*").with(LoginController.class, "index"); //登录后并且选择商户
     }

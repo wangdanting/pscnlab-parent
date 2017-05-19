@@ -215,7 +215,7 @@ class Role extends BaseComponent {
                 <Link
                     style={{color: 'white'}}
                     activeStyle={{color: 'red'}}
-                    to={`/add-role`}>
+                    to={`/role/add-role`}>
                     <Button type="primary" size="large" style={{marginBottom: 16}}>新增角色</Button>
                 </Link>
                 <Col>

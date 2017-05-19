@@ -1,0 +1,646 @@
+.add-modal {
+    .coupon-item-wrap {
+        padding: 15px;
+        box-sizing: border-box;
+        cursor: pointer;
+
+        &:hover {
+            border: 1px solid #eeeeee;
+            border-top: 0;
+            padding: 15px 14px 14px 14px;
+            box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.1);
+
+            .btn {
+                background: #ff4434;
+                color: #fff;
+            }
+        }
+    }
+
+    .coupon-item {
+        width: 100%;
+        height: 200px;
+        text-align: center;
+        background-color: #f8f8f8;
+
+        .title {
+            height: 70px;
+            padding-top: 30px;
+            background-color: #ff4434;
+            background-repeat: repeat-x;
+            background-position: bottom;
+            color: #fff;
+            text-align: center;
+            font-size: 16px;
+            &:after {
+                content: '';
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 50%;
+                margin-left: -20px;
+                width: 40px;
+                height: 30px;
+                border-radius: 50%;
+                background: #fff;
+            }
+        }
+        .desc {
+            text-align: left;
+            padding: 10px 5px;
+            color: #666;
+            min-height: 90px;
+            span {
+                color: #ff4434;
+            }
+        }
+        .btn {
+            border-color: #ff4434;
+            color: #ff4434;
+            &:hover {
+                background: #ff4434;
+                color: #fff;
+            }
+        }
+    }
+
+}
+
+.coupon-add {
+    .content {
+        position: relative;
+        width: 1000px;
+    }
+    .form-row {
+        margin-bottom: 15px;
+    }
+    .ant-form-item {
+        margin-bottom: 0px !important;
+    }
+    .label {
+        padding-top: 8px;
+        text-align: right;
+    }
+    .help-label {
+        text-align: left;
+        margin-left: 10px;
+        padding-top: 8px;
+        color: #929292;
+    }
+    .important {
+        color: #f50;
+    }
+    .desc {
+        margin-top: 15px;
+    }
+    .form-item.form-item-datetime-area {
+        float: left;
+        .area-split {
+            margin-top: 6px;
+        }
+    }
+    .radio-input {
+        span.ant-radio {
+            float: left;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .r-label {
+            float: left;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+        .r-input {
+            float: left;
+            margin-left: 10px;
+        }
+        .r-help {
+            float: left;
+            margin-top: 10px;
+        }
+        .r-input,
+        .r-help {
+            display: inline-block;
+            padding-top: 0;
+        }
+    }
+
+    .pre-view {
+        position: fixed;
+        top: 260px;
+        left: 928px;
+        padding-top: 174px;
+        padding-left: 49px;
+        height: 466px;
+        background-size: cover;
+        width: 506px;
+    }
+    .btns > * {
+        margin-right: 10px;
+    }
+}
+
+.coupon-wrap {
+    .add-btn-wrap {
+        position: relative;
+        border-bottom: 1px solid #d9d9d9;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+    .coupon-table {
+        margin-top: 20px;
+        width: 1000px;
+        border: 1px solid #d9d9d9;
+        position: relative;
+
+        & > table {
+            width: 100%;
+            border-top: 1px solid #d9d9d9;
+            td,
+            th {
+                padding: 10px;
+                border-right: 1px solid #d9d9d9;
+                border-bottom: 1px solid #d9d9d9;
+            }
+            tr td:last-child,
+            tr th:last-child {
+                border-right: 0;
+            }
+            tr:last-child td {
+                border-bottom: 0;
+            }
+            tr td:not(:first-child) {
+                text-align: center;
+            }
+        }
+
+        .header {
+            position: relative;
+            box-sizing: border-box;
+            padding: 10px;
+            width: 100%;
+            font-weight: bold;
+            background-color: #f0f0f0;
+            & > div {
+                display: inline-block;
+            }
+            & > div.msg {
+                width: 30%;
+            }
+            & > div.sta {
+                width: 70%;
+            }
+            .stop-reason {
+                color: #4dace2;
+            }
+            .title.left,
+            .title.right {
+                width: 50%;
+                display: inline-block;
+            }
+            .time {
+                position: absolute;
+                right: 20px;
+                color: #929292;
+                font-weight: normal;
+            }
+
+        }
+        & > .row:not(:last-child) {
+            border-bottom: 1px solid #eee;
+        }
+        .content {
+            padding: 10px 15px;
+
+        }
+        .col-content {
+            padding-top: 10px;
+            .row {
+                margin-bottom: 10px;
+            }
+        }
+        .message,
+        .status {
+            padding: 20px;
+        }
+        .message {
+            .title {
+                font-size: 18px;
+            }
+            & > div:not(.line) {
+                margin-bottom: 10px;
+            }
+            position: relative;
+        }
+        .line {
+            position: absolute;
+            top: 20px;
+            bottom: 20px;
+            right: 0;
+            border-left: 1px solid #eee;
+        }
+        .label {
+            text-align: right;
+        }
+        .status {
+            & > .row {
+                margin-bottom: 20px;
+            }
+            .number {
+                text-align: center;
+            }
+        }
+    }
+    .little-coupon {
+        .msg {
+            width: 132px;
+            height: 40px;
+            line-height: 40px;
+            overflow: hidden;
+            background: #f1c40f repeat-y;
+            color: #fff;
+            .desc {
+                text-indent: 1em;
+                &:after {
+                    content: '';
+                    display: block;
+                    position: absolute;
+                    left: 5px;
+                    top: 5px;
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    background: #fff;
+                }
+            }
+
+        }
+        .state {
+            width: 70px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            color: #fff;
+            &:after {
+                content: '';
+                display: block;
+                position: absolute;
+                top: 50%;
+                margin-top: -10px;
+                width: 0;
+                height: 0;
+                border-top: 10px solid transparent;
+                border-left: 10px solid #f1c40f;
+                border-bottom: 10px solid transparent;
+            }
+            &.using { //进行中
+                background-color: #1bbc9b;
+            }
+            &.end { //已取消 作废
+                background-color: #bec3c7;
+            }
+            &.nonstart { //未开时
+                background-color: #f39c11;
+            }
+        }
+    }
+    .btns {
+        margin-top: 10px;
+        .qr-code {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+        }
+    }
+
+    &.detail {
+        position: relative;
+        width: 1200px;
+        & .coupon-table {
+            width: 1200px;
+        }
+        & > .title {
+            float: left;
+            height: 50px;
+            line-height: 50px;
+            color: #4dace2;
+            font-size: 15px;
+        }
+        & > .little-coupon {
+            width: 250px;
+            overflow: hidden;
+            .msg,
+            .state {
+                height: 50px;
+                line-height: 50px;
+            }
+        }
+        & > .time {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 50px;
+            line-height: 50px;
+            color: #929292;
+        }
+    }
+    &.add {
+        .review-wrap {
+            margin-bottom: 10px;
+            margin-left: 20px;
+        }
+        .form-row {
+            margin-bottom: 15px;
+        }
+        .ant-form-item {
+            margin-bottom: 0px !important;
+        }
+        .label {
+            padding-top: 6px;
+
+        }
+        .help-label {
+            text-align: left;
+            margin-left: 10px;
+            padding-top: 6px;
+            color: #929292;
+        }
+        .important {
+            color: #f50;
+        }
+        .desc {
+            margin-top: 15px;
+        }
+    }
+    .pagination-component .pagination-wrap {
+        float: left;
+    }
+}
+
+.coupon-disable-modal {
+    position: relative;
+    textarea {
+        width: 100%;
+        height: 150px;
+        border: 1px solid #d9d9d9;
+        padding: 5px;
+    }
+    .invalidate-msg {
+        color: red;
+    }
+
+}
+
+.qr-code-popover {
+    .qr-code-big {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+/* 入口类型样式　*/
+.activity-types-card {
+    display: block;
+    margin-right: 15px;
+    border: 1px solid #e6e6e6;
+    text-align: center;
+    padding: 20px 10px 15px;
+    .activity-title {
+        margin-bottom: 15px;
+        font-size: 16px;
+        color: #333;
+    }
+    .activity-text {
+        height: 2.8em;
+        color: #999;
+    }
+    .activity-times {
+        color: #2db7f5;
+    }
+    hr {
+        height: 0;
+        border: 0;
+        border-top: 1px solid #e6e6e6;
+        margin: 15px 0;
+    }
+}
+.activity-types-card:hover {
+    box-shadow: 0 0 4px #ddd;
+}
+
+.coupon-types-card {
+    display: block;
+    padding: 12px;
+    background-color: #f8f8f8;
+    margin-right: 15px;
+    margin-bottom: 12px;
+
+    .coupon-title {
+        line-height: 1;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .coupon-text {
+        margin-top: 22px;
+        display: inline-block;
+        line-height: 1;
+        color: #999;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .coupon-short {
+        float: left;
+        display: inline-block;
+        margin-right: 10px;
+        height: 50px;
+        width: 50px;
+        color: #fff;
+        font-size: 20px;
+        text-align: center;
+        line-height: 50px;
+        border-radius: 3px;
+    }
+}
+.types-card-no-margin {
+    margin-right: 0;
+}
+
+
+/* 简单卡券预览样式 */
+.coupon-preview-list {
+    .coupon-preview-list-coupon {
+        padding: 10px;
+        background-color: #ffb0ab;
+        border: 1px dashed #fd4232;
+        font-size: 14px;
+        border-radius: 5px;
+        color: #fff;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .coupon-preview-list-close {
+        cursor: pointer;
+        font-size: 20px;
+    }
+    .coupon-preview-list-close:hover {
+        color: #2db7f5;
+    }
+}
+
+
+/* 详情样式 */
+
+.coupon-detail {
+    .coupon-detail-preview {
+        padding: 15px;
+    }
+    .coupon-detail-info {
+        padding: 10px 15px 0;
+        p {
+            text-indent: -5em;
+            padding-left: 5em;
+            margin-bottom: 10px;
+            label{
+                display: inline-block;
+                width: 5em;
+                text-align: right;
+            }
+        }
+    }
+
+    .coupon-table-trends {
+        width: 100%;
+        border-top: 1px solid #d9d9d9;
+        td,
+        th {
+            padding: 10px;
+            border-right: 1px solid #d9d9d9;
+            border-bottom: 1px solid #d9d9d9;
+        }
+        tr td:last-child,
+        tr th:last-child {
+            border-right: 0;
+        }
+        tr:last-child td {
+            border-bottom: 0;
+        }
+        tr td:not(:first-child) {
+            text-align: center;
+        }
+        tr td:last-child {
+            text-align: center;
+        }
+    }
+    .coupon-status-tip {
+        span {
+            margin-left: 10px;
+            padding: 5px;
+            border-radius: 3px;
+            color: #fff;
+        }
+        .coupon-status-no_surplus {/*无剩余*/
+            background-color:#f39c11;
+        }
+        .coupon-status-using {/*进行中*/
+            background-color:#1bbc9b;
+        }
+        .coupon-status-canceled {/*已废弃*/
+            background-color:#bec3c7;
+        }
+    }
+}
+
+.activity-detail {
+    .activity-detail-banner {
+        width: 210px;
+        padding: 15px;
+        text-align: center;
+        font-size: 0;
+        .banner-content {
+            display: inline-block;
+            height: 160px;
+            width: 200px;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    }
+    .activity-detail-info {
+        padding: 10px 15px;
+        p {
+            text-indent: -5em;
+            padding-left: 5em;
+            margin-bottom: 10px;
+            label{
+                display: inline-block;
+                width: 5em;
+                text-align: right;
+            }
+        }
+    }
+    .activity-status-tip {
+        span {
+            margin-left: 10px;
+            padding: 5px;
+            border-radius: 3px;
+            color: #fff;
+        }
+        .activity-status-nonstart {/*未开始*/
+            background-color:#f39c11;
+        }
+        .activity-status-using {/*进行中*/
+            background-color:#1bbc9b;
+        }
+        .activity-status-end {/*已结束*/
+            background-color:#bec3c7;
+        }
+        .activity-status-canceled {/*已废弃*/
+            background-color:#bec3c7;
+        }
+    }
+    .content-table-discount {
+        tr + tr {
+            border-top: 1px solid #eee;
+        }
+    }
+
+}
+.content-trends {
+    .label {
+        text-align: right;
+    }
+}
+.activity-table-trends {
+    width: 100%;
+    border-top: 1px solid #d9d9d9;
+    td,
+    th {
+        padding: 10px;
+        border-right: 1px solid #d9d9d9;
+        border-bottom: 1px solid #d9d9d9;
+    }
+    tr td:last-child,
+    tr th:last-child {
+        border-right: 0;
+    }
+    tr:last-child td {
+        border-bottom: 0;
+    }
+    tr td:not(:first-child) {
+        text-align: center;
+    }
+    tr td:last-child {
+        text-align: center;
+    }
+}
+.show-reason-true {
+    display: block;
+}
+.show-reason-false {
+    display: none;
+}
+
