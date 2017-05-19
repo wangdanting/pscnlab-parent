@@ -45,6 +45,7 @@ public class Routes implements ApplicationRoutes {
 
         //主页 就是角色管理
         router.GET().route("/role").with(RoleController.class,"index");
+        router.GET().route("/role/add-role").with(RoleController.class,"index");
         router.POST().route("/role").with(RoleApiController.class,"role");
 
         router.GET().route("/.*").with(LoginController.class, "index"); //登录后并且选择商户

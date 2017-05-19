@@ -84,7 +84,8 @@ function getSidebarMenusChildren(children, menus, parentPath) {
                 mm.children = getSidebarMenusChildren(m.children, [], parentPath);
             } else {
                 if(mm.path){
-                    mm.path = '/m/'+ merchantId +'' +parentPath+'/'+mm.path + (m.menuParam ? '?' + m.menuParam : '');
+                    // mm.path = '/m/'+ merchantId +'' +parentPath+'/'+mm.path + (m.menuParam ? '?' + m.menuParam : '');
+                    mm.path = '/'+mm.path + (m.menuParam ? '?' + m.menuParam : '');
                 }
                 mm.children = null;
             }

@@ -8,4 +8,14 @@ export default [
             });
         },
     },
+    // 增加角色
+    {
+        path: `role/add-role`, noHaveMenu: true,
+        getComponent: (location, cb) => {
+            require.ensure([], (require) => {
+                cb(null, require('./role/CreateRole.jsx'));
+            });
+        },
+    },
+
 ];
