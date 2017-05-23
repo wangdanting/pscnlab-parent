@@ -29,12 +29,30 @@ export default [
     },
     //新增成员
     {
-        path: `member/add-member`,
+        path: `member/add-member`, noHaveMenu: true,
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
                 cb(null, require('./member/CreateMember.jsx'));
             });
         },
-    }
+    },
 
+    //项目信息
+    {
+        path: `train`,
+        getComponent: (location, cb) => {
+            require.ensure([], (require) => {
+                cb(null, require('./train/Train.jsx'));
+            });
+        },
+    },
+    //新增项目
+    {
+        path: `train/add-train`, noHaveMenu: true,
+        getComponent: (location, cb) => {
+            require.ensure([], (require) => {
+                cb(null, require('./train/CreateTrain.jsx'));
+            });
+        },
+    }
 ];
