@@ -65,6 +65,15 @@ public class RoleServiceImpl extends BaseServiceImpl<Integer,Role> implements Ro
     }
 
     @Override
+    public void update(Role var1) {
+        Role byRoleAndPosition = this.findByRoleAndPosition(var1.getRole(), var1.getPosition());
+        if(byRoleAndPosition !=null&&!byRoleAndPosition.getUuidRole().equals(var1.getUuidRole())){
+            throw ServiceException.build(1000,"当前角色已存在");
+        }
+        super.update(var1);
+    }
+
+    @Override
     public void deleteById(Integer var1) {
         Role one = this.findOne(var1);
         if(one==null){

@@ -16,14 +16,13 @@ import com.google.inject.Inject;
 import com.jiabangou.ninja.extentions.AssetsController;
 import controllers.apis.LoginApiController;
 import controllers.apis.PasswordApiController;
+import controllers.apis.RoleApiController;
 import controllers.pages.IndexController;
 import controllers.pages.LoginController;
 import controllers.pages.PasswordController;
 import ninja.Router;
 import ninja.application.ApplicationRoutes;
 import ninja.utils.NinjaProperties;
-
-//import controllers.pages.IndexController;
 
 public class Routes implements ApplicationRoutes {
 
@@ -43,6 +42,13 @@ public class Routes implements ApplicationRoutes {
         //找回密码
         router.GET().route("/password_find").with(PasswordController.class,"index");
         router.POST().route("/password_find").with(PasswordApiController.class,"password");
+
+        //角色
+        router.GET().route("/role.json").with(RoleApiController.class,"getAllRole");
+        router.POST().route("/role/new.json").with(RoleApiController.class,"newRole");
+        router.GET().route("/role/{roleId}.json").with(RoleApiController.class,"findOneRole");
+        router.PUT().route("/role/update.json").with(RoleApiController.class,"updateRole");
+        router.GET().route("/role/delete.json").with(RoleApiController.class,"deleteRole");
 
         //主页 就是角色管理
         router.GET().route("/.*").with(IndexController.class, "index"); //登录后并且选择商户

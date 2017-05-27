@@ -17,6 +17,15 @@ export default [
             });
         },
     },
+    // 修改角色
+    {
+        path: `role/modify-role/:id`, noHaveMenu: true,
+        getComponent: (location, cb) => {
+            require.ensure([], (require) => {
+                cb(null, require('./role/CreateRole.jsx'));
+            });
+        },
+    },
 
     //成员信息
     {

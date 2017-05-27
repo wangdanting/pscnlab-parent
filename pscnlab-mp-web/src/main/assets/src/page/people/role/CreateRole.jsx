@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs, Table, Col, Button, Form, Input, Row} from 'antd';
+import { Tabs, Table, Col, Button, Form, Input, Row, message} from 'antd';
 import {Link} from 'react-router';
 import { Page } from 'framework';
 import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
@@ -13,6 +13,7 @@ class CreateRole extends BaseComponent {
         isIgnoreIntercept: false, // 跳转页面时，是否忽略拦截
         isSubmitting: false,
         loading: true,
+        isUpdateRole: false,  //是否是更新角色
     };
 
     // 判断用户是否输入了值
@@ -35,48 +36,48 @@ class CreateRole extends BaseComponent {
         return false;
     };
 
-
-    componentWillMount() {
-        //判断是否是修改广告
-        // let adId = this.props.params.id;
-        // if(adId) {
-        //     this.state.isUpdateAd = true;
-        //     this.getAdInfo(adId);
-        // }
-        // this.request()
-        //     .noMchId()
-        //     .noStoreId()
-        //     .get(`/api/advertisements/scopes.json`)
-        //     .success((data) => {
-        //         this.setState({
-        //             scopes: data
-        //         });
-        //         if(!this.state.isUpdateAd) {
-        //             this.setState({
-        //                 loading: false
-        //             });
-        //         }
-        //     })
-        //     .end();
-
-        // const {route} = this.props;
-        // const {router} = this.context; // If contextTypes is not defined, then context will be an empty object.
-        // router.setRouteLeaveHook(route, (/* nextLocation */) => {
-        //     // 返回 false 会继续停留当前页面，
-        //     // 否则，返回一个字符串，会显示给用户，让其自己决定
-        //     if (this.isEnterSomeValue()) {
-        //         return '您有未保存的内容，确认要离开？';
-        //     }
-        //     return true;
-        // });
-        // this.setState({
-        //     activityType: this.props.activityType,
-        // });
+    componentDidMount() {
+        // 判断是否是修改广告
+        let roleId = this.props.params.id;
+        if(roleId) {
+            this.state.isUpdateRole = true;
+            this.getRoleInfo(roleId);
+        }
+        const {route} = this.props;
+        const {router} = this.context; // If contextTypes is not defined, then context will be an empty object.
+        router.setRouteLeaveHook(route, (/* nextLocation */) => {
+            // 返回 false 会继续停留当前页面，
+            // 否则，返回一个字符串，会显示给用户，让其自己决定
+            if (this.isEnterSomeValue()) {
+                return '您有未保存的内容，确认要离开？';
+            }
+            return true;
+        });
 
         this.setState({
             loading: false
         });
     }
+
+    //获取该角色信息 更新
+    getRoleInfo = (roleId) => {
+        const that = this;
+        this.request()
+            .get(`/role/${roleId}.json`)
+            .success((response) => {
+                let results = response;
+                that.setState({
+                    loading: false,
+                });
+                let formvalue = {
+                    role: results.role,
+                    position: results.position,
+                };
+
+                that.props.form.setFieldsValue(formvalue);
+            })
+            .end();
+    };
 
     // 提交
     handleSubmit = (e) => {
@@ -119,6 +120,7 @@ class CreateRole extends BaseComponent {
     // 构建需要提交的数据
     createSubmitObj = (values) => {
         let submitData = {};
+        submitData.uuidRole = null;
         submitData.role = values.role;
         submitData.position = values.position;
 
@@ -129,45 +131,47 @@ class CreateRole extends BaseComponent {
     // 发送数据，根据不同的类型
     handleSendData = (submitData) => {
         let sendUrl;
-        // if(adId) { //更新
-        //     sendUrl = `/advertisements/${adId}.json`;
-        //     this.request()
-        //         .put(sendUrl)
-        //         .params(submitData)
-        //         .success(() => {
-        //             message.success('更新成功', 1);
-        //             this.setState({
-        //                 isIgnoreIntercept: true,
-        //             });
-        //             setTimeout(this.handleGoBack(), 500);
-        //         })
-        //         .error((err, res) => {
-        //             message.error(res && res.body && res.body.message || '未知系统错误', 1);
-        //             this.setState({
-        //                 isSubmitting: false,
-        //             });
-        //         })
-        //         .end();
-        // } else {   //创建
-        //     sendUrl = '/advertisements.json';
-        //     this.request()
-        //         .post(sendUrl)
-        //         .params(submitData)
-        //         .success(() => {
-        //             message.success('操作成功', 1);
-        //             this.setState({
-        //                 isIgnoreIntercept: true,
-        //             });
-        //             setTimeout(this.handleGoBack(), 500);
-        //         })
-        //         .error((err, res) => {
-        //             message.error(res && res.body && res.body.message || '未知系统错误', 1);
-        //             this.setState({
-        //                 isSubmitting: false,
-        //             });
-        //         })
-        //         .end();
-        // }
+        let roleId = this.props.params.id;
+        if(roleId) { //更新
+            sendUrl = `/role/update.json`;
+            submitData.uuidRole = roleId;
+            this.request()
+                .put(sendUrl)
+                .params(submitData)
+                .success(() => {
+                    message.success('更新成功', 1);
+                    this.setState({
+                        isIgnoreIntercept: true,
+                    });
+                    setTimeout(this.handleGoBack(), 500);
+                })
+                .error((err, res) => {
+                    message.error(res && res.body && res.body.message || '未知系统错误', 1);
+                    this.setState({
+                        isSubmitting: false,
+                    });
+                })
+                .end();
+        } else {   //创建
+            sendUrl = '/role/new.json';
+            this.request()
+                .post(sendUrl)
+                .params(submitData)
+                .success(() => {
+                    message.success('操作成功', 1);
+                    this.setState({
+                        isIgnoreIntercept: true,
+                    });
+                    setTimeout(this.handleGoBack(), 500);
+                })
+                .error((err, res) => {
+                    message.error(res && res.body && res.body.message || '未知系统错误', 1);
+                    this.setState({
+                        isSubmitting: false,
+                    });
+                })
+                .end();
+        }
     };
 
     // 返回

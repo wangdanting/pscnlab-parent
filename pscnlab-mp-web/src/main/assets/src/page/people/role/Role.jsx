@@ -1,32 +1,14 @@
 import React, { Component } from 'react';
-import { Tabs, Table, Col, Button } from 'antd';
+import { Tabs, Table, Col, Button, Modal } from 'antd';
 import {Link} from 'react-router';
 import { Page } from 'framework';
 import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
 
+const confirm = Modal.confirm;
+
 class Role extends BaseComponent {
     state = {
-        dataSource: [
-            {"role": "老师", "position": "java开发"},
-            {"role": "老师", "position": "前端开发"},
-            {"role": "学生", "position": "前端开发"},
-            {"role": "学生", "position": "前端开发"},
-            {"role": "学生", "position": "前端开发"},
-            {"role": "学生", "position": "前端开发"},
-            {"role": "学生", "position": "前端开发"},
-            {"role": "学生", "position": "前端开发"},
-            {"role": "学生", "position": "前端开发"},
-            {"role": "学生", "position": "前端开发"},
-            {"role": "学生", "position": "前端开发"},
-            {"role": "学生", "position": "前端开发"},
-            {"role": "学生", "position": "前端开发"},
-            {"role": "学生", "position": "前端开发"},
-            {"role": "学生", "position": "前端开发"},
-            {"role": "学生", "position": "前端开发"},
-            ],
-        currentPage: 1,
-        pageSize: 10,
-        totalCount: 0,
+        dataSource: [],
     };
 
     columns = [
@@ -42,27 +24,43 @@ class Role extends BaseComponent {
         },
         {
             title: '操作',
-            dataIndex: 'operate',
+            dataIndex: 'uuidRole',
+            key: 'uuidRole',
             render(text) {
                 return (
                     <span>
                             <Link
                                 style={{color: '#57c5f7'}}
                                 activeStyle={{color: 'red'}}
-                                to={`/add-role`}>
+                                to={`role/modify-role/${text}`}>
                                 编辑角色
                             </Link>｜
-                            <Link
-                                style={{color: '#57c5f7'}}
-                                activeStyle={{color: 'red'}}
-                                to={`/add-role`}>
-                                删除角色
-                            </Link>
-                        </span>
+                            <Button onClick={this.showDeleteConfirm(text)}>删除角色</Button>
+                    </span>
                 );
             }
             },
     ];
+
+    //确认删除角色对话框
+    showDeleteConfirm(id) {
+        confirm({
+            title: '你确定要删除该角色信息？',
+            content: '注意：如果有成员绑定改角色，该角色将删除失败！',
+            onOk() {
+                console.log('444');
+                this.request()
+                    .noStoreId()
+                    .get('/role/delete.json')
+                    .params({id: id})
+                    .success((data, res) => {
+                        console.log('dddd44');
+                    })
+                    .end();
+            },
+            onCancel() {},
+        })
+    };
 
     // 查询数据
     handleSearch(queryData = this.state.queryData) {
@@ -71,8 +69,6 @@ class Role extends BaseComponent {
             refundDataTotal: 0,
         });
 
-        const currentPage = queryData.currentPage;
-        const pageSize = queryData.pageSize;
 
         const sendData = {
 
@@ -152,63 +148,28 @@ class Role extends BaseComponent {
         return storeQueryTerms;
     }
 
-    componentWillMount() {
-        const {pageSize, currentPage} = this.state;
-        const params = {
-            pageSize,
-            currentPage,
-        };
-        this.initTableData(params);
+    componentDidMount() {
+        this.initTableData();
     }
 
-
-    initTableData = (params) => {
-        const size = params.pageSize;
-        const offset = (params.currentPage - 1) * size;
-        const dishName = params.dishName;
-        const isOnLined = params.isOnLined;
+    initTableData = () => {
         this.setState({
-            totalCount: 16,
         });
-        // this.request()
-        //     .noMchId()
-        //     .noStoreId()
-        //     .get(`/api/dish/balances.json?size=${size}&offset=${offset}&mchId=${mchId}&storeId=${storeId}&dishName=${dishName}&isOnLined=${isOnLined}`)
-        //     .success((data, res) => {
-        //         this.getHandledData(data);
-        //         this.setState({
-        //             totalCount: res.body.totalCount,
-        //         });
-        //     })
-        //     .end();
+        this.request()
+            .noMchId()
+            .noStoreId()
+            .get(`/role.json`)
+            .success((data, res) => {
+                console.log(data, 'data');
+                this.setState({
+                    dataSource: data,
+                });
+            })
+            .end();
     };
 
     render() {
-        let {
-            pageSize,
-            currentPage,
-            totalCount,
-            dataSource} = this.state;
-
-        const paginationOptions = {
-            showQuickJumper: false, // 默认true
-            pageSize,
-            currentPage,
-            totalCount,
-            onChange: (current, size) => {
-                const state = this.state;
-                const params = {
-                    pageSize: size,
-                    currentPage: current,
-                    storeId: state.storeId,
-                };
-                this.initTableData(params);
-                this.setState({
-                    currentPage: current,
-                    pageSize: size,
-                });
-            },
-        };
+        let {dataSource} = this.state;
 
         return (
             <Page header="auto" loading={this.state.loading}>
@@ -222,7 +183,6 @@ class Role extends BaseComponent {
                     <QueryTerms options={this.queryTermsOptions}/>
                 </Col>
                 <Table columns={this.columns} rowKey={(record, index) => index} dataSource={dataSource} pagination={false}/>
-                <PaginationComponent options={paginationOptions}/>
             </Page>
         );
     }
