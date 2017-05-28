@@ -35,11 +35,14 @@ class Role extends BaseComponent {
                                 to={`role/modify-role/${text}`}>
                                 编辑角色
                             </Link>｜
-                            <Button onClick={this.showDeleteConfirm(text)}>删除角色</Button>
+                            <Button onClick={() => {
+                                console.log(this, 'this');
+                                this.showDeleteConfirm(text)
+                            }}>删除角色</Button>
                     </span>
                 );
-            }
             },
+        },
     ];
 
     //确认删除角色对话框
@@ -71,11 +74,6 @@ class Role extends BaseComponent {
 
 
         const sendData = {
-
-            // auditStatus: queryData.status,
-            // offset: (currentPage - 1) * (pageSize),
-            // size: pageSize,
-            // mchOrStore: this.handleCheckIsStore() ? 'store' : 'mch',
         };
 
         this.request()

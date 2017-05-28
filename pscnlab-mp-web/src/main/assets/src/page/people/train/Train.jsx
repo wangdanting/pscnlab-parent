@@ -6,90 +6,164 @@ import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
 
 class Train extends BaseComponent {
     state = {
-
         currentPage: 1,
         pageSize: 10,
         totalCount: 0,
-        columns: [{
+        trainData: [
+            {
+                uuidTrain: 1,
+                trainInfo: {
+                    title: '牛逼的前端开发',
+                    speaker: '王丹婷',
+                    time: '2015-03-04 17:00',
+                    place: '虎门硝烟',
+                    number: 40,
+                },
+                trainPeople: [
+                    {
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    }
+                ],
+            },{
+                uuidTrain: 2,
+                trainInfo: {
+                    title: '牛逼的前端开发',
+                    speaker: '王丹婷',
+                    time: '2015-03-04 17:00',
+                    place: '虎门硝烟',
+                    number: 40,
+                },
+                trainPeople: [
+                    {
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '李四',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '李四',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '李四',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },{
+                        name: '张三',
+                        telPhone: '18875082742'
+                    },
+                ],
+            }
+        ],
+    };
+
+    columns = [
+        {
             title: '培训信息',
-            dataIndex: 'train',
-            width: 400,
+            dataIndex: 'trainInfo',
+            key: 'trainInfo',
+            width: 300,
             render(text) {
                 return (
                     <div style={{maxWidth: 300}}>
-                        <h3 style={{marginBottom: 10}}>{text.name}</h3>
-                        <span>主讲人:&nbsp;&nbsp;{text.phone || '暂无'}</span><br/>
-                        <span>联系电话:&nbsp;&nbsp;{text.showFullAddr || '暂无'}</span><br/>
-                        <span>地址:&nbsp;&nbsp;{text.manager || '暂无'}</span><br/>
-                        <span>时间:&nbsp;&nbsp;{text.createrName || '暂无'}&nbsp;&nbsp;{text.createDateTime || '暂无'}</span><br/>
-                        <span>预计参加人数:&nbsp;&nbsp;{text.manager || '暂无'}</span><br/>
+                    <h3 style={{marginBottom: 10}}>{text.title}</h3>
+                    <span>主讲人:&nbsp;&nbsp;{text.speaker || '暂无'}</span><br/>
+                    <span>联系电话:&nbsp;&nbsp;{text.speaker_telPhone || '暂无'}</span><br/>
+                    <span>地址:&nbsp;&nbsp;{text.place || '暂无'}</span><br/>
+                    <span>时间:&nbsp;&nbsp;{text.time || '暂无'}</span><br/>
+                    <span>预计参加人数:&nbsp;&nbsp;{text.number || '暂无'}</span><br/>
                     </div>
 
                 );
             },
         }, {
-            title: '业务平台',
-            dataIndex: 'storeBusinesses',
-            width: 800,
+            title: '参加人员',
+            dataIndex: 'trainPeople',
+            key: 'trainPeople',
+            width: 700,
             render(text) {
-                let businessCard = text.map((item, index) => {
-                    return <BusinessCard business={item} key={index}/>;
+                let trainPeople = text.map((item, index) => {
+                    return (<span>{item.name}&nbsp;&nbsp;{item.telPhone}&nbsp;&nbsp;&nbsp;&nbsp;</span>);
                 });
-                return <div>{businessCard}</div>;
+                return <div>{trainPeople}</div>;
             },
         }, {
             title: '操作',
-            dataIndex: 'operate',
-            width: 100,
+            dataIndex: 'uuidTrain',
+            key: 'uuidTrain',
+            width: 300,
             render(text) {
                 return (
                     <span>
-                            <Link
-                                style={{color: '#57c5f7'}}
-                                activeStyle={{color: 'red'}}
-                                to={`/m/${Common.getMerchantID.byUrl()}/store-modify/${text.id}`}>
-                                管理门店
-                            </Link>
-                        </span>
+                        <Link
+                            style={{color: '#57c5f7'}}
+                            activeStyle={{color: 'red'}}
+                            to={`train/modify-train/${text}`}>
+                            编辑培训
+                        </Link>｜
+                        <Button>参加培训</Button>｜
+                        <Button>退出培训</Button>｜
+                        <Button>删除培训</Button>
+                    </span>
                 );
             },
-        }],
-    };
-
-    columns = [
-        {
-            title: '角色',
-            dataIndex: 'role',
-            key: 'role',
-        },
-        {
-            title: '角色职位',
-            dataIndex: 'position',
-            key: 'position',
-        },
-        {
-            title: '操作',
-            dataIndex: 'operate',
-            render(text) {
-                return (
-                    <span>
-                            <Link
-                                style={{color: '#57c5f7'}}
-                                activeStyle={{color: 'red'}}
-                                to={`/add-role`}>
-                                编辑角色
-                            </Link>｜
-                            <Link
-                                style={{color: '#57c5f7'}}
-                                activeStyle={{color: 'red'}}
-                                to={`/add-role`}>
-                                删除角色
-                            </Link>
-                        </span>
-                );
-            }
-        },
-    ];
+    }];
 
     // 查询数据
     handleSearch(queryData = this.state.queryData) {
@@ -122,7 +196,7 @@ class Train extends BaseComponent {
             .end();
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {pageSize, currentPage} = this.state;
         const params = {
             pageSize,
@@ -158,7 +232,7 @@ class Train extends BaseComponent {
             pageSize,
             currentPage,
             totalCount,
-            dataSource} = this.state;
+            trainData} = this.state;
 
         const queryTermsOptions = {
             showSearchBtn: true,
@@ -215,18 +289,19 @@ class Train extends BaseComponent {
                 <Link
                     style={{color: 'white'}}
                     activeStyle={{color: 'red'}}
-                    to={`/role/add-train`}>
-                    <Button type="primary" size="large" style={{marginBottom: 16}}>新增项目</Button>
+                    to={`/train/add-train`}>
+                    <Button type="primary" size="large" style={{marginBottom: 16}}>新增培训</Button>
                 </Link>
                 <Col>
                     <QueryTerms options={queryTermsOptions}/>
                 </Col>
                 <Table
-                    columns={this.state.columns}
-                    dataSource={this.state.data}
+                    columns={this.columns}
+                    dataSource={trainData}
                     pagination={false} bordered={true}
                     showHeader={false}
                     style={{marginBottom: 15}}
+                    rowKey={(record, index) => index}
                     loading={this.state.isLoading}/>
                 <PaginationComponent options={paginationOptions}/>
             </Page>

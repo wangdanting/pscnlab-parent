@@ -46,7 +46,7 @@ export default [
         },
     },
 
-    //项目信息
+    //培训信息
     {
         path: `train`,
         getComponent: (location, cb) => {
@@ -55,7 +55,7 @@ export default [
             });
         },
     },
-    //新增项目
+    //新增培训
     {
         path: `train/add-train`, noHaveMenu: true,
         getComponent: (location, cb) => {
@@ -63,5 +63,42 @@ export default [
                 cb(null, require('./train/CreateTrain.jsx'));
             });
         },
-    }
+    },
+    //修改培训
+    {
+        path: `train/modify-trai/:id`, noHaveMenu: true,
+        getComponent: (location, cb) => {
+            require.ensure([], (require) => {
+                cb(null, require('./train/CreateTrain.jsx'));
+            });
+        },
+    },
+
+    //招聘信息
+    {
+        path: `recruit`,
+        getComponent: (location, cb) => {
+            require.ensure([], (require) => {
+                cb(null, require('./recruit/Recruit.jsx'));
+            });
+        },
+    },
+    //新增招聘
+    {
+        path: `recruit/add-recruit`, noHaveMenu: true,
+        getComponent: (location, cb) => {
+            require.ensure([], (require) => {
+                cb(null, require('./recruit/CreateRecruit.jsx'));
+            });
+        },
+    },
+    //修改招聘
+    {
+        path: `recruit/modify-recruit/:id`, noHaveMenu: true,
+        getComponent: (location, cb) => {
+            require.ensure([], (require) => {
+                cb(null, require('./recruit/CreateRecruit.jsx'));
+            });
+        },
+    },
 ];

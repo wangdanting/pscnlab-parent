@@ -43,16 +43,16 @@ class CreateRole extends BaseComponent {
             this.state.isUpdateRole = true;
             this.getRoleInfo(roleId);
         }
-        const {route} = this.props;
-        const {router} = this.context; // If contextTypes is not defined, then context will be an empty object.
-        router.setRouteLeaveHook(route, (/* nextLocation */) => {
-            // 返回 false 会继续停留当前页面，
-            // 否则，返回一个字符串，会显示给用户，让其自己决定
-            if (this.isEnterSomeValue()) {
-                return '您有未保存的内容，确认要离开？';
-            }
-            return true;
-        });
+        // const {route} = this.props;
+        // const {router} = this.context; // If contextTypes is not defined, then context will be an empty object.
+        // router.setRouteLeaveHook(route, (/* nextLocation */) => {
+        //     // 返回 false 会继续停留当前页面，
+        //     // 否则，返回一个字符串，会显示给用户，让其自己决定
+        //     if (this.isEnterSomeValue()) {
+        //         return '您有未保存的内容，确认要离开？';
+        //     }
+        //     return true;
+        // });
 
         this.setState({
             loading: false
