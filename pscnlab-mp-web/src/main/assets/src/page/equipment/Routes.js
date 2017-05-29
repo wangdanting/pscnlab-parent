@@ -45,7 +45,7 @@ export default [
             });
         },
     },
-    //修改经费
+    //修改经费 ttt
     {
         path: `fund/modify-fund/:id`, noHaveMenu: true,
         getComponent: (location, cb) => {
