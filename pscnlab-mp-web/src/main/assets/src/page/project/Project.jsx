@@ -114,7 +114,12 @@ class Project extends BaseComponent {
                             编辑成员
                         </Link>｜
                         <Button>删除项目</Button>｜
-                        <Button>编辑进度</Button>
+                         <Link
+                             style={{color: '#57c5f7'}}
+                             activeStyle={{color: 'red'}}
+                             to={`project/one-progress/${text}`}>
+                            编辑进度
+                        </Link>
                     </span>
                 );
             },

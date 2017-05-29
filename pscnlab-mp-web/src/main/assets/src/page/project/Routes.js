@@ -32,7 +32,7 @@ export default [
         path: `project/add-member/:id`, noHaveMenu: true,
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
-                cb(null, require('./AddProjectMember.jsx'));
+                cb(null, require('./EditProjectMember.jsx'));
             });
         },
     },
@@ -47,7 +47,7 @@ export default [
     },
     //个人项目进度信息
     {
-        path: `project/one-progress`, noHaveMenu: true,
+        path: `project/one-progress/:id`, noHaveMenu: true,
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
                 cb(null, require('./CreateProjectProgress.jsx'));
