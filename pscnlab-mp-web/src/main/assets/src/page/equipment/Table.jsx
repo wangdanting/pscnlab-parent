@@ -3,10 +3,12 @@ import { Tabs, Table, Col, Button, Modal } from 'antd';
 import {Link} from 'react-router';
 import { Page } from 'framework';
 import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
+import './style.less';
+import defeatHeadImg from './defeat-head.jpg';
 
 const confirm = Modal.confirm;
 
-class Role extends BaseComponent {
+class Tablew extends BaseComponent {
     state = {
         table: [{
             num: 1,
@@ -14,6 +16,28 @@ class Role extends BaseComponent {
             num: 2,
         }, {
             num: 3,
+        }, {
+            num: 4,
+        }, {
+            num: 5,
+        }, {
+            num: 6,
+        }, {
+            num: 7,
+        }, {
+            num: 8,
+        }, {
+            num: 9,
+        }, {
+            num: 10,
+        }, {
+            num: 11,
+        }, {
+            num: 12,
+        }, {
+            num: 13,
+        }, {
+            num: 14,
         }],
     };
 
@@ -152,7 +176,7 @@ class Role extends BaseComponent {
                     <div className="table-title">一号桌</div>
                     <div className="table-body">
                         <div className="user-image">
-                            <img/>
+                            <img src={defeatHeadImg}/>
                         </div>
                         <div className="user-info">
                             <p>王丹婷</p>
@@ -193,4 +217,4 @@ class Role extends BaseComponent {
         );
     }
 }
-export default Role;
+export default Tablew;
