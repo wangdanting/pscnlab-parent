@@ -11,6 +11,7 @@
 
 package com.pscnlab.member.services;
 
+import com.jiabangou.guice.persist.jpa.util.Page;
 import com.pscnlab.base.services.BaseService;
 import com.pscnlab.member.models.Role;
 
@@ -22,4 +23,6 @@ import java.util.List;
 public interface RoleService extends BaseService<Integer,Role> {
     List<Role> findAll();
     Role findByRoleAndPosition(String role,String position);
+
+    Page<Role> findByRoleOrPosition(String role, String position, Integer offset, Integer size);
 }

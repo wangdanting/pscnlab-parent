@@ -13,8 +13,10 @@ package com.pscnlab.member.daos.impls;
 
 import com.jiabangou.guice.persist.jpa.BaseDao;
 import com.jiabangou.guice.persist.jpa.util.FilterMap;
+import com.jiabangou.guice.persist.jpa.util.Page;
 import com.pscnlab.member.daos.RoleDao;
 import com.pscnlab.member.models.Role;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
@@ -33,5 +35,20 @@ public class RoleDaoImpl extends BaseDao<Integer,Role> implements RoleDao {
         filterMap.eq("role",role);
         filterMap.eq("position",position);
         return super.findOne(filterMap);
+    }
+
+    @Override
+    public Page<Role> findByRoleOrPosition(String role, String position, Integer offset,Integer size){
+
+        FilterMap filterMap=new FilterMap();
+        if(StringUtils.isNotBlank(role)) {
+            filterMap.eq("role", role);
+        }
+        if(StringUtils.isNotBlank(position)) {
+            FilterMap filterMap1 = new FilterMap();
+            filterMap1.eq("position", position);
+            filterMap.or(filterMap1);
+        }
+        return super.page(filterMap,offset,size);
     }
 }

@@ -42,11 +42,11 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/password_find").with(PasswordApiController.class,"password");
 
         //角色
-        router.GET().route("/role.json").with(RoleApiController.class,"getAllRole");
         router.POST().route("/role/new.json").with(RoleApiController.class,"newRole");
         router.GET().route("/role/{roleId}.json").with(RoleApiController.class,"findOneRole");
         router.PUT().route("/role/update.json").with(RoleApiController.class,"updateRole");
-        router.GET().route("/role/delete.json").with(RoleApiController.class,"deleteRole");
+        router.DELETE().route("/role/delete.json").with(RoleApiController.class,"deleteRole");
+        router.GET().route("/role.json").with(RoleApiController.class,"researchRole");
 
         //成员查询
         router.GET().route("/memeber/lists.json").with(MemberApiController.class,"memberList");
