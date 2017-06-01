@@ -9,7 +9,6 @@ import java.util.List;
 public class ProjectQueryPageDTO implements Serializable {
 
     private Integer uuid;        //项目ID
-    private Integer uuidRole;    //
     private String uuidProjectProgress;
     private String title;       //标题
     private String state;       //状态
@@ -28,14 +27,6 @@ public class ProjectQueryPageDTO implements Serializable {
 
     public void setUuid(Integer uuid) {
         this.uuid = uuid;
-    }
-
-    public Integer getUuidRole() {
-        return uuidRole;
-    }
-
-    public void setUuidRole(Integer uuidRole) {
-        this.uuidRole = uuidRole;
     }
 
     public String getUuidProjectProgress() {

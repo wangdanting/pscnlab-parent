@@ -2,8 +2,10 @@ package controllers.apis;
 
 import com.google.inject.Singleton;
 import com.jiabangou.ninja.extentions.filter.JsonAndJsonpResult;
+import com.pscnlab.SessionConstant;
 import com.pscnlab.member.models.Member;
 import com.pscnlab.member.services.MemberSevice;
+import ninja.Context;
 import ninja.FilterWith;
 import ninja.Result;
 import ninja.Results;
@@ -25,8 +27,9 @@ public class LoginApiController {
      * @param
      * @return
      */
-    public Result login(@Param("telephone") String telephone,@Param("password") String password){
+    public Result login(@Param("telephone") String telephone, @Param("password") String password, Context context){
         Member member= memberSevice.login(telephone, password);
+        context.getSession().put(SessionConstant.USER_ID,member.getUuidMember()+"");
         return Results.ok().render(member);
     }
 }
