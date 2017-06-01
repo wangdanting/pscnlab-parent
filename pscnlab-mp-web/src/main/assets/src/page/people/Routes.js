@@ -1,7 +1,11 @@
+//获取userId
+let pathC = window.location.pathname.split('/');
+let userId = pathC[1];
+
 export default [
     // 角色信息
     {
-        path: `role`,
+        path: `${userId}/role`,
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
                 cb(null, require('./role/Role.jsx'));

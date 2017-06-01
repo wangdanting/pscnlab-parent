@@ -37,7 +37,7 @@ public class Routes implements ApplicationRoutes {
 
         // 登录
         router.GET().route("/login").with(LoginController.class, "index");
-        router.POST().route("/login").with(LoginApiController.class, "login");
+        router.POST().route("/login.json").with(LoginApiController.class, "login");
 
         //找回密码
         router.GET().route("/password_find").with(PasswordController.class,"index");
@@ -52,5 +52,6 @@ public class Routes implements ApplicationRoutes {
 
         //主页 就是角色管理
         router.GET().route("/.*").with(IndexController.class, "index"); //登录后并且选择商户
+
     }
 }

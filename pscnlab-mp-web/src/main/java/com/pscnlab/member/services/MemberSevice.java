@@ -24,4 +24,5 @@ public interface MemberSevice extends BaseService<Integer,Member> {
     Long countMemberByUuidRole(Integer uuidRole);
     Member findOneByTelephone(String telephone);
     Page<MemberPageDTO> findPage(MemberPageQueryDTO query, Integer offset, Integer size);
+    Member login(String userName, String password);
 }

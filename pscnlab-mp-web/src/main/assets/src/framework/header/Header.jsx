@@ -48,7 +48,7 @@ class Header extends React.Component {
                 current: data.current,
             });
 
-            const userInfo = storage.session.get('userInfo');
+            const userInfo = storage.session.get('MemberInfo');
             if (!userInfo) {
                 Common.goToLogin('用户信息不存在');
             }
@@ -70,20 +70,21 @@ class Header extends React.Component {
     };
 
     signOut() { // 退出登录
-        request
-            .del('/api/sessions.json', true)
-            .end((err, res) => {
-                if (err || !res.ok) {
-                    message.error(res.body.message, 1);
-                } else {
-                    // TODO 处理登录的历史账户,重构后修改
-                    const historyAccount = localStorage.getItem('historyAccount');
-                    storage.session.removeAll();
-                    localStorage.setItem('historyAccount', historyAccount);
-
-                    Common.goToLogin('退出登录');
-                }
-            });
+        // request
+        //     .del('/api/sessions.json', true)
+        //     .end((err, res) => {
+        //         if (err || !res.ok) {
+        //             message.error(res.body.message, 1);
+        //         } else {
+        //             // TODO 处理登录的历史账户,重构后修改
+        //             const historyAccount = localStorage.getItem('historyAccount');
+        //             storage.session.removeAll();
+        //             localStorage.setItem('historyAccount', historyAccount);
+        //
+        //             Common.goToLogin('退出登录');
+        //         }
+        //     });
+        location.href = `/login`;
     }
 
     render() {
@@ -112,14 +113,8 @@ class Header extends React.Component {
                         <li className="admin-header-menu-item">
                             <Link to={``} style={{height: '48px'}}>
                                 <UserDefaultImage imageUrl={this.state.userInfo.avatar}/>
-                                <span>{this.state.userInfo.userName}</span>
+                                <span>{this.state.userInfo.manage ? '成员' : '超级管理员'}</span>
                             </Link>
-                        </li>
-                        <li className="admin-header-menu-item">
-                            <a href="/merchants">
-                                <IconFont type="qiehuanshanghu"/>
-                                切换品牌
-                            </a>
                         </li>
                         <li className="admin-header-menu-item">
                             <Popconfirm

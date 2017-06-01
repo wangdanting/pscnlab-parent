@@ -93,19 +93,32 @@ class Login extends React.Component {
             loading: true,
         });
         const sendData = {
-            accountName: userName,
+            telephone: userName,
             password,
         };
         request
-            .post('/api/sessions.json', true) // 登录
+            .post('/login.json', true) // 登录
             .send(sendData)
             .set('Content-Type', 'application/x-www-form-urlencoded')
             .end((err, resUserInfo) => {
                 if (err || !resUserInfo.ok) {
+                    console.log(resUserInfo, 'resUserInfo');
                     that.setState({
                         tipContent: resUserInfo.body.message,
                         loading: false,
                     });
+                } else {
+                    console.log('成功了');
+                    console.log(resUserInfo, 'resUserInfo');
+                    that.setState({
+                        loading: false,
+                    });
+                    if(resUserInfo.text) {
+                        let MemberInfo = JSON.parse(resUserInfo.text);
+                        storage.session.set('MemberInfo', MemberInfo);
+                        let uuid = MemberInfo.uuidMember;
+                        location.href = `${uuid}/role`;
+                    }
                 }
             });
     }
@@ -167,7 +180,7 @@ class Login extends React.Component {
                         <div className="admin-login-row">
                             <label className="admin-login-name-ico" htmlFor="MCY_username"></label>
                             <input type="text" name="MCY_username" id="MCY_username" onFocus={this::this.userNameFocus} onBlur={this::this.userNameBlur} style={{marginBottom: 15}} maxLength="40" className="admin-login-input admin-login-name" value={this.state.userName} onKeyDown={this::this.keyDownLogin} onChange={this::this.changeUserName}
-                                   placeholder="请输入邮箱或手机号"/>
+                                   placeholder="请输入手机号"/>
                             <div className="admin-login-fill-user-name" style={{display: (this.state.isShowHistory && this.state.historyData.length ? 'block' : 'none')}}>
                                 {historyData}
                             </div>

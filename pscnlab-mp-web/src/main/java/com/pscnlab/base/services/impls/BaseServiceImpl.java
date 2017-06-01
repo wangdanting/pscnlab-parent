@@ -44,14 +44,10 @@ public abstract class BaseServiceImpl<ID, T> implements BaseService<ID, T>  {
         this.getBaseDao().save(var1);
     }
 
-
-
     @Override
     public void update(T var1) {
         this.getBaseDao().update(var1);
     }
-
-
 
     @Override
     public void delete(T var1) {
@@ -62,4 +58,6 @@ public abstract class BaseServiceImpl<ID, T> implements BaseService<ID, T>  {
     public void deleteById(ID var1) {
         this.getBaseDao().deleteById(var1);
     }
+
+
 }

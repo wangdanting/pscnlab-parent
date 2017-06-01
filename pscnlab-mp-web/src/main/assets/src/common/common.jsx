@@ -158,9 +158,10 @@ let getCurrentMerchantID = exports.getMerchantID = {
 };
 
 exports.getMerchant = () => {
-    let merchant = storage.session.get('merchant');
+    let merchant = storage.session.get('MemberInfo');
+    console.log(merchant, 'merchant444');
     if (!merchant) {
-        goToLogin('获取商户为空');
+        goToLogin('获取成员为空');
     }
     return merchant;
 };
@@ -362,7 +363,7 @@ exports.currentPosition = currentPosition;
  * 获取当前用户信息
  */
 exports.getCurrentUser = () => {
-    return storage.session.get('userInfo');
+    return storage.session.get('MemberInfo');
 };
 
 /*

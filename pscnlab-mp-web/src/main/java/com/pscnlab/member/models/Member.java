@@ -27,6 +27,7 @@ public class Member {
     private String telephone;
     private String hobby;
     private String password;
+    private Integer manage;
 
     @Id
     @Column(name = "uuid_member")
@@ -114,10 +115,22 @@ public class Member {
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
+
+
+    @Basic
+    @Column(name = "manage")
+    public Integer getManage() {
+        return manage;
+    }
+
+    public void setManage(Integer manage) {
+        this.manage = manage;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -135,6 +148,7 @@ public class Member {
         if (telephone != null ? !telephone.equals(member.telephone) : member.telephone != null) return false;
         if (hobby != null ? !hobby.equals(member.hobby) : member.hobby != null) return false;
         if (password != null ? !password.equals(member.password) : member.password != null) return false;
+        if (manage != null ? !manage.equals(member.manage) : member.manage != null) return false;
 
         return true;
     }
@@ -150,6 +164,8 @@ public class Member {
         result = 31 * result + (telephone != null ? telephone.hashCode() : 0);
         result = 31 * result + (hobby != null ? hobby.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (manage != null ? manage.hashCode() : 0);
         return result;
     }
 }

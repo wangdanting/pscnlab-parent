@@ -87,4 +87,13 @@ public class MemberSeviceImpl extends BaseServiceImpl<Integer,Member> implements
 
         return Page.build(memberPageDTOS,page.getTotalCount());
     }
+
+    @Override
+    public Member login(String userName,String password) {
+        Member member = this.findOneByTelephone(userName);
+        if(member==null||!member.getPassword().equals(password)){
+            throw ServiceException.build(0,"账户或密码错误！");
+        }
+        return member;
+    }
 }

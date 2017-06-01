@@ -50,8 +50,12 @@ class UserDefaultImage extends React.Component {
             }
 
             let userNameFirstChar = '';
-            if (userInfo && userInfo.userName) {
-                userNameFirstChar = userInfo.userName.charAt(0);
+            if (userInfo) {
+                if(userInfo.manage) {
+                    userNameFirstChar = '成';
+                } else {
+                    userNameFirstChar = "管"
+                }
             }
 
             let hashFirstNumber = 0;
