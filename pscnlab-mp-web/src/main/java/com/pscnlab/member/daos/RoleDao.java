@@ -13,6 +13,7 @@ package com.pscnlab.member.daos;
 
 import com.google.inject.ImplementedBy;
 import com.jiabangou.guice.persist.jpa.IBaseDao;
+import com.jiabangou.guice.persist.jpa.util.Page;
 import com.pscnlab.member.daos.impls.RoleDaoImpl;
 import com.pscnlab.member.models.Role;
 
@@ -26,4 +27,6 @@ public interface RoleDao extends IBaseDao<Integer,Role> {
     List<Role> findAll();
 
     Role findByRoleAndPosition(String role, String position);
+
+    Page<Role> findByRoleOrPosition(String role, String position,Integer offset,Integer size);
 }

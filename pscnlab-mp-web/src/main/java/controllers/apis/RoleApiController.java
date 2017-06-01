@@ -1,6 +1,7 @@
 package controllers.apis;
 
 import com.jiabangou.core.vos.ResultVO;
+import com.jiabangou.guice.persist.jpa.util.Page;
 import com.jiabangou.ninja.extentions.filter.JsonAndJsonpResult;
 import com.pscnlab.member.models.Role;
 import com.pscnlab.member.services.RoleService;
@@ -50,5 +51,14 @@ public class RoleApiController {
     public Result deleteRole(@Param("id") Integer id) {
         roleService.deleteById(id);
         return Results.ok().render(ResultVO.build(true));
+    }
+
+    public Result researchRole(@Param("role") String role,
+                               @Param("position") String position,
+                               @Param("offset") Integer offset,
+                               @Param("size") Integer size) {
+        Page<Role> page = roleService.findByRoleOrPosition(role, position,offset,size);
+
+        return Results.ok().render(page);
     }
 }

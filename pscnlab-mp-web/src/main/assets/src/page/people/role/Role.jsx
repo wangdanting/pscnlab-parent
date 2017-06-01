@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs, Table, Col, Button, Modal } from 'antd';
+import { Tabs, Table, Col, Button, Modal, message } from 'antd';
 import {Link} from 'react-router';
 import { Page } from 'framework';
 import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
@@ -9,6 +9,12 @@ const confirm = Modal.confirm;
 class Role extends BaseComponent {
     state = {
         dataSource: [],
+        searchSource: [],
+
+        //分页
+        currentPage: 1,
+        pageSize: 10,
+        totalCount: 0,
     };
 
     columns = [
@@ -26,7 +32,7 @@ class Role extends BaseComponent {
             title: '操作',
             dataIndex: 'uuidRole',
             key: 'uuidRole',
-            render(text) {
+            render:(text) =>  {
                 return (
                     <span>
                             <Link
@@ -35,10 +41,9 @@ class Role extends BaseComponent {
                                 to={`role/modify-role/${text}`}>
                                 编辑角色
                             </Link>｜
-                            <Button onClick={() => {
-                                console.log(this, 'this');
-                                this.showDeleteConfirm(text)
-                            }}>删除角色</Button>
+                            <a>
+                                <span onClick={()=>this.showDeleteConfirm(text)}>删除角色</span>
+                            </a>
                     </span>
                 );
             },
@@ -50,14 +55,19 @@ class Role extends BaseComponent {
         confirm({
             title: '你确定要删除该角色信息？',
             content: '注意：如果有成员绑定改角色，该角色将删除失败！',
-            onOk() {
-                console.log('444');
+            onOk:() => {
+                const {pageSize, currentPage} = this.state;
+                const params = {
+                    pageSize,
+                    currentPage,
+                };
+
                 this.request()
                     .noStoreId()
-                    .get('/role/delete.json')
-                    .params({id: id})
+                    .del(`/role/delete.json?id=${id}`)
                     .success((data, res) => {
-                        console.log('dddd44');
+                        message.success('删除成功', 1);
+                        this.initTableData(params);
                     })
                     .end();
             },
@@ -65,25 +75,57 @@ class Role extends BaseComponent {
         })
     };
 
+    componentDidMount() {
+        const {pageSize, currentPage} = this.state;
+        const params = {
+            pageSize,
+            currentPage,
+        };
+        this.initTableData(params);
+    }
+
+    initTableData = (params) => {
+        const size = params.pageSize;
+        const offset = (params.currentPage - 1) * size;
+        const role = '';
+        const position = '';
+        this.setState({
+        });
+        this.request()
+            .noMchId()
+            .noStoreId()
+            .get(`/role.json?size=${size}&offset=${offset}&role=${role}&position=${position}`)
+            .success((data, res) => {
+                console.log(data, 'data');
+                this.setState({
+                    dataSource: data,
+                    searchSource: data,
+                    totalCount: res.body.totalCount,
+                });
+            })
+            .end();
+    };
+
     // 查询数据
-    handleSearch(queryData = this.state.queryData) {
+    handleSearch(data, currentPage) {
         this.setState({
             refundDataList: [],
             refundDataTotal: 0,
         });
 
+        let currentPagee = currentPage.currentPage;
+        let pageSizee = this.state.pageSize;
 
-        const sendData = {
-        };
+        let offset = (currentPagee - 1) * (pageSizee);
+        let size = pageSizee;
+
 
         this.request()
             .noStoreId()
-            .get('/refunds.json')
-            .params(sendData)
+            .get(`/role.json?size=${size}&offset=${offset}&role=${data.role}&position=${data.position}`)
             .success((data, res) => {
                 this.setState({
-                    refundDataList: res.body.results || [],
-                    refundDataTotal: res.body.totalCount || 0,
+                    dataSource: data
                 });
             })
             .end();
@@ -93,81 +135,73 @@ class Role extends BaseComponent {
         showSearchBtn: true,
         resultDateToString: true,
         getAllOptions: (callBack) => {
-            this.request()
-                .noStoreId()
-                .get('/refunds/conditions.json')
-                .success((data, res) => {
-                    let resultsStores = res.body.result.stores;
+            setTimeout(() => {
+                let allPostionOptions = this.state.searchSource.map((item, index) => ({
+                    value: `${item.position}`,
+                    label: `${item.position}`,
+                }));
+                console.log(allPostionOptions, 'allPostionOptions');
+                callBack({position: allPostionOptions});
+            }, 1000);
 
-                    let store = resultsStores.map((item) => ({
-                        value: item.id,
-                        label: item.name,
-                    }));
-                    store.unshift({value: '', label: '全部'});
-
-                    let allOptions = {
-                        store,
-                    };
-                    callBack(allOptions);
-                })
-                .end();
         },
         onSubmit: (data) => {
-            let queryData = assign({}, this.state.queryData, data, {currentPage: 1});
-            this.setState({
-                queryData,
-            });
-            this.handleSearch(queryData);
+            console.log(data, 'onSubmit');
+            this.handleSearch(data, {currentPage: 1});
         },
-        onComplete: (data) => {
-            let queryData = assign({}, this.state.queryData, data, {currentPage: 1});
-            this.setState({
-                queryData,
-                loadFilter: false,
-            });
-            this.handleSearch(queryData);
-        },
-        items: this.renderStoreQueryTerms(),
-    };
-
-    renderStoreQueryTerms() {
-        let storeQueryTerms = [
-            [
-                {
-                    type: 'selectSearch',
-                    label: '角色',
-                    name: 'role',
-                    initialValue: '',
-                    searchOnChange: true,
-                    labelWidth: 40,
-                },
-            ],
-        ];
-        return storeQueryTerms;
-    }
-
-    componentDidMount() {
-        this.initTableData();
-    }
-
-    initTableData = () => {
-        this.setState({
-        });
-        this.request()
-            .noMchId()
-            .noStoreId()
-            .get(`/role.json`)
-            .success((data, res) => {
-                console.log(data, 'data');
-                this.setState({
-                    dataSource: data,
-                });
-            })
-            .end();
+        items: [
+            {
+                type: 'select',
+                label: '角色',
+                name: 'role',
+                initialValue: '',
+                searchOnChange: false,
+                labelWidth: 40,
+                options: [
+                    {
+                        value: '老师',
+                        label: '老师',
+                        checked: true
+                    }, {
+                        value: '学生',
+                        label: '学生'
+                    }
+                ]
+            }, {
+                type: 'select',
+                label: '承担职位',
+                name: 'position',
+                initialValue: '',
+                searchOnChange: false,
+                labelWidth: 60,
+            }
+        ]
     };
 
     render() {
-        let {dataSource} = this.state;
+        let {
+            pageSize,
+            currentPage,
+            totalCount,
+            dataSource} = this.state;
+
+        const paginationOptions = {
+            showQuickJumper: false, // 默认true
+            pageSize,
+            currentPage,
+            totalCount,
+            onChange: (current, size) => {
+                const params = {
+                    pageSize: size,
+                    currentPage: current,
+                };
+                this.initTableData(params);
+                this.setState({
+                    currentPage: current,
+                    pageSize: size,
+                });
+            },
+        };
 
         return (
             <Page header="auto" loading={this.state.loading}>
@@ -181,6 +215,7 @@ class Role extends BaseComponent {
                     <QueryTerms options={this.queryTermsOptions}/>
                 </Col>
                 <Table columns={this.columns} rowKey={(record, index) => index} dataSource={dataSource} pagination={false}/>
+                <PaginationComponent options={paginationOptions}/>
             </Page>
         );
     }

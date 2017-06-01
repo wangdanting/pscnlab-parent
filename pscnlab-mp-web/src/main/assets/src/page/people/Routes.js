@@ -2,6 +2,9 @@
 let pathC = window.location.pathname.split('/');
 let userId = pathC[1];
 
+// import Common from '../../common/common.jsx';
+// let merchantId = Common.getMerchantID.byUrl();
+
 export default [
     // 角色信息
     {

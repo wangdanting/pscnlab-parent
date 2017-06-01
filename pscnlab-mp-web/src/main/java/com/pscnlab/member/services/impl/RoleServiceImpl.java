@@ -13,6 +13,7 @@ package com.pscnlab.member.services.impl;
 
 import com.jiabangou.core.exceptions.ServiceException;
 import com.jiabangou.guice.persist.jpa.IBaseDao;
+import com.jiabangou.guice.persist.jpa.util.Page;
 import com.pscnlab.base.services.impls.BaseServiceImpl;
 import com.pscnlab.member.daos.RoleDao;
 import com.pscnlab.member.models.Role;
@@ -45,6 +46,11 @@ public class RoleServiceImpl extends BaseServiceImpl<Integer,Role> implements Ro
     public Role findByRoleAndPosition(String role, String position) {
 
         return roleDao.findByRoleAndPosition(role,position);
+    }
+
+    @Override
+    public Page<Role> findByRoleOrPosition(String role, String position,Integer offset,Integer size){
+        return roleDao.findByRoleOrPosition(role,position,offset,size);
     }
 
     @Override
