@@ -1,14 +1,14 @@
 //获取userId
-let pathC = window.location.pathname.split('/');
-let userId = pathC[1];
+// let pathC = window.location.pathname.split('/');
+// let userId = pathC[1];
 
-// import Common from '../../common/common.jsx';
-// let merchantId = Common.getMerchantID.byUrl();
+import {Common} from 'common';
+let uuidMember = Common.getMerchant().uuidMember;
 
 export default [
     // 角色信息
     {
-        path: `${userId}/role`,
+        path: `${uuidMember}/role`,
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
                 cb(null, require('./role/Role.jsx'));

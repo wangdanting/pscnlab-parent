@@ -3,6 +3,9 @@ import { Tabs, Table, Col, Button } from 'antd';
 import {Link} from 'react-router';
 import { Page } from 'framework';
 import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
+import {Common} from 'common';
+
+const manage = Common.getMerchant().manage;
 
 class Member extends BaseComponent {
     state = {
@@ -252,7 +255,7 @@ class Member extends BaseComponent {
         return (
             <Page header="auto" loading={this.state.loading}>
                 <Link
-                    style={{color: 'white'}}
+                    style={{color: 'white', display: (manage?'none': 'block')}}
                     activeStyle={{color: 'red'}}
                     to={`/member/add-member`}>
                     <Button type="primary" size="large" style={{marginBottom: 16}}>新增成员</Button>

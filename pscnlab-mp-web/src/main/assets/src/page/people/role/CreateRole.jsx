@@ -4,6 +4,7 @@ import {Link} from 'react-router';
 import { Page } from 'framework';
 import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
 import Panel from 'component/panel/Panel';
+import {Common} from 'common';
 import '../style.less';
 
 const FormItem = Form.Item;
@@ -177,7 +178,7 @@ class CreateRole extends BaseComponent {
     // 返回
     handleGoBack = () => {
         const {history} = this.props;
-        history.push(`/role`);
+        history.push(`/${Common.getMerchant().uuidMember}/role`);
     };
 
     render() {

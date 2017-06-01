@@ -50,6 +50,8 @@ public class Routes implements ApplicationRoutes {
         router.DELETE().route("/role/delete.json").with(RoleApiController.class,"deleteRole");
         router.GET().route("/role.json").with(RoleApiController.class,"researchRole");
 
+        //
+
         //主页 就是角色管理
         router.GET().route("/.*").with(IndexController.class, "index"); //登录后并且选择商户
 

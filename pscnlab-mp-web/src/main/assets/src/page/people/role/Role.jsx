@@ -3,8 +3,11 @@ import { Tabs, Table, Col, Button, Modal, message } from 'antd';
 import {Link} from 'react-router';
 import { Page } from 'framework';
 import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
+import {Common} from 'common';
 
 const confirm = Modal.confirm;
+
+const manage = Common.getMerchant().manage;
 
 class Role extends BaseComponent {
     state = {
@@ -35,6 +38,7 @@ class Role extends BaseComponent {
             render:(text) =>  {
                 return (
                     <span>
+                        <span style={{display: (manage?'none': 'block')}}>
                             <Link
                                 style={{color: '#57c5f7'}}
                                 activeStyle={{color: 'red'}}
@@ -44,6 +48,8 @@ class Role extends BaseComponent {
                             <a>
                                 <span onClick={()=>this.showDeleteConfirm(text)}>删除角色</span>
                             </a>
+                        </span>
+                        <span style={{color: '#57c5f7', display: (manage?'block': 'none')}}>暂无</span>
                     </span>
                 );
             },
@@ -96,7 +102,6 @@ class Role extends BaseComponent {
             .noStoreId()
             .get(`/role.json?size=${size}&offset=${offset}&role=${role}&position=${position}`)
             .success((data, res) => {
-                console.log(data, 'data');
                 this.setState({
                     dataSource: data,
                     searchSource: data,
@@ -140,13 +145,11 @@ class Role extends BaseComponent {
                     value: `${item.position}`,
                     label: `${item.position}`,
                 }));
-                console.log(allPostionOptions, 'allPostionOptions');
                 callBack({position: allPostionOptions});
             }, 1000);
 
         },
         onSubmit: (data) => {
-            console.log(data, 'onSubmit');
             this.handleSearch(data, {currentPage: 1});
         },
         items: [
@@ -206,7 +209,7 @@ class Role extends BaseComponent {
         return (
             <Page header="auto" loading={this.state.loading}>
                 <Link
-                    style={{color: 'white'}}
+                    style={{color: 'white', display: (manage?'none': 'block')}}
                     activeStyle={{color: 'red'}}
                     to={`/role/add-role`}>
                     <Button type="primary" size="large" style={{marginBottom: 16}}>新增角色</Button>
