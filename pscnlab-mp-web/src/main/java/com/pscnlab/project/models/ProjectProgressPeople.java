@@ -12,6 +12,7 @@ public class ProjectProgressPeople {
     private Integer uuidProject;
     private Integer uuidMember;
     private String progress;
+    private String progressInfo;
 
     @Id
     @Column(name = "uuid")
@@ -52,6 +53,16 @@ public class ProjectProgressPeople {
 
     public void setProgress(String progress) {
         this.progress = progress;
+    }
+
+    @Basic
+    @Column(name = "progressInfo")
+    public String getProgressInfo() {
+        return progressInfo;
+    }
+
+    public void setProgressInfo(String progressInfo) {
+        this.progressInfo = progressInfo;
     }
 
     @Override

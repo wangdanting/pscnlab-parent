@@ -7,18 +7,19 @@ import java.io.Serializable;
  */
 public class ProjectProgressPeopleDTO implements Serializable {
 
-    private String uuidProgessPeople;//成员进度表ID
     private String memberName;     //成员名称
     private String roleName;       //角色
     private String position;       //职位
     private String progress;       //进度
+    private String progressInfo;   //进度信息
 
-    public String getUuidProgessPeople() {
-        return uuidProgessPeople;
+
+    public String getProgressInfo() {
+        return progressInfo;
     }
 
-    public void setUuidProgessPeople(String uuidProgessPeople) {
-        this.uuidProgessPeople = uuidProgessPeople;
+    public void setProgressInfo(String progressInfo) {
+        this.progressInfo = progressInfo;
     }
 
     public String getMemberName() {

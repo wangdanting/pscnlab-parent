@@ -14,9 +14,7 @@ package conf;
 
 import com.google.inject.Inject;
 import com.jiabangou.ninja.extentions.AssetsController;
-import controllers.apis.LoginApiController;
-import controllers.apis.PasswordApiController;
-import controllers.apis.RoleApiController;
+import controllers.apis.*;
 import controllers.pages.IndexController;
 import controllers.pages.LoginController;
 import controllers.pages.PasswordController;
@@ -49,6 +47,12 @@ public class Routes implements ApplicationRoutes {
         router.GET().route("/role/{roleId}.json").with(RoleApiController.class,"findOneRole");
         router.PUT().route("/role/update.json").with(RoleApiController.class,"updateRole");
         router.GET().route("/role/delete.json").with(RoleApiController.class,"deleteRole");
+
+        //成员查询
+        router.GET().route("/memeber/lists.json").with(MemberApiController.class,"memberList");
+
+        //项目管理
+        router.GET().route("/role/projects.json").with(ProjectApiController.class,"projectList");
 
         //主页 就是角色管理
         router.GET().route("/.*").with(IndexController.class, "index"); //登录后并且选择商户

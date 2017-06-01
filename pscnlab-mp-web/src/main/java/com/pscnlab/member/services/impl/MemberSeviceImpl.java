@@ -11,9 +11,12 @@
 
 package com.pscnlab.member.services.impl;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.jiabangou.core.exceptions.ServiceException;
 import com.jiabangou.guice.persist.jpa.IBaseDao;
 import com.jiabangou.guice.persist.jpa.util.Page;
+import com.jiabangou.ninja.extentions.SessionConstant;
 import com.pscnlab.base.services.impls.BaseServiceImpl;
 import com.pscnlab.member.daos.MemberDao;
 import com.pscnlab.member.models.Member;
@@ -25,10 +28,7 @@ import com.pscnlab.member.services.dtos.MemberPageQueryDTO;
 import org.apache.commons.collections.CollectionUtils;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -65,6 +65,37 @@ public class MemberSeviceImpl extends BaseServiceImpl<Integer,Member> implements
         return memberDao.findOneByTelephone(telephone);
     }
 
+    //通过成员ID查询成员列表
+    @Override
+    public Map<Integer,MemberPageDTO> findMemberWithRoleByIds(Set<Integer> memberIdsSet){
+
+        List<Member> members = memberDao.findByIds(Lists.newArrayList(memberIdsSet));
+        if(CollectionUtils.isEmpty(members)){
+            return Collections.emptyMap();
+        }
+
+        Set<Integer> roleIds = members.stream().map(Member::getUuidRole).collect(Collectors.toSet());
+        Map<Integer, Role> roleMap = roleService.findMapByIds(new ArrayList<>(roleIds));
+
+        Map<Integer,MemberPageDTO> memberPageDTOMap = Maps.newHashMap();
+        for (Member result : members) {
+            MemberPageDTO memberPageDTO=new MemberPageDTO();
+            memberPageDTO.setRole(roleMap.get(result.getUuidRole()));
+            memberPageDTO.setMember(result);
+            memberPageDTOMap.put(result.getUuidMember(),memberPageDTO);
+        }
+
+        return memberPageDTOMap;
+    }
+
+    //通过成员姓名查询成员列表
+    @Override
+    public List<Member> findMemberWithMemberName(String memeberName){
+
+        List<Member> members = memberDao.findListByMemberName(memeberName);
+        return members;
+    }
+
     @Override
     public Page<MemberPageDTO> findPage(MemberPageQueryDTO query, Integer offset, Integer size) {
 
@@ -94,6 +125,9 @@ public class MemberSeviceImpl extends BaseServiceImpl<Integer,Member> implements
         if(member==null||!member.getPassword().equals(password)){
             throw ServiceException.build(0,"账户或密码错误！");
         }
+
+
         return member;
     }
+
 }

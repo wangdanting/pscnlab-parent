@@ -18,6 +18,8 @@ import com.pscnlab.member.daos.impls.MemberDaoImpl;
 import com.pscnlab.member.models.Member;
 import com.pscnlab.member.services.dtos.MemberPageQueryDTO;
 
+import java.util.List;
+
 /**
  * Created by xiong on 2017/5/15 .
  */
@@ -28,4 +30,6 @@ public interface MemberDao extends IBaseDao<Integer,Member> {
     Page<Member> findPage(MemberPageQueryDTO query, Integer offset, Integer size);
 
     Member findOneByTelephone(String telephone);
+
+    List<Member> findListByMemberName(String memberName);
 }
