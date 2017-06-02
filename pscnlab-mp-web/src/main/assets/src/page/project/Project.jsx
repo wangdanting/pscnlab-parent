@@ -62,7 +62,7 @@ class Project extends BaseComponent {
             dataIndex: 'uuid',
             key: 'uuid',
             width: 250,
-            render(text) {
+            render:(text) => {
                 return (
                     <span>
                         <span style={{display: (manage?'none': 'block')}}>
@@ -78,16 +78,35 @@ class Project extends BaseComponent {
                                 to={`project/add-member/${text}`}>
                                 编辑成员
                             </Link>｜
+                            <Link
+                                style={{color: '#57c5f7'}}
+                                activeStyle={{color: 'red'}}
+                                to={`project/all-progress/${text}`}>
+                                查看总进度
+                            </Link>｜
                              <a>
                                  <span onClick={()=>this.showDeleteConfirm(text)}>删除项目</span>
-                             </a>｜
-                             <Link
-                                 style={{color: '#57c5f7'}}
-                                 activeStyle={{color: 'red'}}
-                                 to={`project/one-progress/${text}`}>
-                                编辑进度
-                            </Link>
+                             </a>
                         </span>
+                    </span>
+                );
+            },
+        }, {
+            title: '编辑进度',
+            dataIndex: 'isInProject',
+            key: 'isInProject',
+            width: 250,
+            render:(text) => {
+                console.log(text, 'text');
+                // {/*<span style={{display: (text?'block': 'none')}}>*/}
+                return (
+                   <span>
+                        <Link
+                            style={{color: '#57c5f7'}}
+                            activeStyle={{color: 'red'}}
+                            to={`project/one-progress/${text}`}>
+                            编辑进度
+                        </Link>
                     </span>
                 );
             },
@@ -105,10 +124,9 @@ class Project extends BaseComponent {
                     pageSize,
                     currentPage,
                 };
-
                 this.request()
                     .noStoreId()
-                    .del(`/role/delete.json?id=${id}`)
+                    .del(`/project/id/${id}/deletes.json`)
                     .success((data, res) => {
                         message.success('删除成功', 1);
                         this.initTableData(params);
@@ -126,6 +144,20 @@ class Project extends BaseComponent {
             currentPage,
         };
         this.initTableData(params);
+
+        // this.request()
+        //     .noMchId()
+        //     .noStoreId()
+        //     .get(`/project/lists.json?state=${state}&offset=${offset}&size=${size}`)
+        //     .success((data, res) => {
+        //         console.log("成功了");
+        //         console.log(data, 'data33');
+        //         this.setState({
+        //
+        //         });
+        //     })
+        //     .end();
+
     }
 
 

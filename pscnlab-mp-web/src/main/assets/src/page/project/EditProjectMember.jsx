@@ -62,10 +62,10 @@ class EditProjectMember extends BaseComponent {
             onOk:() => {
                 this.request()
                     .noStoreId()
-                    .del(`/project/id/${this.props.params.id}/delete_members.json?memberUUId=${id}`)
+                    .post(`/project/id/${this.props.params.id}/delete_members.json?memberUUId=${id}`)
                     .success((data, res) => {
                         message.success('删除成功', 1);
-                        this.initTableData(params);
+                        this.initTableData();
                     })
                     .end();
             },
