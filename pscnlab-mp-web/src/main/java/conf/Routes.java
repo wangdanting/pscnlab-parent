@@ -83,7 +83,6 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/project/id/{projectId}/mid/{memberId}/updates.json").with(ProjectApiController.class,"projectUpdateProgress");
 
         //桌位管理
-
         //桌位查询
         router.GET().route("/desk/lists.json").with(DeskApiController.class,"deskList");
         //查询某一个桌位
@@ -93,7 +92,7 @@ public class Routes implements ApplicationRoutes {
         //修改桌位
         router.POST().route("/desk/update_desks.json").with(DeskApiController.class,"updateDesk");
         //删除桌位
-        router.DELETE().route("/desk/delete_desks.json").with(DeskApiController.class,"deleteDesk");
+        router.POST().route("/desk/id/{deskId}/delete_desks.json").with(DeskApiController.class,"deleteDesk");
 
 
         //经费
