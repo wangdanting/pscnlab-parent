@@ -3,7 +3,6 @@ package controllers.apis;
 import com.google.inject.Inject;
 import com.jiabangou.core.dtos.ResultsTotalDTO;
 import com.jiabangou.core.vos.ResultsVO;
-import com.jiabangou.guice.persist.jpa.util.Page;
 import com.jiabangou.ninja.extentions.filter.JsonAndJsonpResult;
 import com.pscnlab.project.models.Project;
 import com.pscnlab.project.services.ProjectService;
@@ -40,7 +39,7 @@ public class ProjectApiController {
 
     //新增项目
     public Result projectNew(Project project){
-        projectService.save(project);
+        projectService.saveProject(project);
         return Results.ok().render(Boolean.TRUE);
     }
 

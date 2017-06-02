@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { Tabs, Table, Col, Button, } from 'antd';
+import { Tabs, Table, Col, Button, Modal, message } from 'antd';
 import {Link} from 'react-router';
 import { Page } from 'framework';
 import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
+import {Common} from 'common';
+
+const confirm = Modal.confirm;
+const manage = Common.getMerchant().manage;
 
 class Project extends BaseComponent {
     state = {
@@ -11,49 +15,7 @@ class Project extends BaseComponent {
         pageSize: 10,
         totalCount: 0,
 
-        projectData: [
-            {
-                uuidProject: 1,
-                projectInfo: {
-                    title: '心理学网站',
-                    state: '执行中',
-                    responseName: '王丹婷',
-                    responseTelephone: '18875082742',
-                    time: '2017-03-03 － 2017-03-04'
-                },
-                demand: '1.skhkshgkshgkshgk; 2.sgshgsdsdhsjkdf',
-                attention: '1.skhkshgkshgkshgk; 2.sgshgsdsdhsjkdf',
-                member: [
-                    {
-                        position: '产品',
-                        name: ['陈钊', '王五']
-                    },{
-                        position: '前端',
-                        name: ['陈钊', '王五']
-                    },
-                ]
-            }, {
-                uuidProject: 2,
-                projectInfo: {
-                    title: '心理学网2',
-                    state: '执行中',
-                    responseName: '王丹婷',
-                    responseTelephone: '18875082742',
-                    time: '2017-03-03 － 2017-03-04'
-                },
-                demand: '1.skhkshgkshgkshgk; 2.sgshgsdsdhsjkdf',
-                attention: '1.skhkshgkshgkshgk; 2.sgshgsdsdhsjkdf',
-                member: [
-                    {
-                        position: '产品',
-                        name: ['陈钊', '王五']
-                    },{
-                        position: '前端',
-                        name: ['陈钊', '王五']
-                    },
-                ]
-            }
-        ],
+        projectData: [],
     };
 
     columns = [
@@ -67,9 +29,9 @@ class Project extends BaseComponent {
                     <div style={{maxWidth: 300}}>
                         <h3 style={{marginBottom: 10}}>{text.title}</h3>
                         <span>状态:&nbsp;&nbsp;{text.state || '暂无'}</span><br/>
-                        <span>负责人:&nbsp;&nbsp;{text.responseName || '暂无'}</span><br/>
-                        <span>负责人联系电话:&nbsp;&nbsp;{text.responseTelephone || '暂无'}</span><br/>
-                        <span>预计时间:&nbsp;&nbsp;{text.time || '暂无'}</span><br/>
+                        <span>负责人:&nbsp;&nbsp;{text.responsiblePersonName || '暂无'}</span><br/>
+                        <span>负责人联系电话:&nbsp;&nbsp;{text.responsiblePersonTelephone || '暂无'}</span><br/>
+                        <span>预计时间:&nbsp;&nbsp;{text.startTime}-{text.startEnd}</span><br/>
                     </div>
 
                 );
@@ -86,47 +48,76 @@ class Project extends BaseComponent {
             width: 400,
         }, {
             title: '项目成员',
-            dataIndex: 'member',
-            key: 'member',
+            dataIndex: 'projectPepoles',
+            key: 'projectPepoles',
             width: 250,
             render(text) {
                 let projectPeople = text.map((item, index) => {
-                    return (<span>{item.position}&nbsp;&nbsp;{item.name}&nbsp;&nbsp;&nbsp;&nbsp;</span>);
+                    return (<span>{item.position}&nbsp;&nbsp;{item.memberName}&nbsp;&nbsp;&nbsp;&nbsp;<br/></span>);
                 });
                 return <div>{projectPeople}</div>;
             },
         }, {
             title: '操作',
-            dataIndex: 'uuidProject',
-            key: 'uuidProject',
+            dataIndex: 'uuid',
+            key: 'uuid',
             width: 250,
             render(text) {
                 return (
                     <span>
-                        <Link
-                            style={{color: '#57c5f7'}}
-                            activeStyle={{color: 'red'}}
-                            to={`project/modify-project/${text}`}>
-                            编辑项目
-                        </Link>｜
-                        <Link
-                            style={{color: '#57c5f7'}}
-                            activeStyle={{color: 'red'}}
-                            to={`project/add-member/${text}`}>
-                            编辑成员
-                        </Link>｜
-                        <Button>删除项目</Button>｜
-                         <Link
-                             style={{color: '#57c5f7'}}
-                             activeStyle={{color: 'red'}}
-                             to={`project/one-progress/${text}`}>
-                            编辑进度
-                        </Link>
+                        <span style={{display: (manage?'none': 'block')}}>
+                            <Link
+                                style={{color: '#57c5f7'}}
+                                activeStyle={{color: 'red'}}
+                                to={`project/modify-project/${text}`}>
+                                编辑项目
+                            </Link>｜
+                            <Link
+                                style={{color: '#57c5f7'}}
+                                activeStyle={{color: 'red'}}
+                                to={`project/add-member/${text}`}>
+                                编辑成员
+                            </Link>｜
+                             <a>
+                                 <span onClick={()=>this.showDeleteConfirm(text)}>删除项目</span>
+                             </a>｜
+                             <Link
+                                 style={{color: '#57c5f7'}}
+                                 activeStyle={{color: 'red'}}
+                                 to={`project/one-progress/${text}`}>
+                                编辑进度
+                            </Link>
+                        </span>
                     </span>
                 );
             },
         }
     ];
+
+    //确认删除角色对话框
+    showDeleteConfirm(id) {
+        confirm({
+            title: '你确定要删除该项目信息？',
+            content: '注意，注意啦',
+            onOk:() => {
+                const {pageSize, currentPage} = this.state;
+                const params = {
+                    pageSize,
+                    currentPage,
+                };
+
+                this.request()
+                    .noStoreId()
+                    .del(`/role/delete.json?id=${id}`)
+                    .success((data, res) => {
+                        message.success('删除成功', 1);
+                        this.initTableData(params);
+                    })
+                    .end();
+            },
+            onCancel() {},
+        })
+    };
 
     componentDidMount() {
         const {pageSize, currentPage} = this.state;
@@ -150,9 +141,18 @@ class Project extends BaseComponent {
             console.log("成功了");
             console.log(data, 'data33');
                 this.setState({
-                    // dataSource: data,
-                    // searchSource: data,
-                    // totalCount: res.body.totalCount,
+                    projectData: data.map((item, index) => {
+                        item.projectInfo = {
+                            title: item.title,
+                            state: item.state,
+                            responsiblePersonName: item.responsiblePersonName,
+                            responsiblePersonTelephone: item.responsiblePersonTelephone,
+                            startEnd: item.startEnd,
+                            startTime: item.startTime,
+                        };
+                        return item;
+                    }),
+                    totalCount: res.body.totalCount,
                 });
             })
             .end();
@@ -176,17 +176,17 @@ class Project extends BaseComponent {
             // mchOrStore: this.handleCheckIsStore() ? 'store' : 'mch',
         };
 
-        this.request()
-            .noStoreId()
-            .get('/refunds.json')
-            .params(sendData)
-            .success((data, res) => {
-                this.setState({
-                    refundDataList: res.body.results || [],
-                    refundDataTotal: res.body.totalCount || 0,
-                });
-            })
-            .end();
+        // this.request()
+        //     .noStoreId()
+        //     .get('/refunds.json')
+        //     .params(sendData)
+        //     .success((data, res) => {
+        //         this.setState({
+        //             refundDataList: res.body.results || [],
+        //             refundDataTotal: res.body.totalCount || 0,
+        //         });
+        //     })
+        //     .end();
     }
 
     render() {
@@ -234,11 +234,9 @@ class Project extends BaseComponent {
             currentPage,
             totalCount,
             onChange: (current, size) => {
-                const state = this.state;
                 const params = {
                     pageSize: size,
                     currentPage: current,
-                    storeId: state.storeId,
                 };
                 this.initTableData(params);
                 this.setState({

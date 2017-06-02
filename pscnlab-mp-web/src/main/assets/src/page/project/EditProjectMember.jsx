@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Tabs, Table, Col, Button, Form, Input, Row} from 'antd';
+import { Tabs, Table, Col, Button, Form, Input, Row, Modal} from 'antd';
 import {Link} from 'react-router';
 import { Page } from 'framework';
-import {BaseComponent} from 'component';
+import {BaseComponent, PaginationComponent} from 'component';
 import Panel from '../../component/panel/Panel';
 
+const confirm = Modal.confirm;
 const FormItem = Form.Item;
 
 class EditProjectMember extends BaseComponent {
@@ -12,6 +13,7 @@ class EditProjectMember extends BaseComponent {
         currentPage: 1,
         pageSize: 10,
         totalCount: 0,
+
         managerList: [{
             id: null,
             name: null,
@@ -19,33 +21,15 @@ class EditProjectMember extends BaseComponent {
             disabled: false,
             options: null,
         }],
-        delStaffs: [],
-        projectMemberData: [
-            {
-                uuid_member: 1,
-                name: '张三',
-                telephone: '18875082742'
-            }, {
-                uuid_member: 2,
-                name: '张三1',
-                telephone: '18875082742'
-            }, {
-                uuid_member: 3,
-                name: '张三2',
-                telephone: '18875082742'
-            }, {
-                uuid_member: 4,
-                name: '张三3',
-                telephone: '18875082742'
-            }
-        ],
+
+        projectMemberData: [],
     };
 
     columns = [
         {
             title: '名字',
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'memberName',
+            key: 'memberName',
             width: 300,
         }, {
             title: '手机号码',
@@ -54,100 +38,129 @@ class EditProjectMember extends BaseComponent {
             width: 300,
         }, {
             title: '操作',
-            dataIndex: 'uuid_member',
-            key: 'uuid_member',
+            dataIndex: 'uuidMember',
+            key: 'uuidMember',
             width: 250,
             render(text) {
                 return (
-                    <span>
-                        <Button>删除成员</Button>
-                    </span>
+                    <a>
+                        <span onClick={()=>this.showDeleteConfirm(text)}>删除成员</span>
+                    </a>
                 );
             },
         }
     ];
 
+    //确认删除角色对话框
+    showDeleteConfirm(id) {
+        confirm({
+            title: '你确定要删除该成员信息？',
+            content: '小心，小心',
+            onOk:() => {
+                this.request()
+                    .noStoreId()
+                    .del(`/project/id/${this.state.projectId}/delete_members.json?memberUUId=${id}`)
+                    .success((data, res) => {
+                        message.success('删除成功', 1);
+                        this.initTableData(params);
+                    })
+                    .end();
+            },
+            onCancel() {},
+        })
+    };
+
     componentDidMount() {
+        this.setState({
+            projectId: this.props.params.id
+        });
         this.initTableData();
     }
 
-
     initTableData = () => {
-        this.setState({
-            totalCount: 16,
-        });
-        // this.request()
-        //     .noMchId()
-        //     .noStoreId()
-        //     .get(`/api/dish/balances.json?size=${size}&offset=${offset}&mchId=${mchId}&storeId=${storeId}&dishName=${dishName}&isOnLined=${isOnLined}`)
-        //     .success((data, res) => {
-        //         this.getHandledData(data);
-        //         this.setState({
-        //             totalCount: res.body.totalCount,
-        //         });
-        //     })
-        //     .end();
+        console.log(this.state.projectId, 'projectId');
+        this.request()
+            .noMchId()
+            .noStoreId()
+            .get(`/project/id/${this.state.projectId}/members.json`)
+            .success((data, res) => {
+            console.log(data, 'iii');
+                this.setState({
+                    projectMemberData: data
+                });
+            })
+            .end();
     };
 
-    // 清楚校验仓库中的当前数据
-    cleanManager(num, dateList) {
-        let that = this;
-        let arr = [];
-        dateList.forEach((item, index) => {
-            let manager = that.props.form.getFieldsValue([`name${index}`, `mobile${index}`]);
-            arr.push({
-                name: manager[`name${index}`],
-                mobile: manager[`mobile${index}`],
+    // 提交
+    handleSubmit = (e) => {
+        e.preventDefault();
+
+        // 构建需要校验字段
+        let validateFields = this.createValidateFields();
+
+        this.props.form.validateFieldsAndScroll(validateFields, (errors, values) => {
+            // 只有validateFields中指定得字段，值才会包含到values中
+
+            if (!!errors) {
+                console.log('Errors in form!!!');
+                return;
+            }
+
+            this.setState({
+                isSubmitting: true,
             });
-        });
-        arr.splice(num, 1);
-        arr.forEach((item, index) => {
-            let manager = {};
-            manager[`name${index}`] = item.name;
-            manager[`mobile${index}`] = item.mobile;
-            that.props.form.setFieldsValue(manager);
+
+            // 构建需要提交的数据
+            let submitData = this.createSubmitObj(values);
+            // 发送数据
+            this.handleSendData(submitData);
         });
     };
 
-    deleteManager(num) {
-        let that = this;
-        let dateList = this.state.managerList;
+    // 构建需要校验的字段
+    createValidateFields = () => {
+        const {getFieldValue} = this.props.form;
 
-        that.cleanManager(num, dateList);
+        let validateFields = [
+            'memberName',
+            'telephone',
+        ];
 
-        if (dateList[num].id) {
-            let delStaffs = that.state.delStaffs;
-            delStaffs.push(dateList[num]);
-            that.setState({
-                delStaffs,
-            });
-        }
-
-        dateList.splice(num, 1);
-        this.setState({
-            managerList: dateList,
-        });
+        return validateFields;
     };
 
-    addManager() {
-        let dateList = this.state.managerList;
+    // 构建需要提交的数据
+    createSubmitObj = (values) => {
+        let submitData = {};
+        submitData.uuidRole = this.state.uuidRole;
+        submitData.name = values.name;
 
-        let addManager = {
-            id: null,
-            name: undefined,
-            mobile: undefined,
-            isInvite: 'N', // 新加的店长是否邀请默认为N
-            disabled: false,
-        };
 
-        dateList.push(addManager);
-        this.setState({
-            managerList: dateList,
-        });
+        // 给 userLimit, userPerDayLimit 赋值
+        return submitData;
     };
 
-    handleSubmit() {
-
+    // 发送数据，根据不同的类型
+    handleSendData = (submitData) => {
+        let sendUrl = '/member/new.json';
+        this.request()
+            .post(sendUrl)
+            .params(submitData)
+            .success(() => {
+                message.success('操作成功', 1);
+                this.setState({
+                    isIgnoreIntercept: true,
+                });
+                setTimeout(this.handleGoBack(), 500);
+            })
+            .error((err, res) => {
+                message.error(res && res.body && res.body.message || '未知系统错误', 1);
+                this.setState({
+                    isSubmitting: false,
+                });
+            })
+            .end();
     };
 
     render() {
@@ -157,70 +170,44 @@ class EditProjectMember extends BaseComponent {
             labelCol: {span: '3'},
             wrapperCol: {span: '14'},
         };
-        //成员
-        const managerGroup = this.state.managerList.map((managerItem, index, arr) => {
 
-            let managerNameProps = getFieldProps(`name${index}`, {
-                rules: [
-                    {required: true, message: '请输入成员姓名!'},
-                ],
-            });
-
-            let managerTelProps = getFieldProps(`mobile${index}`, {
-                rules: [
-                    {required: false, message: '请选择正确的联系方式!'},
-                ],
-            });
-
-            // let options = this.state.manager[`options${index}`];
-
-            let disabled = managerItem.id ? true : this.state.managerList[index].disabled || false;
-
-            return (
-                <div key={`manager${index}`}>
-                    <FormItem
-                        label="成员信息："
-                        {...formItemLayout}
-                        labelCol={{span: '3'}}
-                        wrapperCol={{span: '18'}}
-                        style={{marginBottom: 4}}
-                        required>
-                        <Col span="5" style={{marginLeft: 10}}>
-                            <FormItem hasFeedback>
-                                <Input {...managerNameProps} style={{marginTop: 1}} maxLength="10" disabled={disabled} placeholder="请输入成员姓名"/>
-                            </FormItem>
-                        </Col>
-                        <Col span="5" style={{marginLeft: 10}}>
-                            <FormItem hasFeedback>
-                                <Input {...managerTelProps} style={{marginTop: 1}} disabled={disabled} placeholder="请输入联系电话"/>
-                            </FormItem>
-                        </Col>
-                        <Col span="5" style={{marginLeft: 10}}>
-                            <a className={arr.length === 1 ? 'store-manage-hidden' : ''}>
-                                <span onClick={() => this.deleteManager(index)} style={{marginLeft: 10}}>删除该成员</span>
-                            </a>
-                        </Col>
-                    </FormItem>
-                </div>
-            );
+        let memberNameProps = getFieldProps('memberName', {
+            rules: [
+                {required: true, message: '请输入成员姓名!'},
+            ],
+        });
+        let telephoneProps = getFieldProps('telephone', {
+            rules: [
+                {required: false, message: '请选择正确的联系方式!'},
+            ],
         });
 
         return (
             <Page header="auto" loading={this.state.loading}>
-                <Form horizontal form={this.props.form} onSubmit={this.handleSubmit}>
+                <Form horizontal form={this.props.form}>
                     <Panel
                         header="邀请成员加入项目"
                         width="100%">
                         <div className="content">
-                            {managerGroup}
-                            <Row style={{marginBottom: 10}}>
-                                <Col span={20} offset={3}>
-                                    <a>
-                                        <span onClick={this::this.addManager}>添加成员</span>
-                                    </a>
+                            <FormItem
+                                label="成员信息："
+                                {...formItemLayout}
+                                labelCol={{span: '3'}}
+                                wrapperCol={{span: '18'}}
+                                style={{marginBottom: 4}}
+                                required>
+                                <Col span="5" style={{marginLeft: 10}}>
+                                    <FormItem hasFeedback>
+                                        <Input {...memberNameProps} style={{marginTop: 1}} maxLength="10" placeholder="请输入成员姓名"/>
+                                    </FormItem>
                                 </Col>
-                            </Row>
-                            <Button type="primary" style={{marginRight: 10}} htmlType="submit">保存</Button>
+                                <Col span="5" style={{marginLeft: 10}}>
+                                    <FormItem hasFeedback>
+                                        <Input {...telephoneProps} style={{marginTop: 1}} placeholder="请输入联系电话"/>
+                                    </FormItem>
+                                </Col>
+                            </FormItem>
+                            <Button type="primary" style={{marginRight: 10}} loading={this.state.isSubmitting} onClick={this.handleSubmit}>添加</Button>
                             <Link to={`/project`}><Button type="ghost">取消</Button></Link>
                         </div>
                     </Panel>

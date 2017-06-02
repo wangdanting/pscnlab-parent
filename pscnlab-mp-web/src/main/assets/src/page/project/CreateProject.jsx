@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs, Table, Col, Button, Form, Input, Row, messag, DatePicker,Radio, } from 'antd';
+import { Tabs, Table, Col, Button, Form, Input, Row, message, DatePicker,Radio, } from 'antd';
 import {Link} from 'react-router';
 import { Page } from 'framework';
 import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
@@ -14,8 +14,7 @@ class CreateProject extends BaseComponent {
         isIgnoreIntercept: false, // 跳转页面时，是否忽略拦截
         isSubmitting: false,
         loading: true,
-        isUpdateRole: false,  //是否是更新角色
-        isProjectState: 'noStart', //项目状态
+        isProjectState: '未开始', //项目状态
     };
 
     // 判断用户是否输入了值
@@ -39,58 +38,47 @@ class CreateProject extends BaseComponent {
     };
 
     // 开始日期的禁用选项
-    handleDisabledStartDate = (startDate) => {
-        let endDate = this.props.form.getFieldValue('endDate');
-        if (!startDate) {
+    handleDisabledStartDate = (startTime) => {
+        let startEnd = this.props.form.getFieldValue('startEnd');
+        if (!startTime) {
             return false;
         }
-        const disableBeforeNow = startDate.getTime() < (Date.now() - 24 * 60 * 360 * 1000);
-        if (!endDate) {
+        const disableBeforeNow = startTime.getTime() < (Date.now() - 24 * 60 * 360 * 1000);
+        if (!startEnd) {
             return disableBeforeNow;
         }
-        return disableBeforeNow || startDate.getTime() > endDate.getTime();
+        return disableBeforeNow || startTime.getTime() > startEnd.getTime();
     };
 
     // 结束日期的禁用选项
-    handleDisabledEndDate = (endDate) => {
-        let startDate = this.props.form.getFieldValue('startDate');
+    handleDisabledEndDate = (startEnd) => {
+        let startTime = this.props.form.getFieldValue('startTime');
         let limitDay = 60;
-        if (!endDate) {
+        if (!startEnd) {
             return false;
         }
-        const disableBeforeNow = endDate.getTime() < (Date.now() - 24 * 60 * 360 * 1000);
-        if (!startDate) {
+        const disableBeforeNow = startEnd.getTime() < (Date.now() - 24 * 60 * 360 * 1000);
+        if (!startTime) {
             return disableBeforeNow;
         }
-        let offsetEndDate = moment(startDate).set('date', moment(startDate).get('date') + limitDay);
-        return endDate.getTime() < startDate.getTime() || endDate.getTime() > offsetEndDate.toDate().getTime();
+        let offsetEndDate = moment(startTime).set('date', moment(startTime).get('date') + limitDay);
+        return startEnd.getTime() < startTime.getTime() || startEnd.getTime() > offsetEndDate.toDate().getTime();
     };
 
     componentDidMount() {
-        // 判断是否是修改广告
+        // 判断是否是修改项目
         let projectId = this.props.params.id;
         if(projectId) {
-            this.state.isUpdateRole = true;
-            this.getRoleInfo(projectId);
+            this.getProjectInfo(projectId);
         }
-        // const {route} = this.props;
-        // const {router} = this.context; // If contextTypes is not defined, then context will be an empty object.
-        // router.setRouteLeaveHook(route, (/* nextLocation */) => {
-        //     // 返回 false 会继续停留当前页面，
-        //     // 否则，返回一个字符串，会显示给用户，让其自己决定
-        //     if (this.isEnterSomeValue()) {
-        //         return '您有未保存的内容，确认要离开？';
-        //     }
-        //     return true;
-        // });
 
         this.setState({
             loading: false
         });
     }
 
-    //获取该角色信息 更新
-    getRoleInfo = (projectId) => {
+    //获取该项目信息 更新
+    getProjectInfo = (projectId) => {
         const that = this;
         this.request()
             .get(`/train/${projectId}.json`)
@@ -101,14 +89,16 @@ class CreateProject extends BaseComponent {
                 });
                 let formvalue = {
                     title: results.title,
-                    responseName: results.responseName,
-                    responseTelephone: results.responseTelephone,
-                    startDate: results.startDate,
-                    endDate: results.endDate,
+                    responsiblePersonName: results.responsiblePersonName,
+                    responsiblePersonTelephone: results.responsiblePersonTelephone,
+                    startTime: results.startTime,
+                    startEnd: results.startEnd,
                     demand: results.demand,
                     attention: results.attention,
-                    state: results.state,
                 };
+                that.setState({
+                    state: results.state,
+                });
 
                 that.props.form.setFieldsValue(formvalue);
             })
@@ -147,10 +137,10 @@ class CreateProject extends BaseComponent {
 
         let validateFields = [
             'title',
-            'responseName',
-            'responseTelephone',
-            'startDate',
-            'endDate',
+            'responsiblePersonName',
+            'responsiblePersonTelephone',
+            'startEnd',
+            'startTime',
             'demand',
             'attention'
         ];
@@ -161,12 +151,12 @@ class CreateProject extends BaseComponent {
     // 构建需要提交的数据
     createSubmitObj = (values) => {
         let submitData = {};
-        submitData.uuidTrain = null;
+        submitData.uuid = null;
         submitData.title = values.title;
-        submitData.responseName = values.responseName;
-        submitData.responseTelephone = values.responseTelephone;
-        submitData.startDate = moment(values.startDate).format('YYYY-MM-DD');
-        submitData.endDate = moment(values.endDate).format('YYYY-MM-DD');
+        submitData.responsiblePersonName = values.responsiblePersonName;
+        submitData.responsiblePersonTelephone = values.responsiblePersonTelephone;
+        submitData.startEnd = moment(values.startEnd).format('YYYY-MM-DD');
+        submitData.startTime = moment(values.startTime).format('YYYY-MM-DD');
         submitData.demand = values.demand;
         submitData.attention = values.attention;
         submitData.state = this.state.isProjectState;
@@ -178,12 +168,11 @@ class CreateProject extends BaseComponent {
     // 发送数据，根据不同的类型
     handleSendData = (submitData) => {
         let sendUrl;
-        let roleId = this.props.params.id;
-        if(roleId) { //更新
-            sendUrl = `/role/update.json`;
-            submitData.uuidRole = roleId;
+        let projectId = this.props.params.id;
+        if(projectId) { //更新
+            sendUrl = `/project/id/${projectId}/updates.json`;
             this.request()
-                .put(sendUrl)
+                .post(sendUrl)
                 .params(submitData)
                 .success(() => {
                     message.success('更新成功', 1);
@@ -200,7 +189,7 @@ class CreateProject extends BaseComponent {
                 })
                 .end();
         } else {   //创建
-            sendUrl = '/role/new.json';
+            sendUrl = '/project/news.json';
             this.request()
                 .post(sendUrl)
                 .params(submitData)
@@ -248,7 +237,7 @@ class CreateProject extends BaseComponent {
             trigger: commonTrigger,
         });
         // 负责人姓名
-        const responseNameProps = getFieldProps('responseName', {
+        const responsiblePersonNameProps = getFieldProps('responsiblePersonName', {
             rules: [
                 {required: true, message: '请输入负责人姓名'},
                 {max: 13, message: '最多13个汉字'},
@@ -256,7 +245,7 @@ class CreateProject extends BaseComponent {
             trigger: commonTrigger,
         });
         // 负责人联系电话
-        const responseTelephoneProps = getFieldProps('responseTelephone', {
+        const responsiblePersonTelephoneProps = getFieldProps('responsiblePersonTelephone', {
             rules: [
                 {required: true, message: '请输入负责人联系电话'},
                 {max: 13, message: '最多11个数字'},
@@ -264,13 +253,13 @@ class CreateProject extends BaseComponent {
             trigger: commonTrigger,
         });
         //项目开始时间
-        const startDateProps = getFieldProps('startDate', {
+        const startTimeProps = getFieldProps('startTime', {
             rules: [
                 {required: true, type: 'date', message: '请选择项目开始时间'},
             ],
         });
         //项目介绍时间
-        const endDateProps = getFieldProps('endDate', {
+        const startEndProps = getFieldProps('startEnd', {
             rules: [
                 {required: true, type: 'date', message: '请选择项目结束时间'},
             ],
@@ -331,9 +320,9 @@ class CreateProject extends BaseComponent {
                                     <Col span="11">
                                         <FormItem>
                                             <RadioGroup onChange={this.getProjectState} value={this.state.isProjectState}>
-                                                <Radio key="noStart" value={ 'noStart' } checked={true} defaultChecked={true}>未开始</Radio>
-                                                <Radio key="run" value={'run' } defaultChecked={false}>执行中</Radio>
-                                                <Radio key="down" value={ 'down' } defaultChecked={false}>已完成</Radio>
+                                                <Radio key="未开始" value={ '未开始' } checked={true} defaultChecked={true}>未开始</Radio>
+                                                <Radio key="执行中" value={'执行中' } defaultChecked={false}>执行中</Radio>
+                                                <Radio key="已完成" value={ '已完成' } defaultChecked={false}>已完成</Radio>
                                             </RadioGroup>
                                         </FormItem>
                                     </Col>
@@ -342,7 +331,7 @@ class CreateProject extends BaseComponent {
                                     <Col span="4" className="label ant-form-item-required">负责人姓名：</Col>
                                     <Col span="11">
                                         <FormItem>
-                                            <Input {...responseNameProps} placeholder="请输入负责人姓名"/>
+                                            <Input {...responsiblePersonNameProps} placeholder="请输入负责人姓名"/>
                                         </FormItem>
                                     </Col>
                                 </Row>
@@ -350,7 +339,7 @@ class CreateProject extends BaseComponent {
                                     <Col span="4" className="label ant-form-item-required">负责人联系电话：</Col>
                                     <Col span="11">
                                         <FormItem>
-                                            <Input {...responseTelephoneProps} placeholder="请输入负责人电话"/>
+                                            <Input {...responsiblePersonTelephoneProps} placeholder="请输入负责人电话"/>
                                         </FormItem>
                                     </Col>
                                 </Row>
@@ -360,7 +349,7 @@ class CreateProject extends BaseComponent {
                                         <FormItem>
                                             <DatePicker
                                                 disabledDate={this.handleDisabledStartDate}
-                                                {...startDateProps}
+                                                {...startTimeProps}
                                             />
                                         </FormItem>
                                     </Col>
@@ -371,7 +360,7 @@ class CreateProject extends BaseComponent {
                                         <FormItem>
                                             <DatePicker
                                                 disabledDate={this.handleDisabledEndDate}
-                                                {...endDateProps}
+                                                {...startEndProps}
                                             />
                                         </FormItem>
                                     </Col>
