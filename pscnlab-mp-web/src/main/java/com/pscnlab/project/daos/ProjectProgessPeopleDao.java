@@ -14,4 +14,6 @@ import java.util.Set;
 @ImplementedBy(ProjectProgressPeopleDaoImpl.class)
 public interface ProjectProgessPeopleDao extends IBaseDao<Long,ProjectProgressPeople>{
     List<ProjectProgressPeople> findListByProjectIdsSet(Set<Integer> projectIdsSet);
+
+    ProjectProgressPeople findOneByMemberUUIdAndProjectId(Integer uuidProject, Integer memberUUId);
 }

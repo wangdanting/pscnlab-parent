@@ -38,4 +38,6 @@ public interface MemberSevice extends BaseService<Integer,Member> {
 
     Page<MemberPageDTO> findPage(MemberPageQueryDTO query, Integer offset, Integer size);
     Member login(String userName, String password);
+
+    void updatePassword(String telephone, String oldPassword, String newPassword);
 }

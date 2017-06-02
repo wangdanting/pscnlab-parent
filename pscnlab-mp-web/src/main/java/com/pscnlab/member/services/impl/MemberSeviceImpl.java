@@ -161,4 +161,17 @@ public class MemberSeviceImpl extends BaseServiceImpl<Integer,Member> implements
         return member;
     }
 
+
+    @Override
+    public void updatePassword(String telephone, String oldPassword, String newPassword){
+
+        Member member = this.findOneByTelephone(telephone);
+        if(member==null||!member.getPassword().equals(oldPassword)){
+            throw ServiceException.build(0,"原始密码错误！");
+        }
+
+        member.setPassword(newPassword);
+        memberDao.update(member);
+    }
+
 }

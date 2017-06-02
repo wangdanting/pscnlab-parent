@@ -37,6 +37,7 @@ public class Routes implements ApplicationRoutes {
         // 登录
         router.GET().route("/login").with(LoginController.class, "index");
         router.POST().route("/login.json").with(LoginApiController.class, "login");
+        router.POST().route("/user/update_passwd.json").with(LoginApiController.class,"updatePasswd");
 
         //找回密码
         router.GET().route("/password_find").with(PasswordController.class,"index");
@@ -73,6 +74,17 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/project/id/{projectId}/add_members.json").with(ProjectApiController.class,"projectAddMember");
         //删除成员
         router.POST().route("/project/id/{projectId}/delete_members.json").with(ProjectApiController.class,"projectDeleteMember");
+
+
+        //桌位管理
+        //桌位查询
+        router.GET().route("/table/lists.json").with(TableApiController.class,"tableList");
+        //添加桌位
+        router.POST().route("/table/new_tables.json").with(TableApiController.class,"addTable");
+        //修改桌位
+        router.POST().route("/table/id/{tableId}/update_tables.json").with(TableApiController.class,"updateTable");
+        //删除桌位
+        router.DELETE().route("/table/id/{tableId}/delete_tables.json").with(TableApiController.class,"deleteTable");
 
 
         //主页 就是角色管理

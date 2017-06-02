@@ -24,4 +24,17 @@ public class ProjectProgressPeopleDaoImpl extends BaseDao<Long,ProjectProgressPe
     }
 
 
+    @Override
+    public ProjectProgressPeople findOneByMemberUUIdAndProjectId(Integer uuidProject,Integer memberUUId){
+        if(uuidProject==null||memberUUId==null){
+            return null;
+        }
+        FilterMap filterMap = new FilterMap();
+        filterMap.eq("uuidProject",uuidProject);
+        filterMap.eq("uuidMember",memberUUId);
+
+        return super.findOne(filterMap);
+    }
+
+
 }

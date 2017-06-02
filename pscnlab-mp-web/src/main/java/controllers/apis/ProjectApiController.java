@@ -26,13 +26,22 @@ public class ProjectApiController {
     @Inject
     private ProjectService projectService;
 
-    //查询项目列表
+    /**
+     * 查询项目列表
+     * @param state    状态：未开始 进行中 已完成
+     * @param offset   分页偏移量
+     * @param size     分页大小
+     * @param memberUUId  成员主键ID
+     * @param context
+     * @return
+     */
     public Result projectList(@Param("state") String state,
                               @Param("offset") Integer offset,
                               @Param("size") Integer size,
+                              @Param("memberUUId") Integer memberUUId,
                               Context context){
 
-        ResultsTotalDTO<ProjectQueryPageDTO> resultsTotalDTO =  projectService.findPageProject(state,offset,size);
+        ResultsTotalDTO<ProjectQueryPageDTO> resultsTotalDTO =  projectService.findPageProject(state,offset,size,memberUUId);
         return Results.ok().render(resultsTotalDTO);
 
     }
@@ -58,9 +67,10 @@ public class ProjectApiController {
     }
 
     //项目加入成员
-    public Result projectAddMember(@PathParam("projectId") Integer projectId){
+    public Result projectAddMember(@PathParam("projectId") Integer projectId,
+                                   @Param("memberUUId") Integer memberUUId){
 
-        //projectService.projectAddMember(projectId);
+        projectService.projectAddMember(projectId,memberUUId);
         return Results.ok().render(Boolean.TRUE);
     }
 
@@ -68,7 +78,7 @@ public class ProjectApiController {
     public Result projectDeleteMember(@PathParam("projectId") Integer projectId,
                                       @Param("memberUUId") Integer memberUUId){
 
-        //projectService.projectDeleteMember(projectId,memberUUId);
+        projectService.projectDeleteMember(projectId,memberUUId);
         return Results.ok().render(Boolean.TRUE);
     }
 }

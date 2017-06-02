@@ -12,11 +12,15 @@ import java.util.List;
  * Created by zengyh on 2017/5/15.
  */
 public interface ProjectService extends BaseService{
+    void projectAddMember(Integer uuidProject, Integer memberUUId);
+
+    void projectDeleteMember(Integer uuidProject, Integer memberUUId);
+
     List<ProjectProgressPeopleDTO> findProjectMemberList(Integer uuid);
 
     void updateProject(Project newProject);
 
     void saveProject(Project project);
 
-    ResultsTotalDTO<ProjectQueryPageDTO> findPageProject(String state, Integer offset, Integer size);
+    ResultsTotalDTO<ProjectQueryPageDTO> findPageProject(String state, Integer offset, Integer size, Integer memberUUId);
 }

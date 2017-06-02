@@ -28,8 +28,16 @@ public class LoginApiController {
      * @return
      */
     public Result login(@Param("telephone") String telephone, @Param("password") String password, Context context){
-        Member member= memberSevice.login(telephone, password);
+        Member member = memberSevice.login(telephone, password);
         context.getSession().put(SessionConstant.USER_ID,member.getUuidMember()+"");
         return Results.ok().render(member);
+    }
+
+    public Result updatePasswd(@Param("telephone") String telephone,
+                               @Param("oldPassword") String oldPassword,
+                               @Param("newPassword") String newPassword){
+
+        memberSevice.updatePassword(telephone,oldPassword,newPassword);
+        return Results.ok().render(Boolean.TRUE);
     }
 }
