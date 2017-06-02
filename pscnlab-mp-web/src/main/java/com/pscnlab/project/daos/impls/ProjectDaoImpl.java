@@ -14,6 +14,15 @@ import org.apache.commons.lang3.StringUtils;
 @Singleton
 public class ProjectDaoImpl extends BaseDao<Long,Project> implements ProjectDao {
 
+    @Override
+    public Project findOneByUUId(Integer uuid){
+        if (uuid==null){
+            return null;
+        }
+        FilterMap filterMap = new FilterMap();
+        filterMap.eq("uuid",uuid);
+        return super.findOne(filterMap);
+    }
 
     @Override
     public Page<Project> findPageProjectByState(String state, Integer offset, Integer size){

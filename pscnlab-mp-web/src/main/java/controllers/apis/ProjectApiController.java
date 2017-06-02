@@ -2,8 +2,10 @@ package controllers.apis;
 
 import com.google.inject.Inject;
 import com.jiabangou.core.dtos.ResultsTotalDTO;
+import com.jiabangou.core.vos.ResultsVO;
 import com.jiabangou.guice.persist.jpa.util.Page;
 import com.jiabangou.ninja.extentions.filter.JsonAndJsonpResult;
+import com.pscnlab.project.models.Project;
 import com.pscnlab.project.services.ProjectService;
 import com.pscnlab.project.services.dtos.ProjectQueryPageDTO;
 import ninja.Context;
@@ -11,6 +13,9 @@ import ninja.FilterWith;
 import ninja.Result;
 import ninja.Results;
 import ninja.params.Param;
+import ninja.params.PathParam;
+
+import java.util.List;
 
 /**
  * Created by zengyh on 2017/6/1.
@@ -22,7 +27,7 @@ public class ProjectApiController {
     @Inject
     private ProjectService projectService;
 
-
+    //查询项目列表
     public Result projectList(@Param("state") String state,
                               @Param("offset") Integer offset,
                               @Param("size") Integer size,
@@ -31,5 +36,40 @@ public class ProjectApiController {
         ResultsTotalDTO<ProjectQueryPageDTO> resultsTotalDTO =  projectService.findPageProject(state,offset,size);
         return Results.ok().render(resultsTotalDTO);
 
+    }
+
+    //新增项目
+    public Result projectNew(Project project){
+        projectService.save(project);
+        return Results.ok().render(Boolean.TRUE);
+    }
+
+    //更新项目
+    public Result projectUpdate(Project project){
+        projectService.updateProject(project);
+        return Results.ok().render(Boolean.TRUE);
+    }
+
+    //查询项目成员
+    public Result projectMember(@PathParam("projectId") Integer projectId){
+
+        List list = projectService.findProjectMemberList(projectId);
+        return Results.ok().render(ResultsVO.build(list));
+
+    }
+
+    //项目加入成员
+    public Result projectAddMember(@PathParam("projectId") Integer projectId){
+
+        //projectService.projectAddMember(projectId);
+        return Results.ok().render(Boolean.TRUE);
+    }
+
+    //项目删除成员
+    public Result projectDeleteMember(@PathParam("projectId") Integer projectId,
+                                      @Param("memberUUId") Integer memberUUId){
+
+        //projectService.projectDeleteMember(projectId,memberUUId);
+        return Results.ok().render(Boolean.TRUE);
     }
 }

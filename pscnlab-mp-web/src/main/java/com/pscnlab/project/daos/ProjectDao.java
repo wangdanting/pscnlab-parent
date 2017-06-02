@@ -13,5 +13,7 @@ import com.pscnlab.project.models.Project;
 public interface ProjectDao extends IBaseDao<Long,Project> {
 
 
+    Project findOneByUUId(Integer uuid);
+
     Page<Project> findPageProjectByState(String state, Integer offset, Integer size);
 }

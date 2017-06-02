@@ -8,11 +8,19 @@ import java.io.Serializable;
 public class ProjectProgressPeopleDTO implements Serializable {
 
     private String memberName;     //成员名称
+    private String telephone;      //电话号码
     private String roleName;       //角色
     private String position;       //职位
     private String progress;       //进度
     private String progressInfo;   //进度信息
 
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
 
     public String getProgressInfo() {
         return progressInfo;

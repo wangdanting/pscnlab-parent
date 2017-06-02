@@ -14,6 +14,7 @@ package conf;
 
 import com.google.inject.Inject;
 import com.jiabangou.ninja.extentions.AssetsController;
+import com.pscnlab.project.services.ProjectService;
 import controllers.apis.*;
 import controllers.pages.IndexController;
 import controllers.pages.LoginController;
@@ -53,10 +54,21 @@ public class Routes implements ApplicationRoutes {
         router.GET().route("/member.json").with(MemberApiController.class,"findPage");
 
         //成员查询
-        router.GET().route("/memeber/lists.json").with(MemberApiController.class,"memberList");
+        router.GET().route("/member/lists.json").with(MemberApiController.class,"memberList");
 
         //项目管理
+        //项目查询
         router.GET().route("/project/lists.json").with(ProjectApiController.class,"projectList");
+        //新增项目
+        router.POST().route("/project/news.json").with(ProjectApiController.class,"projectNew");
+        //编辑项目
+        router.POST().route("/project/id/{projectId}/updates.json").with(ProjectApiController.class,"projectUpdate");
+        //查询项目成员
+        router.GET().route("/project/id/{projectId}/members.json").with(ProjectApiController.class,"projectMember");
+        //加入成员
+        router.POST().route("/project/id/{projectId}/add_members.json").with(ProjectApiController.class,"projectAddMember");
+        //删除成员
+        router.POST().route("/project/id/{projectId}/delete_members.json").with(ProjectApiController.class,"projectDeleteMember");
 
 
         //主页 就是角色管理
