@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.jiabangou.core.beans.ConvertUtils;
 import com.jiabangou.core.dtos.ResultsTotalDTO;
+import com.jiabangou.core.exceptions.ServiceException;
 import com.jiabangou.guice.persist.jpa.IBaseDao;
 import com.jiabangou.guice.persist.jpa.util.Page;
 import com.pscnlab.base.services.BaseService;
@@ -37,6 +38,33 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
 
     @Inject
     private MemberSevice memberSevice;
+
+    @Override
+    public void projectAddMember(Integer uuidProject,Integer memberUUId){
+
+        ProjectProgressPeople people = projectProgessPeopleDao.findOneByMemberUUIdAndProjectId(uuidProject,memberUUId);
+        if(people!=null){
+            throw ServiceException.build(500001l,"项目中已添加该成员");
+        }
+
+        people = new ProjectProgressPeople();
+        people.setProgress("");
+        people.setProgressInfo("");
+        people.setUuidMember(memberUUId);
+        people.setUuidProject(uuidProject);
+
+        projectProgessPeopleDao.save(people);
+
+    }
+
+    @Override
+    public void projectDeleteMember(Integer uuidProject,Integer memberUUId){
+
+        ProjectProgressPeople people = projectProgessPeopleDao.findOneByMemberUUIdAndProjectId(uuidProject,memberUUId);
+        if(people!=null){
+            projectProgessPeopleDao.delete(people);
+        }
+    }
 
     @Override
     public List<ProjectProgressPeopleDTO> findProjectMemberList(Integer uuid){

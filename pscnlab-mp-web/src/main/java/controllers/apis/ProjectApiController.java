@@ -59,9 +59,10 @@ public class ProjectApiController {
     }
 
     //项目加入成员
-    public Result projectAddMember(@PathParam("projectId") Integer projectId){
+    public Result projectAddMember(@PathParam("projectId") Integer projectId,
+                                   @Param("memberUUId") Integer memberUUId){
 
-        //projectService.projectAddMember(projectId);
+        projectService.projectAddMember(projectId,memberUUId);
         return Results.ok().render(Boolean.TRUE);
     }
 
@@ -69,7 +70,7 @@ public class ProjectApiController {
     public Result projectDeleteMember(@PathParam("projectId") Integer projectId,
                                       @Param("memberUUId") Integer memberUUId){
 
-        //projectService.projectDeleteMember(projectId,memberUUId);
+        projectService.projectDeleteMember(projectId,memberUUId);
         return Results.ok().render(Boolean.TRUE);
     }
 }
