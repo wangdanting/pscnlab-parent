@@ -3,8 +3,8 @@ package controllers.apis;
 import com.google.inject.Inject;
 import com.jiabangou.core.dtos.ResultsTotalDTO;
 import com.jiabangou.ninja.extentions.filter.JsonAndJsonpResult;
-import com.pscnlab.project.models.Table;
-import com.pscnlab.project.services.TableService;
+import com.pscnlab.project.models.Desk;
+import com.pscnlab.project.services.DeskService;
 import ninja.FilterWith;
 import ninja.Result;
 import ninja.Results;
@@ -15,47 +15,47 @@ import ninja.params.PathParam;
  * Created by zengyh on 2017/6/2.
  */
 @FilterWith(JsonAndJsonpResult.class)
-public class TableApiController {
+public class DeskApiController {
 
     @Inject
-    private TableService tableService;
+    private DeskService deskService;
 
     //桌位查询
-    public Result tableList(@Param("tableNum") String tableNum,
+    public Result deskList(@Param("tableNum") String tableNum,
                             @Param("userName") String userName,
                             @Param("state") String state,
                             @Param("offset") Integer offset,
                             @Param("size") Integer size){
 
-        ResultsTotalDTO<Table> resultsTotalDTO = tableService.findListByCondition(tableNum,userName,state,offset,size);
+        ResultsTotalDTO<Desk> resultsTotalDTO = deskService.findListByCondition(tableNum,userName,state,offset,size);
         return Results.ok().render(resultsTotalDTO);
 
     }
 
     //查询单个桌位
-    public Result tableInfo(@PathParam("tableId") Integer tableId){
+    public Result deskInfo(@PathParam("deskId") Integer deskId){
 
-        Table table = tableService.findOneByTableId(tableId);
-        return Results.ok().render(table);
+        Desk desk = deskService.findOneByTableId(deskId);
+        return Results.ok().render(desk);
     }
 
     //添加桌位
-    public Result addTable(Table table){
+    public Result addDesk(Desk desk){
 
-        tableService.addTable(table);
+        deskService.addDesk(desk);
         return Results.ok().render(Boolean.TRUE);
     }
 
     //修改桌位
-    public Result updateTable(Table table){
+    public Result updateDesk(Desk desk){
 
-        tableService.updateTable(table);
+        deskService.updateDesk(desk);
         return Results.ok().render(Boolean.TRUE);
     }
 
     //删除桌位
-    public Result deleteTable(@Param("tableId") Integer tableId){
-        tableService.delete(tableId);
+    public Result deleteDesk(@Param("deskId") Integer deskId){
+        deskService.delete(deskId);
         return Results.ok().render(Boolean.TRUE);
     }
 

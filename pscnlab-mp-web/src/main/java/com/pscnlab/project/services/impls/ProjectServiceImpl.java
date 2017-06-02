@@ -40,6 +40,33 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
     @Inject
     private MemberSevice memberSevice;
 
+    //查询成员项目进度
+    @Override
+    public ProjectProgressPeople findProjectProgress(Integer projectId,Integer memberId){
+
+        ProjectProgressPeople people = projectProgessPeopleDao.findOneByMemberUUIdAndProjectId(projectId,memberId);
+        if(people==null){
+            throw ServiceException.build(500003l,"您不属于该项目，无法编辑进度");
+        }
+
+        return people;
+    }
+
+    //项目编辑进度
+    @Override
+    public void updateProjectProgress(Integer projectId,Integer memberId,String progress,String progressInfo){
+
+        ProjectProgressPeople people = projectProgessPeopleDao.findOneByMemberUUIdAndProjectId(projectId,memberId);
+        if(people==null){
+            throw ServiceException.build(500003l,"您不属于该项目，无法编辑进度");
+        }
+
+        people.setProgress(progress);
+        people.setProgressInfo(progressInfo);
+        projectProgessPeopleDao.update(people);
+    }
+
+    //项目添加成员
     @Override
     public void projectAddMember(Integer uuidProject, Integer memberUUId){
 

@@ -14,8 +14,6 @@ package conf;
 
 import com.google.inject.Inject;
 import com.jiabangou.ninja.extentions.AssetsController;
-import com.pscnlab.project.models.Table;
-import com.pscnlab.project.services.ProjectService;
 import controllers.apis.*;
 import controllers.pages.IndexController;
 import controllers.pages.LoginController;
@@ -79,25 +77,31 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/project/id/{projectId}/add_members.json").with(ProjectApiController.class,"projectAddMember");
         //删除成员
         router.POST().route("/project/id/{projectId}/delete_members.json").with(ProjectApiController.class,"projectDeleteMember");
-
+        //查询成员项目进度
+        router.GET().route("/project/id/{projectId}/mid/{memberId}/infos.json").with(ProjectApiController.class,"projectProgressInfo");
+        //成员编辑项目进度
+        router.POST().route("/project/id/{projectId}/mid/{memberId}/updates.json").with(ProjectApiController.class,"projectUpdateProgress");
 
         //桌位管理
         //桌位查询
-        router.GET().route("/table/lists.json").with(TableApiController.class,"tableList");
+        router.GET().route("/desk/lists.json").with(DeskApiController.class,"deskList");
         //查询某一个桌位
-        router.GET().route("/table/id/{tableId}/infos.json").with(TableApiController.class,"tableInfo");
+        router.GET().route("/desk/id/{deskId}/infos.json").with(DeskApiController.class,"deskInfo");
         //添加桌位
-        router.POST().route("/table/new_tables.json").with(TableApiController.class,"addTable");
+        router.POST().route("/desk/new_desks.json").with(DeskApiController.class,"addDesk");
         //修改桌位
-        router.POST().route("/table/id/{tableId}/update_tables.json").with(TableApiController.class,"updateTable");
+        router.POST().route("/desk/update_desks.json").with(DeskApiController.class,"updateDesk");
         //删除桌位
-        router.DELETE().route("/table/id/{tableId}/delete_tables.json").with(TableApiController.class,"deleteTable");
+        router.DELETE().route("/desk/delete_desks.json").with(DeskApiController.class,"deleteDesk");
 
 
         //经费
-        //
+        //查询经费
+        //router.GET().route("").with();
+        //查询某项经费
+        //router.GET().route("").with();
+        //添加经分
 
-        //
 
         //
 

@@ -1,9 +1,6 @@
 package com.pscnlab.project.models;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by zengyh on 2017/6/2.
@@ -18,6 +15,7 @@ public class Funds {
 
     @Id
     @Column(name = "uuid_fund")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getUuidFund() {
         return uuidFund;
     }

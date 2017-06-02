@@ -4,19 +4,19 @@ import com.google.inject.Singleton;
 import com.jiabangou.guice.persist.jpa.BaseDao;
 import com.jiabangou.guice.persist.jpa.util.FilterMap;
 import com.jiabangou.guice.persist.jpa.util.Page;
-import com.pscnlab.project.daos.TableDao;
-import com.pscnlab.project.models.Table;
+import com.pscnlab.project.daos.DeskDao;
+import com.pscnlab.project.models.Desk;
 import org.apache.commons.lang.StringUtils;
 
 /**
  * Created by zengyh on 2017/6/2.
  */
 @Singleton
-public class TableDaoImpl extends BaseDao<Integer,Table> implements TableDao{
+public class DeskDaoImpl extends BaseDao<Integer,Desk> implements DeskDao {
 
     //按条件查询桌位
     @Override
-    public Page<Table> findListByConditions(String tableNum,
+    public Page<Desk> findListByConditions(String tableNum,
                                             String userName,
                                             String state,
                                             Integer offset,
@@ -24,10 +24,10 @@ public class TableDaoImpl extends BaseDao<Integer,Table> implements TableDao{
 
         FilterMap filterMap = new FilterMap();
         if(StringUtils.isNotBlank(tableNum)) {
-            filterMap.eq("num",tableNum);
+            filterMap.like("num","%"+tableNum+"%");
         }
         if(StringUtils.isNotBlank(userName)) {
-            filterMap.eq("userName",userName);
+            filterMap.like("userName","%"+userName+"%");
         }
         if(StringUtils.isNotBlank(state)) {
             filterMap.eq("state",state);
@@ -38,7 +38,7 @@ public class TableDaoImpl extends BaseDao<Integer,Table> implements TableDao{
 
     //查询桌位
     @Override
-    public Table findOneByTableId(Integer uuid){
+    public Desk findOneByTableId(Integer uuid){
         if(uuid==null){
             return null;
         }

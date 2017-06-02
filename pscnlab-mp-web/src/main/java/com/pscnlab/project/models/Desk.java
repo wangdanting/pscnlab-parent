@@ -6,8 +6,8 @@ import javax.persistence.*;
  * Created by zengyh on 2017/5/15.
  */
 @Entity
-@javax.persistence.Table(name = "table")
-public class Table {
+@javax.persistence.Table(name = "desk")
+public class Desk {
     private Integer uuid;
     private String num;
     private String attention;
@@ -81,14 +81,14 @@ public class Table {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Table table = (Table) o;
+        Desk desk = (Desk) o;
 
-        if (uuid != null ? !uuid.equals(table.uuid) : table.uuid != null) return false;
-        if (num != null ? !num.equals(table.num) : table.num != null) return false;
-        if (attention != null ? !attention.equals(table.attention) : table.attention != null) return false;
-        if (state != null ? !state.equals(table.state) : table.state != null) return false;
-        if (userName != null ? !userName.equals(table.userName) : table.userName != null) return false;
-        if (userTelephone != null ? !userTelephone.equals(table.userTelephone) : table.userTelephone != null)
+        if (uuid != null ? !uuid.equals(desk.uuid) : desk.uuid != null) return false;
+        if (num != null ? !num.equals(desk.num) : desk.num != null) return false;
+        if (attention != null ? !attention.equals(desk.attention) : desk.attention != null) return false;
+        if (state != null ? !state.equals(desk.state) : desk.state != null) return false;
+        if (userName != null ? !userName.equals(desk.userName) : desk.userName != null) return false;
+        if (userTelephone != null ? !userTelephone.equals(desk.userTelephone) : desk.userTelephone != null)
             return false;
 
         return true;

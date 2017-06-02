@@ -5,6 +5,7 @@ import com.jiabangou.core.dtos.ResultsTotalDTO;
 import com.jiabangou.core.vos.ResultsVO;
 import com.jiabangou.ninja.extentions.filter.JsonAndJsonpResult;
 import com.pscnlab.project.models.Project;
+import com.pscnlab.project.models.ProjectProgressPeople;
 import com.pscnlab.project.services.ProjectService;
 import com.pscnlab.project.services.dtos.ProjectQueryPageDTO;
 import ninja.Context;
@@ -92,6 +93,23 @@ public class ProjectApiController {
                                       @Param("memberUUId") Integer memberUUId){
 
         projectService.projectDeleteMember(projectId,memberUUId);
+        return Results.ok().render(Boolean.TRUE);
+    }
+
+    //查询成员项目进度
+    public Result projectProgressInfo(@PathParam("projectId") Integer projectId,
+                                      @PathParam("memberId") Integer memberId){
+
+        ProjectProgressPeople people = projectService.findProjectProgress(projectId,memberId);
+        return Results.ok().render(people);
+    }
+
+    //项目编辑进度
+    public Result projectUpdateProgress(@PathParam("projectId") Integer projectId,
+                                        @PathParam("memberId") Integer memberId,
+                                        @Param("progress") String progress,
+                                        @Param("progressInfo") String progressInfo){
+        projectService.updateProjectProgress(projectId,memberId,progress,progressInfo);
         return Results.ok().render(Boolean.TRUE);
     }
 }
