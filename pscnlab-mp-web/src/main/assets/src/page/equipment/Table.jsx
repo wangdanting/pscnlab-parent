@@ -45,24 +45,21 @@ class Tablew extends BaseComponent {
     };
 
     // 查询数据
-    handleSearch(queryData = this.state.queryData) {
-        this.setState({
-            refundDataList: [],
-            refundDataTotal: 0,
-        });
+    handleSearch(data, currentPage)  {
 
+        let currentPagee = currentPage.currentPage;
+        let pageSizee = this.state.pageSize;
 
-        const sendData = {
-        };
+        let offset = (currentPagee - 1) * (pageSizee);
+        let size = pageSizee;
 
         this.request()
             .noStoreId()
-            .get('/refunds.json')
-            .params(sendData)
+            .get(`/desk/lists.json?tableNum=${data.tableNum}&userName=${data.userName}&size=${size}&offset=${offset}`)
             .success((data, res) => {
                 this.setState({
-                    refundDataList: res.body.results || [],
-                    refundDataTotal: res.body.totalCount || 0,
+                    table: data,
+                    totalCount: res.body.totalCount,
                 });
             })
             .end();
@@ -71,66 +68,31 @@ class Tablew extends BaseComponent {
     queryTermsOptions = {
         showSearchBtn: true,
         resultDateToString: true,
-        getAllOptions: (callBack) => {
-            this.request()
-                .noStoreId()
-                .get('/refunds/conditions.json')
-                .success((data, res) => {
-                    let resultsStores = res.body.result.stores;
 
-                    let store = resultsStores.map((item) => ({
-                        value: item.id,
-                        label: item.name,
-                    }));
-                    store.unshift({value: '', label: '全部'});
-
-                    let allOptions = {
-                        store,
-                    };
-                    callBack(allOptions);
-                })
-                .end();
-        },
         onSubmit: (data) => {
-            let queryData = assign({}, this.state.queryData, data, {currentPage: 1});
-            this.setState({
-                queryData,
-            });
-            this.handleSearch(queryData);
+            this.handleSearch(data, {currentPage: 1});
         },
-        onComplete: (data) => {
-            let queryData = assign({}, this.state.queryData, data, {currentPage: 1});
-            this.setState({
-                queryData,
-                loadFilter: false,
-            });
-            this.handleSearch(queryData);
-        },
-        items: this.renderStoreQueryTerms(),
-    };
 
-    renderStoreQueryTerms() {
-        let storeQueryTerms = [
+        items: [
             [
                 {
-                    type: 'selectSearch',
+                    type: 'input',
                     label: '桌位号',
-                    name: 'num',
+                    name: 'tableNum',
                     initialValue: '',
-                    searchOnChange: true,
+                    searchOnChange: false,
                     labelWidth: 50,
                 }, {
-                    type: 'selectSearch',
-                    label: '名字',
-                    name: 'name',
-                    initialValue: '',
-                    searchOnChange: true,
-                    labelWidth: 40,
+                type: 'input',
+                label: '名字',
+                name: 'userName',
+                initialValue: '',
+                searchOnChange: false,
+                labelWidth: 40,
             },
             ],
-        ];
-        return storeQueryTerms;
-    }
+        ]
+    };
 
     componentDidMount() {
         const {pageSize, currentPage} = this.state;
