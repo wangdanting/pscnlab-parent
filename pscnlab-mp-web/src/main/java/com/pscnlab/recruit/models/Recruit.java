@@ -1,28 +1,15 @@
-/*
- *  Copyright (c) 2015.  meicanyun.com Corporation Limited.
- *  All rights reserved.
- *
- *  This software is the confidential and proprietary information of
- *  meicanyun Company. ("Confidential Information").  You shall not
- *  disclose such Confidential Information and shall use it only in
- *  accordance with the terms of the license agreement you entered into
- *  with meicanyun.com.
- */
-
 package com.pscnlab.recruit.models;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
- * Created by xiong on 2017/5/16 .
+ * Created by zengyh on 2017/6/3.
  */
 @Entity
+@javax.persistence.Table(name = "recruit")
 public class Recruit {
     private Integer uuid;
-    private Integer uuidRole;
+    private String position;
     private String number;
     private String condition;
     private String responsePerson;
@@ -30,6 +17,7 @@ public class Recruit {
 
     @Id
     @Column(name = "uuid")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getUuid() {
         return uuid;
     }
@@ -39,13 +27,13 @@ public class Recruit {
     }
 
     @Basic
-    @Column(name = "uuid_role")
-    public Integer getUuidRole() {
-        return uuidRole;
+    @Column(name = "position")
+    public String getPosition() {
+        return position;
     }
 
-    public void setUuidRole(Integer uuidRole) {
-        this.uuidRole = uuidRole;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     @Basic
@@ -96,7 +84,7 @@ public class Recruit {
         Recruit recruit = (Recruit) o;
 
         if (uuid != null ? !uuid.equals(recruit.uuid) : recruit.uuid != null) return false;
-        if (uuidRole != null ? !uuidRole.equals(recruit.uuidRole) : recruit.uuidRole != null) return false;
+        if (position != null ? !position.equals(recruit.position) : recruit.position != null) return false;
         if (number != null ? !number.equals(recruit.number) : recruit.number != null) return false;
         if (condition != null ? !condition.equals(recruit.condition) : recruit.condition != null) return false;
         if (responsePerson != null ? !responsePerson.equals(recruit.responsePerson) : recruit.responsePerson != null)
@@ -109,7 +97,7 @@ public class Recruit {
     @Override
     public int hashCode() {
         int result = uuid != null ? uuid.hashCode() : 0;
-        result = 31 * result + (uuidRole != null ? uuidRole.hashCode() : 0);
+        result = 31 * result + (position != null ? position.hashCode() : 0);
         result = 31 * result + (number != null ? number.hashCode() : 0);
         result = 31 * result + (condition != null ? condition.hashCode() : 0);
         result = 31 * result + (responsePerson != null ? responsePerson.hashCode() : 0);

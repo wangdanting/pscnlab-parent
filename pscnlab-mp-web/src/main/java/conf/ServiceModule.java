@@ -6,8 +6,10 @@ import com.pscnlab.member.services.RoleService;
 import com.pscnlab.member.services.impl.MemberSeviceImpl;
 import com.pscnlab.member.services.impl.RoleServiceImpl;
 import com.pscnlab.project.services.DeskService;
+import com.pscnlab.project.services.FundService;
 import com.pscnlab.project.services.ProjectService;
 import com.pscnlab.project.services.impls.DeskServiceImpl;
+import com.pscnlab.project.services.impls.FundServiceImpl;
 import com.pscnlab.project.services.impls.ProjectServiceImpl;
 import com.pscnlab.recruit.services.RecruitService;
 import com.pscnlab.recruit.services.impls.RecruitServiceImpl;
@@ -32,5 +34,7 @@ public class ServiceModule extends AbstractModule {
 
         bind(ProjectService.class).to(ProjectServiceImpl.class);
         bind(DeskService.class).to(DeskServiceImpl.class);
+        bind(FundService.class).to(FundServiceImpl.class);
+
     }
 }

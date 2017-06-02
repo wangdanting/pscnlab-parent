@@ -18,5 +18,8 @@
 
 
     <entity class="com.pscnlab.project.models.Desk"/>
+    <entity class="com.pscnlab.project.models.Funds"/>
+
+
 
 </entity-mappings>
