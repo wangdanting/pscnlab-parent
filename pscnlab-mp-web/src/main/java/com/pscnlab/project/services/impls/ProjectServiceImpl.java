@@ -9,9 +9,7 @@ import com.jiabangou.core.dtos.ResultsTotalDTO;
 import com.jiabangou.core.exceptions.ServiceException;
 import com.jiabangou.guice.persist.jpa.IBaseDao;
 import com.jiabangou.guice.persist.jpa.util.Page;
-import com.pscnlab.base.services.BaseService;
 import com.pscnlab.base.services.impls.BaseServiceImpl;
-import com.pscnlab.member.models.Member;
 import com.pscnlab.member.services.MemberSevice;
 import com.pscnlab.member.services.dtos.MemberPageDTO;
 import com.pscnlab.project.daos.ProjectDao;
@@ -101,6 +99,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
             dto.setPosition(memberPageDTO.getRole().getPosition());
             dto.setRoleName(memberPageDTO.getRole().getRole());
             dto.setTelephone(memberPageDTO.getMember().getTelephone());
+            dto.setUuidMember(memberPageDTO.getMember().getUuidMember());
             projectPepoles.add(dto);
         });
 
