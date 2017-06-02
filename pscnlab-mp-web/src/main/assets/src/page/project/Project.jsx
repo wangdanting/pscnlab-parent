@@ -86,31 +86,31 @@ class Project extends BaseComponent {
                             </Link>｜
                              <a>
                                  <span onClick={()=>this.showDeleteConfirm(text)}>删除项目</span>
-                             </a>
+                             </a>｜
+                                <Link
+                                    style={{color: '#57c5f7'}}
+                                    activeStyle={{color: 'red'}}
+                                    to={`project/one-progress/${text}`}>
+                                    编辑进度
+                                </Link>
                         </span>
                     </span>
                 );
             },
-        }, {
-            title: '编辑进度',
-            dataIndex: 'isInProject',
-            key: 'isInProject',
-            width: 250,
-            render:(text) => {
-                console.log(text, 'text');
-                // {/*<span style={{display: (text?'block': 'none')}}>*/}
-                return (
-                   <span>
-                        <Link
-                            style={{color: '#57c5f7'}}
-                            activeStyle={{color: 'red'}}
-                            to={`project/one-progress/${text}`}>
-                            编辑进度
-                        </Link>
-                    </span>
-                );
-            },
-        }
+        },
+        // {
+        //     title: '编辑进度',
+        //     dataIndex: 'isInProject',
+        //     key: 'isInProject',
+        //     width: 250,
+        //     render:(text) => {
+        //         console.log(text, 'text');
+        //         // {/*<span style={{display: (text?'block': 'none')}}>*/}
+        //         return (
+        //
+        //         );
+        //     },
+        // }
     ];
 
     //确认删除角色对话框
