@@ -2,13 +2,13 @@
 // let pathC = window.location.pathname.split('/');
 // let userId = pathC[1];
 
-import {Common} from 'common';
-let uuidMember = Common.getMerchant().uuidMember;
+// import {Common} from 'common';
+// let uuidMember = Common.getMerchant().uuidMember;
 
 export default [
     // 角色信息
     {
-        path: `${uuidMember}/role`,
+        path: `role`,
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
                 cb(null, require('./role/Role.jsx'));
@@ -43,9 +43,18 @@ export default [
             });
         },
     },
-    //新增成员
+    //新增成员信息
     {
         path: `member/add-member`, noHaveMenu: true,
+        getComponent: (location, cb) => {
+            require.ensure([], (require) => {
+                cb(null, require('./member/CreateMember.jsx'));
+            });
+        },
+    },
+    // 修改成员信息
+    {
+        path: `member/modify-member/:id`, noHaveMenu: true,
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
                 cb(null, require('./member/CreateMember.jsx'));

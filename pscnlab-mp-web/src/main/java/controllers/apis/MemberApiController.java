@@ -2,9 +2,11 @@ package controllers.apis;
 
 //import com.google.inject.Inject;
 
+import com.jiabangou.core.vos.ResultVO;
 import com.jiabangou.core.vos.ResultsVO;
 import com.jiabangou.guice.persist.jpa.util.Page;
 import com.jiabangou.ninja.extentions.filter.JsonAndJsonpResult;
+import com.pscnlab.member.models.Member;
 import com.pscnlab.member.services.MemberSevice;
 import com.pscnlab.member.services.dtos.MemberPageDTO;
 import com.pscnlab.member.services.dtos.MemberPageQueryDTO;
@@ -12,6 +14,7 @@ import ninja.FilterWith;
 import ninja.Result;
 import ninja.Results;
 import ninja.params.Param;
+import ninja.params.PathParam;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -30,6 +33,26 @@ public class MemberApiController {
         List list = memberSevice.findMemberWithMemberName(memberName);
         return Results.ok().render(ResultsVO.build(list));
 
+    }
+
+    public Result newMember(Member member) {
+        memberSevice.save(member);
+        return Results.ok().render(ResultVO.build(true));
+    }
+
+    public Result findOneMember(@PathParam("memberId")Integer memberId) {
+        Member member = memberSevice.findOne(memberId);
+        return Results.ok().render(member);
+    }
+
+    public Result updateMember(Member member) {
+        memberSevice.update(member);
+        return Results.ok().render(ResultVO.build(true));
+    }
+
+    public Result deleteMember(@Param("id") Integer id) {
+        memberSevice.deleteByUUId(id);
+        return Results.ok().render(ResultVO.build(true));
     }
 
     public Result findPage(@Param("uuidRole") Integer uuidRole,

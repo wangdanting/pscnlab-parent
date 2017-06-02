@@ -6,9 +6,11 @@ import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
 
 class Project extends BaseComponent {
     state = {
+        //分页
         currentPage: 1,
         pageSize: 10,
         totalCount: 0,
+
         projectData: [
             {
                 uuidProject: 1,
@@ -126,6 +128,36 @@ class Project extends BaseComponent {
         }
     ];
 
+    componentDidMount() {
+        const {pageSize, currentPage} = this.state;
+        const params = {
+            pageSize,
+            currentPage,
+        };
+        this.initTableData(params);
+    }
+
+
+    initTableData = (params) => {
+        const size = params.pageSize;
+        const offset = (params.currentPage - 1) * size;
+        const state = '';
+        this.request()
+            .noMchId()
+            .noStoreId()
+            .get(`/project/lists.json?state=${state}&offset=${offset}&size=${size}`)
+            .success((data, res) => {
+            console.log("成功了");
+            console.log(data, 'data33');
+                this.setState({
+                    // dataSource: data,
+                    // searchSource: data,
+                    // totalCount: res.body.totalCount,
+                });
+            })
+            .end();
+    };
+
     // 查询数据
     handleSearch(queryData = this.state.queryData) {
         this.setState({
@@ -156,37 +188,6 @@ class Project extends BaseComponent {
             })
             .end();
     }
-
-    componentDidMount() {
-        const {pageSize, currentPage} = this.state;
-        const params = {
-            pageSize,
-            currentPage,
-        };
-        this.initTableData(params);
-    }
-
-
-    initTableData = (params) => {
-        const size = params.pageSize;
-        const offset = (params.currentPage - 1) * size;
-        const dishName = params.dishName;
-        const isOnLined = params.isOnLined;
-        this.setState({
-            totalCount: 16,
-        });
-        // this.request()
-        //     .noMchId()
-        //     .noStoreId()
-        //     .get(`/api/dish/balances.json?size=${size}&offset=${offset}&mchId=${mchId}&storeId=${storeId}&dishName=${dishName}&isOnLined=${isOnLined}`)
-        //     .success((data, res) => {
-        //         this.getHandledData(data);
-        //         this.setState({
-        //             totalCount: res.body.totalCount,
-        //         });
-        //     })
-        //     .end();
-    };
 
     render() {
         let {

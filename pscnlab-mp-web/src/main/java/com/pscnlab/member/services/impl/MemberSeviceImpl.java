@@ -11,12 +11,10 @@
 
 package com.pscnlab.member.services.impl;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.jiabangou.core.exceptions.ServiceException;
 import com.jiabangou.guice.persist.jpa.IBaseDao;
 import com.jiabangou.guice.persist.jpa.util.Page;
-import com.jiabangou.ninja.extentions.SessionConstant;
 import com.pscnlab.base.services.impls.BaseServiceImpl;
 import com.pscnlab.member.daos.MemberDao;
 import com.pscnlab.member.models.Member;
@@ -55,6 +53,7 @@ public class MemberSeviceImpl extends BaseServiceImpl<Integer,Member> implements
         super.save(var1);
     }
 
+
     @Override
     public Long countMemberByUuidRole(Integer uuidRole) {
         return memberDao.countMemberByUuidRole(uuidRole);
@@ -63,6 +62,38 @@ public class MemberSeviceImpl extends BaseServiceImpl<Integer,Member> implements
     @Override
     public Member findOneByTelephone(String telephone) {
         return memberDao.findOneByTelephone(telephone);
+    }
+
+    @Override
+    public void update(Member var1) {
+        Member member = memberDao.findOne(var1.getUuidMember());
+        member.setUuidRole(var1.getUuidRole());
+        member.setGender(var1.getGender());
+        //member.setTelephone(var1.getTelephone());
+        member.setName(var1.getName());
+        member.setAge(var1.getAge());
+        member.setGradeClass(var1.getGradeClass());
+        member.setHobby(var1.getHobby());
+        member.setManage(var1.getManage());
+        memberDao.update(member);
+    }
+
+    @Override
+    public void deleteById(Integer var1) {
+        Member one = this.findOne(var1);
+        if(one==null){
+            throw ServiceException.build(1000,"数据不存在");
+        }
+        super.delete(one);
+    }
+
+    @Override
+    public void deleteByUUId(Integer memberUUId){
+        Member member = memberDao.findByUUId(memberUUId);
+        if (member==null){
+            throw ServiceException.build(1000,"数据不存在");
+        }
+        super.delete(member);
     }
 
     //通过成员ID查询成员列表
@@ -127,8 +158,6 @@ public class MemberSeviceImpl extends BaseServiceImpl<Integer,Member> implements
         if(member==null||!member.getPassword().equals(password)){
             throw ServiceException.build(0,"账户或密码错误！");
         }
-
-
         return member;
     }
 

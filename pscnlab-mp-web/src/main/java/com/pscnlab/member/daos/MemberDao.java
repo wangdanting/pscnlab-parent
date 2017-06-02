@@ -35,4 +35,6 @@ public interface MemberDao extends IBaseDao<Integer,Member> {
     List<Member> findListByMemberName(String memberName);
 
     List<Member> findListByMemberIdsSet(Set<Integer> memberIdsSet);
+
+    Member findByUUId(Integer memberUUId);
 }

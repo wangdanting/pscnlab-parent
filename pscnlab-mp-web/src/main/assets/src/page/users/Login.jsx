@@ -117,7 +117,7 @@ class Login extends React.Component {
                         let MemberInfo = JSON.parse(resUserInfo.text);
                         storage.session.set('MemberInfo', MemberInfo);
                         let uuid = MemberInfo.uuidMember;
-                        location.href = `${uuid}/role`;
+                        location.href = `role`;
                     }
                 }
             });

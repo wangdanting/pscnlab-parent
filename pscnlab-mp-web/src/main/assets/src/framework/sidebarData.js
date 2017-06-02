@@ -1,6 +1,6 @@
 //获取userId
-let pathC = window.location.pathname.split('/');
-let userId = pathC[1];
+// let pathC = window.location.pathname.split('/');
+// let userId = pathC[1];
 
 export const MENUS = [
     {
@@ -40,7 +40,7 @@ export const MENUS = [
                         menuPic: "fa-sitemap",
                         menuPid: 1100010000,
                         menuTarget: "",
-                        menuUrl: `${userId}/role`,
+                        menuUrl: `role`,
                         taskCode: "",
                     }, {
                         children: [],

@@ -11,7 +11,7 @@ const manage = Common.getMerchant().manage;
 class Member extends BaseComponent {
     state = {
         dataSource: [],
-        searchSource: [],
+        roleList: [],
 
         currentPage: 1,
         pageSize: 10,
@@ -121,11 +121,8 @@ class Member extends BaseComponent {
             .noStoreId()
             .get(`/member.json?uuidRole=${uuidRole}&gender=${gender}&name=${name}&telephone=${telephone}&size=${size}&offset=${offset}`)
             .success((data, res) => {
-            console.log('成功了');
-            console.log(data, 'data33');
                 this.setState({
-                    dataSource: data.map((item) => item.member),
-                    searchSource: data,
+                    dataSource: data.map((item) => {item.member.role = `${item.role.role}(${item.role.position})`; return item.member;}),
                     totalCount: res.body.totalCount,
                 });
             })
@@ -143,10 +140,11 @@ class Member extends BaseComponent {
 
         this.request()
             .noStoreId()
-            .get(`/member.json?role=${data.role}&gender=${data.gender}&name=${data.name}&telephone=${data.telephone}&size=${size}&offset=${offset}`)
+            .get(`/member.json?uuidRole=${data.uuidRole}&gender=${data.gender}&name=${data.name}&telephone=${data.telephone}&size=${size}&offset=${offset}`)
             .success((data, res) => {
                 this.setState({
-                    dataSource: data
+                    dataSource: data.map((item) => {item.member.role = `${item.role.role}(${item.role.position})`; return item.member;}),
+                    totalCount: res.body.totalCount,
                 });
             })
             .end();
@@ -156,32 +154,28 @@ class Member extends BaseComponent {
         showSearchBtn: true,
         resultDateToString: true,
         getAllOptions: (callBack) => {
+            this.request()
+                .noMchId()
+                .noStoreId()
+                .get('/role/lists.json')
+                .success((data, res) => {
+                    this.setState({
+                        roleList: data.map((item, index) => {
+                            item.value = item.uuidRole;
+                            item.label = `${item.role}(${item.position})`;
+                            if(index == 0) {
+                                item.checked = true;
+                            }
+                            return item;
+                        })
+                    });
+                })
+                .end();
 
-            // this.request()
-            //     .noStoreId()
-            //     .get('/refunds/conditions.json')
-            //     .success((data, res) => {
-            //         let resultsStores = res.body.result.stores;
-            //
-            //         let store = resultsStores.map((item) => ({
-            //             value: item.id,
-            //             label: item.name,
-            //         }));
-            //         store.unshift({value: '', label: '全部'});
-            //
-            //         let allOptions = {
-            //             store,
-            //         };
-            //     })
-            //     .end();
-            //
-            // setTimeout(() => {
-            //     let allPostionOptions = this.state.searchSource.map((item, index) => ({
-            //         value: `${item.position}`,
-            //         label: `${item.position}`,
-            //     }));
-            //     callBack({position: allPostionOptions});
-            // }, 1000);
+            setTimeout(() => {
+                let allRoleOptions =  this.state.roleList;
+                callBack({uuidRole: allRoleOptions});
+            }, 1000);
         },
         onSubmit: (data) => {
             this.handleSearch(data, {currentPage: 1});
@@ -190,7 +184,7 @@ class Member extends BaseComponent {
             {
                 type: 'select',
                 label: '角色',
-                name: 'role',
+                name: 'uuidRole',
                 initialValue: '',
                 searchOnChange: false,
                 labelWidth: 40,
@@ -201,6 +195,16 @@ class Member extends BaseComponent {
                 initialValue: '',
                 searchOnChange: false,
                 labelWidth: 40,
+                options: [
+                    {
+                        value: '男',
+                        label: '男',
+                        checked: true
+                    }, {
+                        value: '女',
+                        label: '女'
+                    }
+                ]
             }, {
                 type: 'input',
                 label: '名字',
