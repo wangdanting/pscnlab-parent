@@ -38,7 +38,7 @@ export default [
     },
     //总体项目进度信息
     {
-        path: `project/all-progress`, noHaveMenu: true,
+        path: `project/all-progress/:id`, noHaveMenu: true,
         getComponent: (location, cb) => {
             require.ensure([], (require) => {
                 cb(null, require('./ProjectProgress.jsx'));

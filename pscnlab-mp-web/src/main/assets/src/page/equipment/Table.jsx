@@ -10,6 +10,11 @@ const confirm = Modal.confirm;
 
 class Tablew extends BaseComponent {
     state = {
+        //分页
+        currentPage: 1,
+        pageSize: 10,
+        totalCount: 0,
+
         table: [{
             num: 1,
         }, {
@@ -50,7 +55,7 @@ class Tablew extends BaseComponent {
                 console.log('444');
                 this.request()
                     .noStoreId()
-                    .get('/role/delete.json')
+                    .get('/table/id/{tableId}/delete_tables.json')
                     .params({id: id})
                     .success((data, res) => {
                         console.log('dddd44');
@@ -150,20 +155,29 @@ class Tablew extends BaseComponent {
     }
 
     componentDidMount() {
-        this.initTableData();
+        const {pageSize, currentPage} = this.state;
+        const params = {
+            pageSize,
+            currentPage,
+        };
+        this.initTableData(params);
     }
 
-    initTableData = () => {
-        this.setState({
-        });
+    initTableData = (params) => {
+        const size = params.pageSize;
+        const offset = (params.currentPage - 1) * size;
+        const tableNum = '';
+        const userName = '';
+        const state = '';
         this.request()
             .noMchId()
             .noStoreId()
-            .get(`/role.json`)
+            .get(`/table/lists.json?tableNum=${tableNum}&userName=${userName}&state=${state}&size=${size}&offset=${offset}`)
             .success((data, res) => {
-                console.log(data, 'data');
+            console.log(data, '999');
                 this.setState({
-                    dataSource: data,
+                    table: data,
+                    totalCount: res.body.totalCount,
                 });
             })
             .end();
@@ -190,7 +204,9 @@ class Tablew extends BaseComponent {
                             to={`table/modify-table`}>
                             编辑
                         </Link>｜
-                        <Button>删除</Button>
+                        <a>
+                            <span onClick={()=>this.showDeleteConfirm(text)}>删除</span>
+                        </a>
                     </div>
                 </div>
             );
@@ -198,6 +214,28 @@ class Tablew extends BaseComponent {
     };
 
     render() {
+        let {
+            pageSize,
+            currentPage,
+            totalCount} = this.state;
+
+        const paginationOptions = {
+            showQuickJumper: false, // 默认true
+            pageSize,
+            currentPage,
+            totalCount,
+            onChange: (current, size) => {
+                const params = {
+                    pageSize: size,
+                    currentPage: current,
+                };
+                this.initTableData(params);
+                this.setState({
+                    currentPage: current,
+                    pageSize: size,
+                });
+            },
+        };
 
         return (
             <Page header="auto" loading={this.state.loading}>
@@ -213,6 +251,7 @@ class Tablew extends BaseComponent {
                 <div className="table-list-container">
                     {this.getTables(this.state.table)}
                 </div>
+                <PaginationComponent options={paginationOptions}/>
             </Page>
         );
     }

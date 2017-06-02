@@ -177,7 +177,7 @@ class CreateTable extends BaseComponent {
     };
 
     //修改项目状态
-    getProjectState = (e) => {
+    stateChange = (e) => {
         this.setState({
             isProjectState: e.target.value
         });
@@ -240,9 +240,9 @@ class CreateTable extends BaseComponent {
                                     <Col span="4" className="label ant-form-item-required">桌位使用状态：</Col>
                                     <Col span="11">
                                         <FormItem>
-                                            <RadioGroup  value={this.state.isProjectState}>
-                                                <Radio key="noStart" value={ 'noStart' } checked={true} defaultChecked={true}>空闲</Radio>
-                                                <Radio key="run" value={'run' } defaultChecked={false}>使用中</Radio>
+                                            <RadioGroup value={this.state.isProjectState} onChange={this.stateChange}>
+                                                <Radio key="空闲" value={ '空闲' } checked={true} defaultChecked={true}>空闲</Radio>
+                                                <Radio key="使用中" value={'使用中' } defaultChecked={false}>使用中</Radio>
                                             </RadioGroup>
                                         </FormItem>
                                     </Col>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs, Table, Col, Button, Form, Input, Row, Modal} from 'antd';
+import { Tabs, Table, Col, Button, Form, Input, Row, Modal, Select, message} from 'antd';
 import {Link} from 'react-router';
 import { Page } from 'framework';
 import {BaseComponent, PaginationComponent} from 'component';
@@ -13,6 +13,7 @@ class EditProjectMember extends BaseComponent {
         currentPage: 1,
         pageSize: 10,
         totalCount: 0,
+        isSubmitting: false,
 
         managerList: [{
             id: null,
@@ -23,6 +24,7 @@ class EditProjectMember extends BaseComponent {
         }],
 
         projectMemberData: [],
+        MemberList: []
     };
 
     columns = [
@@ -41,7 +43,7 @@ class EditProjectMember extends BaseComponent {
             dataIndex: 'uuidMember',
             key: 'uuidMember',
             width: 250,
-            render(text) {
+            render:(text) => {
                 return (
                     <a>
                         <span onClick={()=>this.showDeleteConfirm(text)}>删除成员</span>
@@ -51,18 +53,19 @@ class EditProjectMember extends BaseComponent {
         }
     ];
 
-    //确认删除角色对话框
+    //确认删除成员对话框
     showDeleteConfirm(id) {
+        console.log(id, 'id');
         confirm({
             title: '你确定要删除该成员信息？',
             content: '小心，小心',
             onOk:() => {
                 this.request()
                     .noStoreId()
-                    .del(`/project/id/${this.state.projectId}/delete_members.json?memberUUId=${id}`)
+                    .post(`/project/id/${this.props.params.id}/delete_members.json?memberUUId=${id}`)
                     .success((data, res) => {
                         message.success('删除成功', 1);
-                        this.initTableData(params);
+                        this.initTableData();
                     })
                     .end();
             },
@@ -71,18 +74,15 @@ class EditProjectMember extends BaseComponent {
     };
 
     componentDidMount() {
-        this.setState({
-            projectId: this.props.params.id
-        });
         this.initTableData();
     }
 
     initTableData = () => {
-        console.log(this.state.projectId, 'projectId');
+        let projectId = this.props.params.id;
         this.request()
             .noMchId()
             .noStoreId()
-            .get(`/project/id/${this.state.projectId}/members.json`)
+            .get(`/project/id/${projectId}/members.json`)
             .success((data, res) => {
             console.log(data, 'iii');
                 this.setState({
@@ -92,73 +92,51 @@ class EditProjectMember extends BaseComponent {
             .end();
     };
 
-    // 提交
-    handleSubmit = (e) => {
-        e.preventDefault();
-
-        // 构建需要校验字段
-        let validateFields = this.createValidateFields();
-
-        this.props.form.validateFieldsAndScroll(validateFields, (errors, values) => {
-            // 只有validateFields中指定得字段，值才会包含到values中
-
-            if (!!errors) {
-                console.log('Errors in form!!!');
-                return;
-            }
-
-            this.setState({
-                isSubmitting: true,
-            });
-
-            // 构建需要提交的数据
-            let submitData = this.createSubmitObj(values);
-            // 发送数据
-            this.handleSendData(submitData);
-        });
-    };
-
-    // 构建需要校验的字段
-    createValidateFields = () => {
-        const {getFieldValue} = this.props.form;
-
-        let validateFields = [
-            'memberName',
-            'telephone',
-        ];
-
-        return validateFields;
-    };
-
-    // 构建需要提交的数据
-    createSubmitObj = (values) => {
-        let submitData = {};
-        submitData.uuidRole = this.state.uuidRole;
-        submitData.name = values.name;
-
-
-        // 给 userLimit, userPerDayLimit 赋值
-        return submitData;
-    };
-
     // 发送数据，根据不同的类型
-    handleSendData = (submitData) => {
-        let sendUrl = '/member/new.json';
+    handleSubmit = () => {
+        let sendUrl = `/project/id/${this.props.params.id}/add_members.json?memberUUId=${this.state.uuidMember}`;
         this.request()
             .post(sendUrl)
-            .params(submitData)
             .success(() => {
                 message.success('操作成功', 1);
                 this.setState({
                     isIgnoreIntercept: true,
                 });
-                setTimeout(this.handleGoBack(), 500);
+                this.initTableData();
             })
             .error((err, res) => {
                 message.error(res && res.body && res.body.message || '未知系统错误', 1);
                 this.setState({
                     isSubmitting: false,
                 });
+            })
+            .end();
+    };
+
+    renderTelSelectOption = () => {
+        const {MemberList} = this.state;
+        return MemberList.map(member => <Option value={member.uuidMember} key={member.uuidMember || 'all'}>{member.telephone}</Option>)
+    };
+
+    handleTelephoneChange = (value) => {
+        console.log(value, 'value');
+        this.setState({
+            uuidMember: value,
+            telephoneChooseNum: value
+        });
+    };
+
+    memberNameChange = (e) => {
+        this.request()
+            .get(`/member/lists.json?memberName=${e.target.value}`)
+            .success((data) => {
+                this.setState({
+                    MemberList: data,
+                    isIgnoreIntercept: true,
+                });
+            })
+            .error((err, res) => {
+                message.error(res && res.body && res.body.message || '未知系统错误', 1);
             })
             .end();
     };
@@ -170,17 +148,6 @@ class EditProjectMember extends BaseComponent {
             labelCol: {span: '3'},
             wrapperCol: {span: '14'},
         };
-
-        let memberNameProps = getFieldProps('memberName', {
-            rules: [
-                {required: true, message: '请输入成员姓名!'},
-            ],
-        });
-        let telephoneProps = getFieldProps('telephone', {
-            rules: [
-                {required: false, message: '请选择正确的联系方式!'},
-            ],
-        });
 
         return (
             <Page header="auto" loading={this.state.loading}>
@@ -198,12 +165,14 @@ class EditProjectMember extends BaseComponent {
                                 required>
                                 <Col span="5" style={{marginLeft: 10}}>
                                     <FormItem hasFeedback>
-                                        <Input {...memberNameProps} style={{marginTop: 1}} maxLength="10" placeholder="请输入成员姓名"/>
+                                        <Input onChange={this.memberNameChange} style={{marginTop: 1}} maxLength="10" placeholder="请输入成员姓名"/>
                                     </FormItem>
                                 </Col>
                                 <Col span="5" style={{marginLeft: 10}}>
                                     <FormItem hasFeedback>
-                                        <Input {...telephoneProps} style={{marginTop: 1}} placeholder="请输入联系电话"/>
+                                        <Select value={this.state.telephoneChooseNum} placeholder="请选择联系电话" style={{ width: 220, marginRight: 10 }} onChange={this.handleTelephoneChange}>
+                                            {this.renderTelSelectOption()}
+                                        </Select>
                                     </FormItem>
                                 </Col>
                             </FormItem>

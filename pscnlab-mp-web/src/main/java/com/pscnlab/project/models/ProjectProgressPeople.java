@@ -16,6 +16,7 @@ public class ProjectProgressPeople {
 
     @Id
     @Column(name = "uuid")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getUuid() {
         return uuid;
     }

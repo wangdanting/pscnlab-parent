@@ -211,9 +211,10 @@ class CreateMember extends BaseComponent {
 
     //选择角色
     handleRoleChange = (value) => {
+        console.log(value, '0009');
         this.setState({
             uuidRole: value,
-            roleChooseNum: value,
+            roleChooseNum: value
         });
     };
 

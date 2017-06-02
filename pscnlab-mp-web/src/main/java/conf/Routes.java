@@ -14,6 +14,7 @@ package conf;
 
 import com.google.inject.Inject;
 import com.jiabangou.ninja.extentions.AssetsController;
+import com.pscnlab.project.services.ProjectService;
 import controllers.apis.*;
 import controllers.pages.IndexController;
 import controllers.pages.LoginController;
@@ -83,6 +84,7 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/project/id/{projectId}/mid/{memberId}/updates.json").with(ProjectApiController.class,"projectUpdateProgress");
 
         //桌位管理
+
         //桌位查询
         router.GET().route("/desk/lists.json").with(DeskApiController.class,"deskList");
         //查询某一个桌位
