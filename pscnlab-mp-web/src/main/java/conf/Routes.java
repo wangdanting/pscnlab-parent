@@ -43,7 +43,7 @@ public class Routes implements ApplicationRoutes {
 
         //角色
         router.POST().route("/role/new.json").with(RoleApiController.class,"newRole");
-        router.GET().route("/role/{roleId}.json").with(RoleApiController.class,"findOneRole");
+        router.GET().route("/role/id/{roleId}.json").with(RoleApiController.class,"findOneRole");
         router.PUT().route("/role/update.json").with(RoleApiController.class,"updateRole");
         router.DELETE().route("/role/delete.json").with(RoleApiController.class,"deleteRole");
         router.GET().route("/role.json").with(RoleApiController.class,"researchRole");
