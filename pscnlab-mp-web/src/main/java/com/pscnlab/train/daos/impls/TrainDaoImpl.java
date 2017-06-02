@@ -16,6 +16,7 @@ import com.jiabangou.guice.persist.jpa.util.FilterMap;
 import com.jiabangou.guice.persist.jpa.util.Page;
 import com.pscnlab.train.daos.TrainDao;
 import com.pscnlab.train.models.Train;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Created by xiong on 2017/5/15 .
@@ -29,4 +30,25 @@ public class TrainDaoImpl  extends BaseDao<Integer,Train> implements TrainDao {
         }
         return super.page(filterMap,offset,size);
     }
+
+    @Override
+    public Page<Train> findPageByTime(String time, Integer offset, Integer size) {
+        FilterMap filterMap=new FilterMap();
+        if(StringUtils.isNotBlank(time)) {
+            filterMap.eq("time",time);
+        }
+        return super.page(filterMap,offset,size);
+    }
+
+    @Override
+    public Train findOneByUUId(Integer uuid){
+        if (uuid==null){
+            return null;
+        }
+        FilterMap filterMap = new FilterMap();
+        filterMap.eq("uuidTrain",uuid);
+        return super.findOne(filterMap);
+    }
+
+
 }

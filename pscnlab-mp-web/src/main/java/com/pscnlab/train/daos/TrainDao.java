@@ -23,4 +23,8 @@ import com.pscnlab.train.models.Train;
 @ImplementedBy(TrainDaoImpl.class)
 public interface TrainDao extends IBaseDao<Integer,Train>{
     Page<Train> findPage(Long  startTime,Long endTime, Integer offset, Integer size);
+
+    Page<Train> findPageByTime(String time, Integer offset, Integer size);
+
+    Train findOneByUUId(Integer uuid);
 }

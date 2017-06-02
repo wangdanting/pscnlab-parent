@@ -19,9 +19,11 @@ import com.pscnlab.train.models.Train;
 import com.pscnlab.train.models.TrainPeople;
 import com.pscnlab.train.services.TrainPeopleService;
 import com.pscnlab.train.services.TrainService;
+import org.apache.commons.collections.CollectionUtils;
 
 import javax.inject.Inject;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -65,6 +67,10 @@ public class TrainPeopleServiceImpl  extends BaseServiceImpl<Integer,TrainPeople
 
     @Override
     public Map<Integer, List<TrainPeople>> findMapByTrainIds(List<Integer> es) {
-        return this.findListByTrainIds(es).stream().collect(Collectors.groupingBy(TrainPeople::getUuidTrain));
+        List<TrainPeople> trainPeoples = this.findListByTrainIds(es);
+        if(CollectionUtils.isEmpty(trainPeoples)){
+            return Collections.EMPTY_MAP;
+        }
+        return trainPeoples.stream().collect(Collectors.groupingBy(TrainPeople::getUuidTrain));
     }
 }

@@ -23,6 +23,15 @@ import java.util.List;
 public class TrainPageDTO implements Serializable {
     private Train train;
     private List<Member> members;
+    private Boolean isInTrainMember; //当前登录成员是否在培训中
+
+    public Boolean getIsInTrainMember() {
+        return isInTrainMember;
+    }
+
+    public void setIsInTrainMember(Boolean inTrainMember) {
+        isInTrainMember = inTrainMember;
+    }
 
     public Train getTrain() {
         return train;

@@ -11,12 +11,17 @@
 
 package com.pscnlab.train.services.impls;
 
+import com.google.common.collect.Lists;
+import com.jiabangou.core.dtos.ResultsTotalDTO;
+import com.jiabangou.core.exceptions.ServiceException;
 import com.jiabangou.guice.persist.jpa.IBaseDao;
 import com.jiabangou.guice.persist.jpa.util.Page;
 import com.pscnlab.base.services.impls.BaseServiceImpl;
 import com.pscnlab.member.models.Member;
 import com.pscnlab.member.services.MemberSevice;
+import com.pscnlab.member.services.dtos.MemberPageDTO;
 import com.pscnlab.train.daos.TrainDao;
+import com.pscnlab.train.daos.TrainPeopleDao;
 import com.pscnlab.train.models.Train;
 import com.pscnlab.train.models.TrainPeople;
 import com.pscnlab.train.services.TrainPeopleService;
@@ -39,12 +44,137 @@ public class TrainServiceImpl extends BaseServiceImpl<Integer,Train> implements 
     @Inject
     private TrainPeopleService trainPeopleService;
     @Inject
+    private TrainPeopleDao trainPeopleDao;
+
+    @Inject
     private MemberSevice memberSevice;
 
     @Override
     protected IBaseDao<Integer, Train> getBaseDao() {
         return trainDao;
     }
+
+    //新增培训
+    @Override
+    public void saveTrain(Train train){
+        trainDao.save(train);
+    }
+
+    //更新项目
+    @Override
+    public void updateTrain(Train newTrain){
+        Train  train = trainDao.findOneByUUId(newTrain.getUuidTrain());
+        if(newTrain.getNumber()!=null) {
+            train.setNumber(newTrain.getNumber());
+        }
+        if(StringUtils.isNotBlank(newTrain.getPlace())){
+            train.setPlace(newTrain.getPlace());
+        }
+        if(StringUtils.isNotBlank(newTrain.getSpeaker())){
+            train.setSpeaker(newTrain.getSpeaker());
+        }
+        if(StringUtils.isNotBlank(newTrain.getTime())) {
+            train.setTime(newTrain.getTime());
+        }
+        if(StringUtils.isNotBlank(newTrain.getTitle())) {
+            train.setTitle(newTrain.getTitle());
+        }
+        trainDao.update(train);
+    }
+
+
+    //删除培训
+    @Override
+    public void deleteTrain(Integer trainId){
+        Train train = trainDao.findOneByUUId(trainId);
+        if(train==null){
+            throw ServiceException.build(700001l,"数据不存在，删除失败");
+        }
+        trainDao.delete(train);
+    }
+
+    //参加培训
+    @Override
+    public void trainAddMember(Integer trainId,Integer memberUUId){
+        Train one = trainDao.findOne(trainId);
+        if(one==null){
+            throw ServiceException.build(1000,"培训不存在");
+        }
+        List<TrainPeople> trainPeoples = trainPeopleDao.findListByTrainIds(Arrays.asList(one.getUuidTrain()));
+        if(trainPeoples.size()>=one.getNumber()){
+            throw ServiceException.build(1000,"参加培训的人已达到上限，参加失败！");
+        }
+
+        TrainPeople trainPeople = trainPeopleDao.findOneByUuidTrainAndUuidMember(trainId, memberUUId);
+        if(trainPeople==null) {
+            trainPeople = new TrainPeople();
+            trainPeople.setUuidMember(memberUUId);
+            trainPeople.setUuidTrain(trainId);
+            trainPeopleDao.save(trainPeople);
+        }
+    }
+
+    //退出培训
+    @Override
+    public void trainDeleteMember(Integer trainId,Integer memberUUId){
+        Train one = trainDao.findOne(trainId);
+        if(one==null){
+            throw ServiceException.build(1000,"培训不存在");
+        }
+        TrainPeople trainPeople = trainPeopleDao.findOneByUuidTrainAndUuidMember(trainId, memberUUId);
+        if(trainPeople!=null) {
+            trainPeopleDao.delete(trainPeople);
+        }
+    }
+
+
+    //查询培训列表
+    @Override
+    public ResultsTotalDTO<TrainPageDTO> findPageByTime(String time, Integer offset, Integer size, Integer memberUUId){
+        Page<Train> trainPage = trainDao.findPageByTime(time,offset,size);
+        List<Train> results = trainPage.getResults();
+        if(CollectionUtils.isEmpty(results)){
+            return ResultsTotalDTO.build(Collections.EMPTY_LIST,trainPage.getTotalCount());
+        }
+
+        Set<Integer> trainIds = results.stream().map(Train::getUuidTrain).collect(Collectors.toSet());
+        Map<Integer, List<TrainPeople>> trainPeopleMap = trainPeopleService.findMapByTrainIds(new ArrayList<>(trainIds));
+        Map<Integer,MemberPageDTO> memberPageDTOMap= new HashMap<>();
+        if(trainPeopleMap.size()>0){
+            Set<Integer> memberIds = trainPeopleMap.values().stream().flatMap(List::stream).map(TrainPeople::getUuidMember).collect(Collectors.toSet());
+            memberPageDTOMap = memberSevice.findMemberWithRoleByIds(memberIds);
+        }
+
+        //拼装培训成员
+        List<TrainPageDTO> trainPageDTOS=new ArrayList<>();
+        for (Train result : results) {
+            TrainPageDTO trainPageDTO=new TrainPageDTO();
+            trainPageDTO.setTrain(result);
+            //单前成员是否在培训列表内
+            Boolean isInTrainMember = Boolean.FALSE;
+            List<Member> members=new ArrayList<>();
+            List<TrainPeople> trainPeoples = trainPeopleMap.get(result.getUuidTrain());
+            if(CollectionUtils.isNotEmpty(trainPeoples)){
+                for (TrainPeople trainPeople : trainPeoples) {
+                    MemberPageDTO memberPageDTO = memberPageDTOMap.get(trainPeople.getUuidMember());
+                    if(memberPageDTO!=null) {
+                        members.add(memberPageDTO.getMember());
+                        if(memberPageDTO.getMember().getUuidMember().equals(memberUUId)){
+                            isInTrainMember = Boolean.TRUE;
+                        }
+                    }
+                }
+            }
+            trainPageDTO.setIsInTrainMember(isInTrainMember);
+            trainPageDTO.setMembers(members);
+            trainPageDTOS.add(trainPageDTO);
+        }
+
+        return ResultsTotalDTO.build(trainPageDTOS,trainPage.getTotalCount());
+    }
+
+
+
 
 
     @Override

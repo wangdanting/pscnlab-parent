@@ -17,11 +17,12 @@ import javax.persistence.*;
  * Created by xiong on 2017/5/15 .
  */
 @Entity
+@Table(name = "train")
 public class Train {
     private Integer uuidTrain;
     private String title;
     private String speaker;
-    private Long time;
+    private String time;
     private String place;
     private Integer number;
 
@@ -58,11 +59,11 @@ public class Train {
 
     @Basic
     @Column(name = "time")
-    public Long getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Long time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

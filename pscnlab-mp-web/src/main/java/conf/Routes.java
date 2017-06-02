@@ -123,6 +123,23 @@ public class Routes implements ApplicationRoutes {
 
 
 
+        //培训管理
+        //培训查询
+        router.GET().route("/train/lists.json").with(TrainApiController.class,"trainList");
+        //新增培训
+        router.POST().route("/train/news.json").with(TrainApiController.class,"trainNew");
+        //编辑培训
+        router.POST().route("/train/id/{trainId}/updates.json").with(TrainApiController.class,"trainUpdate");
+        //删除培训
+        router.DELETE().route("/train/id/{trainId}/deletes.json").with(TrainApiController.class,"trainDelete");
+        //参加培训
+        router.POST().route("/train/id/{trainId}/add_members.json").with(TrainApiController.class,"trainAddMember");
+        //退出培训
+        router.POST().route("/train/id/{trainId}/delete_members.json").with(TrainApiController.class,"trainDeleteMember");
+
+
+
+
         //主页 就是角色管理
         router.GET().route("/.*").with(IndexController.class, "index"); //登录后并且选择商户
 
