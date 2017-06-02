@@ -14,6 +14,7 @@ package conf;
 
 import com.google.inject.Inject;
 import com.jiabangou.ninja.extentions.AssetsController;
+import com.pscnlab.project.models.Table;
 import com.pscnlab.project.services.ProjectService;
 import controllers.apis.*;
 import controllers.pages.IndexController;
@@ -81,6 +82,8 @@ public class Routes implements ApplicationRoutes {
         //桌位管理
         //桌位查询
         router.GET().route("/table/lists.json").with(TableApiController.class,"tableList");
+        //查询某一个桌位
+        router.GET().route("/table/id/{tableId}/infos.json").with(TableApiController.class,"tableInfo");
         //添加桌位
         router.POST().route("/table/new_tables.json").with(TableApiController.class,"addTable");
         //修改桌位

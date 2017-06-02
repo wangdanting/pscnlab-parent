@@ -9,6 +9,7 @@ import ninja.FilterWith;
 import ninja.Result;
 import ninja.Results;
 import ninja.params.Param;
+import ninja.params.PathParam;
 
 /**
  * Created by zengyh on 2017/6/2.
@@ -29,6 +30,13 @@ public class TableApiController {
         ResultsTotalDTO<Table> resultsTotalDTO = tableService.findListByCondition(tableNum,userName,state,offset,size);
         return Results.ok().render(resultsTotalDTO);
 
+    }
+
+    //查询单个桌位
+    public Result tableInfo(@PathParam("tableId") Integer tableId){
+
+        Table table = tableService.findOneByTableId(tableId);
+        return Results.ok().render(table);
     }
 
     //添加桌位
