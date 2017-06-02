@@ -5,6 +5,7 @@ import { Page } from 'framework';
 import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
 import Panel from 'component/panel/Panel';
 import moment from 'moment';
+import {Common} from 'common';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -81,7 +82,7 @@ class CreateProject extends BaseComponent {
     getProjectInfo = (projectId) => {
         const that = this;
         this.request()
-            .get(`/train/${projectId}.json`)
+            .get(`/project/id/${projectId}/infos.json?memberUUId=${Common.getMerchant().uuidMember}`)
             .success((response) => {
                 let results = response;
                 that.setState({
