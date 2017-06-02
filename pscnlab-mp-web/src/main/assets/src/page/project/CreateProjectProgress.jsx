@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Tabs, Table, Col, Button, Form, Input, Row, messag, DatePicker,Radio, } from 'antd';
+import { Tabs, Table, Col, Button, Form, Input, Row, messag, DatePicker,Radio, message} from 'antd';
 import {Link} from 'react-router';
 import { Page } from 'framework';
 import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
 import Panel from 'component/panel/Panel';
 import moment from 'moment';
+import {Common} from 'common';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -39,24 +40,20 @@ class CreateProjectProgress extends BaseComponent {
 
     componentDidMount() {
         // 判断是否是修改广告
-        let projectId = this.props.params.id;
-        if(projectId) {
-            this.state.isUpdateRole = true;
-            this.getRoleInfo(projectId);
-        }
-
+        this.getRoleInfo();
         this.setState({
             loading: false
         });
     }
 
     //获取该角色信息 更新
-    getRoleInfo = (projectId) => {
-        const that = this;
+    getRoleInfo = () => {
+        let that = this;
         this.request()
-            .get(`/train/${projectId}.json`)
-            .success((response) => {
-                let results = response;
+            .get(`/project/id/${this.props.params.id}/mid/${Common.getMerchant().uuidMember}/infos.json`)
+            .success((data) => {
+                let results = data;
+                console.log(data, '0003');
                 that.setState({
                     loading: false,
                 });
@@ -111,58 +108,31 @@ class CreateProjectProgress extends BaseComponent {
     // 构建需要提交的数据
     createSubmitObj = (values) => {
         let submitData = {};
-        submitData.uuidTrain = null;
         submitData.progress = values.progress;
         submitData.progressInfo = values.progressInfo;
-
         // 给 userLimit, userPerDayLimit 赋值
         return submitData;
     };
 
     // 发送数据，根据不同的类型
     handleSendData = (submitData) => {
-        let sendUrl;
-        let roleId = this.props.params.id;
-        if(roleId) { //更新
-            sendUrl = `/role/update.json`;
-            submitData.uuidRole = roleId;
-            this.request()
-                .put(sendUrl)
-                .params(submitData)
-                .success(() => {
-                    message.success('更新成功', 1);
-                    this.setState({
-                        isIgnoreIntercept: true,
-                    });
-                    setTimeout(this.handleGoBack(), 500);
-                })
-                .error((err, res) => {
-                    message.error(res && res.body && res.body.message || '未知系统错误', 1);
-                    this.setState({
-                        isSubmitting: false,
-                    });
-                })
-                .end();
-        } else {   //创建
-            sendUrl = '/role/new.json';
-            this.request()
-                .post(sendUrl)
-                .params(submitData)
-                .success(() => {
-                    message.success('操作成功', 1);
-                    this.setState({
-                        isIgnoreIntercept: true,
-                    });
-                    setTimeout(this.handleGoBack(), 500);
-                })
-                .error((err, res) => {
-                    message.error(res && res.body && res.body.message || '未知系统错误', 1);
-                    this.setState({
-                        isSubmitting: false,
-                    });
-                })
-                .end();
-        }
+        this.request()
+            .post(`/project/id/${this.props.params.id}/mid/${Common.getMerchant().uuidMember}/updates.json?progressInfo=${submitData.progressInfo}&progress=${submitData.progress}`)
+            .success(() => {
+                message.success('操作成功', 1);
+                this.setState({
+                    isIgnoreIntercept: true,
+                });
+                setTimeout(this.handleGoBack(), 500);
+            })
+            .error((err, res) => {
+                message.error(res && res.body && res.body.message || '未知系统错误', 1);
+                this.setState({
+                    isSubmitting: false,
+                });
+            })
+            .end();
+
     };
 
     // 校验进度输入数字
