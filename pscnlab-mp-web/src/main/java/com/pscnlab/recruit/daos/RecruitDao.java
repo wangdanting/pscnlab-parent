@@ -13,6 +13,7 @@ package com.pscnlab.recruit.daos;
 
 import com.google.inject.ImplementedBy;
 import com.jiabangou.guice.persist.jpa.IBaseDao;
+import com.jiabangou.guice.persist.jpa.util.Page;
 import com.pscnlab.recruit.daos.impls.RecruitDaoImpl;
 import com.pscnlab.recruit.models.Recruit;
 
@@ -21,4 +22,7 @@ import com.pscnlab.recruit.models.Recruit;
  */
 @ImplementedBy(RecruitDaoImpl.class)
 public interface RecruitDao extends IBaseDao<Integer,Recruit>{
+    Page<Recruit> findPageByCondition(String position, Integer offset, Integer size);
+
+    Recruit findOneById(Integer uuid);
 }

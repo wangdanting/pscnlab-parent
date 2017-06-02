@@ -96,14 +96,31 @@ public class Routes implements ApplicationRoutes {
 
 
         //经费
+        //计算经费余额
+        router.GET().route("/fund/counts.json").with(FundApiController.class,"fundCount");
         //查询经费
-        //router.GET().route("").with();
+        router.GET().route("/fund/lists.json").with(FundApiController.class,"fundList");
         //查询某项经费
-        //router.GET().route("").with();
-        //添加经分
+        router.GET().route("/fund/id/{fundId}/infos.json").with(FundApiController.class,"fundInfo");
+        //添加经费
+        router.POST().route("/fund/news.json").with(FundApiController.class,"newFund");
+        //修改经费
+        router.POST().route("/fund/updates.json").with(FundApiController.class,"updateFund");
+        //删除经费
+        router.POST().route("/fund/id/{fundId}/deletes.json").with(FundApiController.class,"deleteFund");
 
+        //招聘
+        //查询招聘
+        router.GET().route("/recruit/lists.json").with(RecruitApiController.class,"recruitList");
+        //查询某项招聘
+        router.GET().route("/recruit/id/{recruitId}/infos.json").with(RecruitApiController.class,"recruitInfo");
+        //添加招聘
+        router.POST().route("/recruit/news.json").with(RecruitApiController.class,"newRecruit");
+        //修改招聘
+        router.POST().route("/recruit/updates.json").with(RecruitApiController.class,"updateRecruit");
+        //删除招聘
+        router.POST().route("/recruit/id/{recruitId}/deletes.json").with(RecruitApiController.class,"deleteRecruit");
 
-        //
 
 
         //主页 就是角色管理
