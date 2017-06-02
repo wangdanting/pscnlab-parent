@@ -121,7 +121,6 @@ class Member extends BaseComponent {
             .noStoreId()
             .get(`/member.json?uuidRole=${uuidRole}&gender=${gender}&name=${name}&telephone=${telephone}&size=${size}&offset=${offset}`)
             .success((data, res) => {
-            console.log('成功了');
                 this.setState({
                     dataSource: data.map((item) => {item.member.role = `${item.role.role}(${item.role.position})`; return item.member;}),
                     totalCount: res.body.totalCount,
