@@ -12,6 +12,7 @@ import ninja.params.Param;
 import ninja.params.PathParam;
 
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Created by wangdanting on 17/5/18.
@@ -60,5 +61,10 @@ public class RoleApiController {
         Page<Role> page = roleService.findByRoleOrPosition(role, position,offset,size);
 
         return Results.ok().render(page);
+    }
+
+    public Result roleListAll(){
+        List list = roleService.findAll();
+        return Results.ok().render(list);
     }
 }
