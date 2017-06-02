@@ -37,6 +37,7 @@ public class Routes implements ApplicationRoutes {
         // 登录
         router.GET().route("/login").with(LoginController.class, "index");
         router.POST().route("/login.json").with(LoginApiController.class, "login");
+        router.POST().route("/user/update_passwd.json").with(LoginApiController.class,"updatePasswd");
 
         //找回密码
         router.GET().route("/password_find").with(PasswordController.class,"index");
