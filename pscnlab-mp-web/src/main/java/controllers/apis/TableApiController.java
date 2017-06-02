@@ -34,7 +34,7 @@ public class TableApiController {
     //添加桌位
     public Result addTable(Table table){
 
-        tableService.save(table);
+        tableService.addTable(table);
         return Results.ok().render(Boolean.TRUE);
     }
 
