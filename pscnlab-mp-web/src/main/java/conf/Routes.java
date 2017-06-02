@@ -48,6 +48,8 @@ public class Routes implements ApplicationRoutes {
         router.DELETE().route("/role/delete.json").with(RoleApiController.class,"deleteRole");
         router.GET().route("/role.json").with(RoleApiController.class,"researchRole");
 
+        //成员
+        router.GET().route("/member.json").with(MemberApiController.class,"findPage");
 
         //成员查询
         router.GET().route("/memeber/lists.json").with(MemberApiController.class,"memberList");
