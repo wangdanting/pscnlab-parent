@@ -20,7 +20,6 @@
     <persistence-unit name="dev_unit" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <mapping-file>META-INF/orm.xml</mapping-file>
-        <class>com.pscnlab.table.models.Table</class>
         <properties>
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL57InnoDBDialect" />
@@ -45,21 +44,6 @@
             <property name="hibernate.c3p0.max_statements" value="0" />
             <property name="hibernate.c3p0.timeout" value="2000" />
             <property name="hibernate.c3p0.preferred_test_query" value="select 'z'"/>
-            <property name="toplink.jdbc.url" value="jdbc:mysql://qdm166654301.my3w.com:3306/qdm166654301_db"/>
-            <property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="toplink.jdbc.user"/>
-            <property name="toplink.jdbc.password"/>
-            <property name="hibernate.connection.url" value="jdbc:mysql://qdm166654301.my3w.com:3306/qdm166654301_db"/>
-            <property name="hibernate.connection.username"/>
-            <property name="hibernate.connection.password"/>
-            <property name="openjpa.ConnectionURL" value="jdbc:mysql://qdm166654301.my3w.com:3306/qdm166654301_db"/>
-            <property name="openjpa.ConnectionDriverName" value="com.mysql.jdbc.Driver"/>
-            <property name="openjpa.ConnectionUserName"/>
-            <property name="openjpa.ConnectionPassword"/>
-            <property name="eclipselink.jdbc.url" value="jdbc:mysql://qdm166654301.my3w.com:3306/qdm166654301_db"/>
-            <property name="eclipselink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="eclipselink.jdbc.user"/>
-            <property name="eclipselink.jdbc.password"/>
         </properties>
     </persistence-unit>
 
