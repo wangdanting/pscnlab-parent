@@ -41,7 +41,6 @@ public class DeskApiController {
 
     //添加桌位
     public Result addDesk(Desk desk){
-
         deskService.addDesk(desk);
         return Results.ok().render(Boolean.TRUE);
     }

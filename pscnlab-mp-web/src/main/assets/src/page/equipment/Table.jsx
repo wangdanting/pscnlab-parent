@@ -15,50 +15,28 @@ class Tablew extends BaseComponent {
         pageSize: 10,
         totalCount: 0,
 
-        table: [{
-            num: 1,
-        }, {
-            num: 2,
-        }, {
-            num: 3,
-        }, {
-            num: 4,
-        }, {
-            num: 5,
-        }, {
-            num: 6,
-        }, {
-            num: 7,
-        }, {
-            num: 8,
-        }, {
-            num: 9,
-        }, {
-            num: 10,
-        }, {
-            num: 11,
-        }, {
-            num: 12,
-        }, {
-            num: 13,
-        }, {
-            num: 14,
-        }],
+        table: [],
     };
 
     //确认删除角色对话框
     showDeleteConfirm(id) {
         confirm({
-            title: '你确定要删除该角色信息？',
+            title: '你确定要删除该桌位信息？',
             content: '注意：如果有成员绑定改角色，该角色将删除失败！',
-            onOk() {
+            onOk:() => {
                 console.log('444');
                 this.request()
                     .noStoreId()
-                    .get('/table/id/{tableId}/delete_tables.json')
-                    .params({id: id})
+                    .post(`/desk/id/${id}/delete_desks.json`)
                     .success((data, res) => {
                         console.log('dddd44');
+                        const {pageSize, currentPage} = this.state;
+                        const params = {
+                            pageSize,
+                            currentPage,
+                        };
+                        this.initTableData(params);
+
                     })
                     .end();
             },
@@ -172,7 +150,7 @@ class Tablew extends BaseComponent {
         this.request()
             .noMchId()
             .noStoreId()
-            .get(`/table/lists.json?tableNum=${tableNum}&userName=${userName}&state=${state}&size=${size}&offset=${offset}`)
+            .get(`/desk/lists.json?tableNum=${tableNum}&userName=${userName}&state=${state}&size=${size}&offset=${offset}`)
             .success((data, res) => {
             console.log(data, '999');
                 this.setState({
@@ -187,25 +165,25 @@ class Tablew extends BaseComponent {
         return tables.map((value, index) => {
             return (
                 <div className="table-list">
-                    <div className="table-title">一号桌</div>
+                    <div className="table-title">{value.num}</div>
                     <div className="table-body">
                         <div className="user-image">
                             <img src={defeatHeadImg}/>
                         </div>
                         <div className="user-info">
-                            <p>王丹婷</p>
-                            <p>18875082742</p>
+                            <p>{value.userName}</p>
+                            <p>{value.userTelephone}</p>
                         </div>
                     </div>
                     <div className="table-footer">
                         <Link
                             style={{color: '#57c5f7'}}
                             activeStyle={{color: 'red'}}
-                            to={`table/modify-table`}>
+                            to={`table/modify-table/${value.uuid}`}>
                             编辑
                         </Link>｜
                         <a>
-                            <span onClick={()=>this.showDeleteConfirm(text)}>删除</span>
+                            <span onClick={()=>this.showDeleteConfirm(value.uuid)}>删除</span>
                         </a>
                     </div>
                 </div>

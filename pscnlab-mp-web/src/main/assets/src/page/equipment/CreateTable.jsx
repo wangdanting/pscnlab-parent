@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs, Table, Col, Button, Form, Input, Row, messag, DatePicker,Radio, Select} from 'antd';
+import { Tabs, Table, Col, Button, Form, Input, Row, message, DatePicker,Radio, Select} from 'antd';
 import {Link} from 'react-router';
 import { Page } from 'framework';
 import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
@@ -16,7 +16,9 @@ class CreateTable extends BaseComponent {
         isSubmitting: false,
         loading: true,
         isUpdateRole: false,  //是否是更新角色
-        isProjectState: 'noStart', //项目状态
+        isProjectState: '空闲', //项目状态
+        MemberList: [],
+        userName: ''
     };
 
     // 判断用户是否输入了值
@@ -42,21 +44,29 @@ class CreateTable extends BaseComponent {
 
     componentDidMount() {
         // 判断是否是修改广告
-        let projectId = this.props.params.id;
-        if(projectId) {
-            this.state.isUpdateRole = true;
-            this.getRoleInfo(projectId);
+        let tableId = this.props.params.id;
+        console.log(tableId, 'tableId');
+        if(tableId) {
+            this.getRoleInfo(tableId);
         }
-        // const {route} = this.props;
-        // const {router} = this.context; // If contextTypes is not defined, then context will be an empty object.
-        // router.setRouteLeaveHook(route, (/* nextLocation */) => {
-        //     // 返回 false 会继续停留当前页面，
-        //     // 否则，返回一个字符串，会显示给用户，让其自己决定
-        //     if (this.isEnterSomeValue()) {
-        //         return '您有未保存的内容，确认要离开？';
-        //     }
-        //     return true;
-        // });
+
+        this.request()
+            .noMchId()
+            .noStoreId()
+            .get('/role/lists.json')
+            .success((data, res) => {
+                this.setState({
+                    roleList: data.map((item, index) => {
+                        item.value = item.uuidRole;
+                        item.label = `${item.role}(${item.position})`;
+                        if(index == 0) {
+                            item.checked = true;
+                        }
+                        return item;
+                    })
+                });
+            })
+            .end();
 
         this.setState({
             loading: false
@@ -64,19 +74,24 @@ class CreateTable extends BaseComponent {
     }
 
     //获取该角色信息 更新
-    getRoleInfo = (projectId) => {
+    getRoleInfo = (tableId) => {
         const that = this;
         this.request()
-            .get(`/train/${projectId}.json`)
+            .get(`/desk/id/${tableId}/infos.json`)
             .success((response) => {
                 let results = response;
+
+                let formvalue = {
+                    num: results.num,
+                };
+
                 that.setState({
+                    state: results.state,
+                    userName: results.userName,
+                    telephoneChooseNum: results.userTelephone,
                     loading: false,
                 });
-                let formvalue = {
-                    title: results.num,
 
-                };
 
                 that.props.form.setFieldsValue(formvalue);
             })
@@ -123,8 +138,11 @@ class CreateTable extends BaseComponent {
     // 构建需要提交的数据
     createSubmitObj = (values) => {
         let submitData = {};
-        submitData.uuidTable = null;
+        submitData.uuid = null;
         submitData.num = values.num;
+        submitData.state = this.state.isProjectState;
+        submitData.userName = this.state.userName;
+        submitData.userTelephone = this.state.telephoneChooseNum;
 
         // 给 userLimit, userPerDayLimit 赋值
         return submitData;
@@ -133,12 +151,12 @@ class CreateTable extends BaseComponent {
     // 发送数据，根据不同的类型
     handleSendData = (submitData) => {
         let sendUrl;
-        let roleId = this.props.params.id;
-        if(roleId) { //更新
-            sendUrl = `/role/update.json`;
-            submitData.uuidRole = roleId;
+        let tableId = this.props.params.id;
+        if(tableId) { //更新
+            sendUrl = `/desk/update_desks.json`;
+            submitData.uuid = tableId;
             this.request()
-                .put(sendUrl)
+                .post(sendUrl)
                 .params(submitData)
                 .success(() => {
                     message.success('更新成功', 1);
@@ -155,7 +173,7 @@ class CreateTable extends BaseComponent {
                 })
                 .end();
         } else {   //创建
-            sendUrl = '/role/new.json';
+            sendUrl = '/desk/new_desks.json';
             this.request()
                 .post(sendUrl)
                 .params(submitData)
@@ -187,6 +205,38 @@ class CreateTable extends BaseComponent {
     handleGoBack = () => {
         const {history} = this.props;
         history.push(`/table`);
+    };
+
+    renderTelSelectOption = () => {
+        const {MemberList} = this.state;
+        return MemberList.map(member => <Option value={member.telephone} key={member.telephone || 'all'}>{member.telephone}</Option>)
+    };
+
+    handleTelephoneChange = (value) => {
+        console.log(value, 'value');
+        this.setState({
+            uuidMember: value,
+            telephoneChooseNum: value
+        });
+    };
+
+    memberNameChange = (e) => {
+        console.log(e.target.value, 'e.target.value');
+        this.setState({
+            userName: e.target.value,
+        });
+        this.request()
+            .get(`/member/lists.json?memberName=${e.target.value}`)
+            .success((data) => {
+                this.setState({
+                    MemberList: data,
+                    isIgnoreIntercept: true,
+                });
+            })
+            .error((err, res) => {
+                message.error(res && res.body && res.body.message || '未知系统错误', 1);
+            })
+            .end();
     };
 
     render() {
@@ -251,11 +301,7 @@ class CreateTable extends BaseComponent {
                                     <Col span="4" className="label ant-form-item-required">使用人姓名：</Col>
                                     <Col span="11">
                                         <FormItem>
-                                            <Select defaultValue={'1'} style={{ width: 220, marginRight: 10 }} >
-                                                <Option key={1}>老师(java开发)</Option>
-                                                <Option key={2}>老师(前端开发)</Option>
-                                                <Option key={3}>学生(前端开发)</Option>
-                                            </Select>
+                                            <Input onChange={this.memberNameChange} style={{marginTop: 1}} maxLength="10" placeholder="请输入成员姓名"/>
                                         </FormItem>
                                     </Col>
                                 </Row>
@@ -263,10 +309,8 @@ class CreateTable extends BaseComponent {
                                     <Col span="4" className="label ant-form-item-required">使用人联系电话：</Col>
                                     <Col span="11">
                                         <FormItem>
-                                            <Select defaultValue={'11'} style={{ width: 220, marginRight: 10 }} >
-                                                <Option key={11}>18875082742</Option>
-                                                <Option key={12}>18875082742</Option>
-                                                <Option key={13}>18875082742</Option>
+                                            <Select value={this.state.telephoneChooseNum} placeholder="请选择联系电话" style={{ width: 220, marginRight: 10 }} onChange={this.handleTelephoneChange}>
+                                                {this.renderTelSelectOption()}
                                             </Select>
                                         </FormItem>
                                     </Col>
