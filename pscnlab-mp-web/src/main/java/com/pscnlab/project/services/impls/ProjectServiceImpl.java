@@ -40,7 +40,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
     private MemberSevice memberSevice;
 
     @Override
-    public void projectAddMember(Integer uuidProject,Integer memberUUId){
+    public void projectAddMember(Integer uuidProject, Integer memberUUId){
 
         ProjectProgressPeople people = projectProgessPeopleDao.findOneByMemberUUIdAndProjectId(uuidProject,memberUUId);
         if(people!=null){
@@ -119,7 +119,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
 
     //查询项目
     @Override
-    public ResultsTotalDTO<ProjectQueryPageDTO> findPageProject(String state,Integer offset,Integer size){
+    public ResultsTotalDTO<ProjectQueryPageDTO> findPageProject(String state,Integer offset,Integer size, Integer memberUUId){
 
         //查询项目列表
         Page<Project> projectPage = projectDao.findPageProjectByState(state,offset,size);
@@ -135,14 +135,14 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
             return ResultsTotalDTO.build(projectQueryPageDTOList,projectPage.getTotalCount());
         }
 
-        List<ProjectQueryPageDTO> resultList = this.assembleProjectPeople(projectPage.getResults(),projectProgressPeoples);
+        List<ProjectQueryPageDTO> resultList = this.assembleProjectPeople(projectPage.getResults(),projectProgressPeoples,memberUUId);
 
         return ResultsTotalDTO.build(resultList,projectPage.getTotalCount());
     }
 
 
     //拼装项目成员
-    public List<ProjectQueryPageDTO> assembleProjectPeople(List<Project> projects,List<ProjectProgressPeople> projectProgressPeoples){
+    public List<ProjectQueryPageDTO> assembleProjectPeople(List<Project> projects,List<ProjectProgressPeople> projectProgressPeoples,Integer memberUUId){
 
         //查询成员信息
         Set<Integer> memberIdsSet = projectProgressPeoples.stream().map(p->p.getUuidMember()).collect(Collectors.toSet());
@@ -163,18 +163,24 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
                 resultList.add(projectQueryPageDTO);
                 continue;
             }
+            Boolean isInProject = Boolean.FALSE;
             //项目有成员
-            peoples.stream().forEach(p -> {
+            for(ProjectProgressPeople people:peoples){
                 ProjectProgressPeopleDTO dto = new ProjectProgressPeopleDTO();
-                dto.setProgress(p.getProgress());
-                dto.setProgressInfo(p.getProgressInfo());
-                MemberPageDTO memberPageDTO = memberMap.get(p.getUuidMember());
+                dto.setProgress(people.getProgress());
+                dto.setProgressInfo(people.getProgressInfo());
+                MemberPageDTO memberPageDTO = memberMap.get(people.getUuidMember());
                 dto.setMemberName(memberPageDTO.getMember().getName());
                 dto.setPosition(memberPageDTO.getRole().getPosition());
                 dto.setRoleName(memberPageDTO.getRole().getRole());
                 projectPepoles.add(dto);
-            });
 
+                if(memberPageDTO.getMember().getUuidMember().equals(memberUUId)){
+                    isInProject = Boolean.TRUE;
+                }
+            }
+
+            projectQueryPageDTO.setIsInProject(isInProject);
             projectQueryPageDTO.setProjectPepoles(projectPepoles);
             resultList.add(projectQueryPageDTO);
         }

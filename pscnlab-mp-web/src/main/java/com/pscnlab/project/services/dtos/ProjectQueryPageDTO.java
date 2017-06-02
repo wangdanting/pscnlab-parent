@@ -18,6 +18,15 @@ public class ProjectQueryPageDTO implements Serializable {
     private String startTime;           //开始时间
     private String startEnd;            //结束时间
     private String attention;           //注意事项
+    private Boolean isInProject;        //当前登录成员是否在此项目中
+
+    public Boolean getIsInProject() {
+        return isInProject;
+    }
+
+    public void setIsInProject(Boolean inProject) {
+        isInProject = inProject;
+    }
 
     private List<ProjectProgressPeopleDTO> projectPepoles; //项目成员与进度
 

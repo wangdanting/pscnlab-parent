@@ -76,6 +76,17 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/project/id/{projectId}/delete_members.json").with(ProjectApiController.class,"projectDeleteMember");
 
 
+        //桌位管理
+        //桌位查询
+        router.GET().route("/table/lists.json").with(TableApiController.class,"tableList");
+        //添加桌位
+        router.POST().route("/table/new_tables.json").with(TableApiController.class,"addTable");
+        //修改桌位
+        router.POST().route("/table/id/{tableId}/update_tables.json").with(TableApiController.class,"updateTable");
+        //删除桌位
+        router.DELETE().route("/table/id/{tableId}/delete_tables.json").with(TableApiController.class,"deleteTable");
+
+
         //主页 就是角色管理
         router.GET().route("/.*").with(IndexController.class, "index"); //登录后并且选择商户
 

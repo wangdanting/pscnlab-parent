@@ -22,5 +22,5 @@ public interface ProjectService extends BaseService{
 
     void saveProject(Project project);
 
-    ResultsTotalDTO<ProjectQueryPageDTO> findPageProject(String state, Integer offset, Integer size);
+    ResultsTotalDTO<ProjectQueryPageDTO> findPageProject(String state, Integer offset, Integer size, Integer memberUUId);
 }
