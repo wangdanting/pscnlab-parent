@@ -3,7 +3,7 @@ package com.pscnlab.project.models;
 import javax.persistence.*;
 
 /**
- * Created by zengyh on 2017/5/15.
+ * Created by zengyh on 2017/6/2.
  */
 @Entity
 @javax.persistence.Table(name = "project_progress_people")
@@ -16,7 +16,6 @@ public class ProjectProgressPeople {
 
     @Id
     @Column(name = "uuid")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getUuid() {
         return uuid;
     }
@@ -56,7 +55,7 @@ public class ProjectProgressPeople {
     }
 
     @Basic
-    @Column(name = "progressInfo")
+    @Column(name = "progress_info")
     public String getProgressInfo() {
         return progressInfo;
     }
@@ -76,6 +75,7 @@ public class ProjectProgressPeople {
         if (uuidProject != null ? !uuidProject.equals(that.uuidProject) : that.uuidProject != null) return false;
         if (uuidMember != null ? !uuidMember.equals(that.uuidMember) : that.uuidMember != null) return false;
         if (progress != null ? !progress.equals(that.progress) : that.progress != null) return false;
+        if (progressInfo != null ? !progressInfo.equals(that.progressInfo) : that.progressInfo != null) return false;
 
         return true;
     }
@@ -86,6 +86,7 @@ public class ProjectProgressPeople {
         result = 31 * result + (uuidProject != null ? uuidProject.hashCode() : 0);
         result = 31 * result + (uuidMember != null ? uuidMember.hashCode() : 0);
         result = 31 * result + (progress != null ? progress.hashCode() : 0);
+        result = 31 * result + (progressInfo != null ? progressInfo.hashCode() : 0);
         return result;
     }
 }

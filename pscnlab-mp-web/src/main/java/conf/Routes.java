@@ -53,7 +53,7 @@ public class Routes implements ApplicationRoutes {
         router.GET().route("/memeber/lists.json").with(MemberApiController.class,"memberList");
 
         //项目管理
-        router.GET().route("/role/projects.json").with(ProjectApiController.class,"projectList");
+        router.GET().route("/project/lists.json").with(ProjectApiController.class,"projectList");
 
 
         //主页 就是角色管理

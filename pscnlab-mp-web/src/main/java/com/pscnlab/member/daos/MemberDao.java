@@ -19,6 +19,7 @@ import com.pscnlab.member.models.Member;
 import com.pscnlab.member.services.dtos.MemberPageQueryDTO;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by xiong on 2017/5/15 .
@@ -32,4 +33,6 @@ public interface MemberDao extends IBaseDao<Integer,Member> {
     Member findOneByTelephone(String telephone);
 
     List<Member> findListByMemberName(String memberName);
+
+    List<Member> findListByMemberIdsSet(Set<Integer> memberIdsSet);
 }

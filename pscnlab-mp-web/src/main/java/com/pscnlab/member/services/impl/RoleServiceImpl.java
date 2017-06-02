@@ -11,6 +11,7 @@
 
 package com.pscnlab.member.services.impl;
 
+import com.jiabangou.core.beans.ConvertUtils;
 import com.jiabangou.core.exceptions.ServiceException;
 import com.jiabangou.guice.persist.jpa.IBaseDao;
 import com.jiabangou.guice.persist.jpa.util.Page;
@@ -19,9 +20,15 @@ import com.pscnlab.member.daos.RoleDao;
 import com.pscnlab.member.models.Role;
 import com.pscnlab.member.services.MemberSevice;
 import com.pscnlab.member.services.RoleService;
+import org.apache.commons.collections.CollectionUtils;
 
 import javax.inject.Inject;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Created by xiong on 2017/5/15 .
@@ -35,6 +42,15 @@ public class RoleServiceImpl extends BaseServiceImpl<Integer,Role> implements Ro
     @Override
     protected IBaseDao<Integer, Role> getBaseDao() {
         return roleDao;
+    }
+
+    @Override
+    public Map<Integer,Role> findMapByRoleIds(Set<Integer> roleIdsSet){
+        List<Role> roles = roleDao.findListByRoleIds(roleIdsSet);
+        if(CollectionUtils.isEmpty(roles)){
+            return Collections.EMPTY_MAP;
+        }
+        return roles.stream().collect(Collectors.toMap(Role::getUuidRole, Function.identity()));
     }
 
     @Override

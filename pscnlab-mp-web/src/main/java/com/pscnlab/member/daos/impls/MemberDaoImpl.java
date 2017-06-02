@@ -20,6 +20,7 @@ import com.pscnlab.member.services.dtos.MemberPageQueryDTO;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by xiong on 2017/5/15 .
@@ -59,6 +60,14 @@ public class MemberDaoImpl extends BaseDao<Integer,Member> implements MemberDao 
     public List<Member> findListByMemberName(String memberName){
         FilterMap filterMap = new FilterMap();
         filterMap.like("name","%"+memberName+"%");
+        return super.list(filterMap);
+    }
+
+    @Override
+    public List<Member> findListByMemberIdsSet(Set<Integer> memberIdsSet){
+
+        FilterMap filterMap = new FilterMap();
+        filterMap.in("uuidMember",memberIdsSet);
         return super.list(filterMap);
     }
 }

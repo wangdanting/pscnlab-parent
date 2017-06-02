@@ -12,7 +12,9 @@
     <entity class="com.pscnlab.train.models.Train"/>
     <entity class="com.pscnlab.train.models.TrainPeople"/>
     <entity class="com.pscnlab.recruit.models.Recruit"/>
-
+    <entity class="com.pscnlab.project.models.Project"/>
+    <entity class="com.pscnlab.project.models.ProjectProgress"/>
+    <entity class="com.pscnlab.project.models.ProjectProgressPeople"/>
 
 
 </entity-mappings>

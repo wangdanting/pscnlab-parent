@@ -6,6 +6,7 @@ import com.jiabangou.guice.persist.jpa.util.FilterMap;
 import com.jiabangou.guice.persist.jpa.util.Page;
 import com.pscnlab.project.daos.ProjectDao;
 import com.pscnlab.project.models.Project;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by zengyh on 2017/5/15.
@@ -18,7 +19,9 @@ public class ProjectDaoImpl extends BaseDao<Long,Project> implements ProjectDao 
     public Page<Project> findPageProjectByState(String state, Integer offset, Integer size){
 
         FilterMap filterMap = new FilterMap();
-        filterMap.eq("state",state);
+        if(StringUtils.isNotBlank(state)) {
+            filterMap.eq("state", state);
+        }
         return super.page(filterMap,offset,size);
     }
 }

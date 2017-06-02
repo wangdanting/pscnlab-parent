@@ -16,11 +16,15 @@ import com.pscnlab.base.services.BaseService;
 import com.pscnlab.member.models.Role;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by xiong on 2017/5/15 .
  */
 public interface RoleService extends BaseService<Integer,Role> {
+    Map<Integer,Role> findMapByRoleIds(Set<Integer> roleIdsSet);
+
     List<Role> findAll();
     Role findByRoleAndPosition(String role,String position);
 

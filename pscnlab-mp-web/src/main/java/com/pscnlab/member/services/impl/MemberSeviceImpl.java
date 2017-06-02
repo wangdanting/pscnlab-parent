@@ -69,13 +69,13 @@ public class MemberSeviceImpl extends BaseServiceImpl<Integer,Member> implements
     @Override
     public Map<Integer,MemberPageDTO> findMemberWithRoleByIds(Set<Integer> memberIdsSet){
 
-        List<Member> members = memberDao.findByIds(Lists.newArrayList(memberIdsSet));
+        List<Member> members = memberDao.findListByMemberIdsSet(memberIdsSet);
         if(CollectionUtils.isEmpty(members)){
             return Collections.emptyMap();
         }
 
         Set<Integer> roleIds = members.stream().map(Member::getUuidRole).collect(Collectors.toSet());
-        Map<Integer, Role> roleMap = roleService.findMapByIds(new ArrayList<>(roleIds));
+        Map<Integer, Role> roleMap = roleService.findMapByRoleIds(roleIds);
 
         Map<Integer,MemberPageDTO> memberPageDTOMap = Maps.newHashMap();
         for (Member result : members) {
@@ -96,6 +96,7 @@ public class MemberSeviceImpl extends BaseServiceImpl<Integer,Member> implements
         return members;
     }
 
+    //分页查询成员列表
     @Override
     public Page<MemberPageDTO> findPage(MemberPageQueryDTO query, Integer offset, Integer size) {
 
@@ -105,8 +106,9 @@ public class MemberSeviceImpl extends BaseServiceImpl<Integer,Member> implements
             return Page.build(new ArrayList<>(),page.getTotalCount());
         }
 
+        //查询成员角色
         Set<Integer> roleIds = results.stream().map(Member::getUuidRole).collect(Collectors.toSet());
-        Map<Integer, Role> roleMap = roleService.findMapByIds(new ArrayList<>(roleIds));
+        Map<Integer, Role> roleMap = roleService.findMapByRoleIds(roleIds);
 
         List<MemberPageDTO>memberPageDTOS=new ArrayList<>();
         for (Member result : results) {

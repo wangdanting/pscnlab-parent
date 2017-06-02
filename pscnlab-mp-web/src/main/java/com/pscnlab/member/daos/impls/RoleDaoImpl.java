@@ -16,14 +16,31 @@ import com.jiabangou.guice.persist.jpa.util.FilterMap;
 import com.jiabangou.guice.persist.jpa.util.Page;
 import com.pscnlab.member.daos.RoleDao;
 import com.pscnlab.member.models.Role;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by xiong on 2017/5/15 .
  */
 public class RoleDaoImpl extends BaseDao<Integer,Role> implements RoleDao {
+
+
+    @Override
+    public List<Role> findListByRoleIds(Set<Integer> roleIdsSet){
+
+        if(CollectionUtils.isEmpty(roleIdsSet)){
+            return Collections.EMPTY_LIST;
+        }
+        FilterMap filterMap = new FilterMap();
+        filterMap.in("uuidRole",roleIdsSet);
+
+        return super.list(filterMap);
+    }
+
     @Override
     public List<Role> findAll() {
         return super.list(new FilterMap());

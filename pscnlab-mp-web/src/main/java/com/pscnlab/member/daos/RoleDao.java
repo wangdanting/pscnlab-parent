@@ -18,12 +18,15 @@ import com.pscnlab.member.daos.impls.RoleDaoImpl;
 import com.pscnlab.member.models.Role;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by xiong on 2017/5/15 .
  */
 @ImplementedBy(RoleDaoImpl.class)
 public interface RoleDao extends IBaseDao<Integer,Role> {
+    List<Role> findListByRoleIds(Set<Integer> roleIdsSet);
+
     List<Role> findAll();
 
     Role findByRoleAndPosition(String role, String position);
