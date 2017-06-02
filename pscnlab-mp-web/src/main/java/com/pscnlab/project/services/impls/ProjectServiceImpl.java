@@ -58,6 +58,17 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
 
     }
 
+    //删除项目
+    @Override
+    public void deleteProject(Integer projectId){
+
+        Project  project = projectDao.findOneByUUId(projectId);
+        if(project!=null){
+            projectDao.delete(project);
+        }
+
+    }
+
     @Override
     public void projectDeleteMember(Integer uuidProject,Integer memberUUId){
 

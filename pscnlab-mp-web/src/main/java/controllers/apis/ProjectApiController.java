@@ -65,6 +65,12 @@ public class ProjectApiController {
         return Results.ok().render(Boolean.TRUE);
     }
 
+    //删除项目
+    public Result projectDelete(@PathParam("projectId") Integer projectId){
+        projectService.deleteProject(projectId);
+        return Results.ok().render(Boolean.TRUE);
+    }
+
     //查询项目成员
     public Result projectMember(@PathParam("projectId") Integer projectId){
 

@@ -71,6 +71,8 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/project/news.json").with(ProjectApiController.class,"projectNew");
         //编辑项目
         router.POST().route("/project/id/{projectId}/updates.json").with(ProjectApiController.class,"projectUpdate");
+        //删除项目
+        router.DELETE().route("/project/id/{projectId}/deletes.json").with(ProjectApiController.class,"projectDelete");
         //查询项目成员
         router.GET().route("/project/id/{projectId}/members.json").with(ProjectApiController.class,"projectMember");
         //加入成员
@@ -90,6 +92,14 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/table/id/{tableId}/update_tables.json").with(TableApiController.class,"updateTable");
         //删除桌位
         router.DELETE().route("/table/id/{tableId}/delete_tables.json").with(TableApiController.class,"deleteTable");
+
+
+        //经费
+        //
+
+        //
+
+        //
 
 
         //主页 就是角色管理
