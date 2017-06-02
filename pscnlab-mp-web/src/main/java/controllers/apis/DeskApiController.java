@@ -54,7 +54,7 @@ public class DeskApiController {
     }
 
     //删除桌位
-    public Result deleteDesk(@Param("deskId") Integer deskId){
+    public Result deleteDesk(@PathParam("deskId") Integer deskId){
         deskService.delete(deskId);
         return Results.ok().render(Boolean.TRUE);
     }
