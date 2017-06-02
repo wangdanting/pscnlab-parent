@@ -122,10 +122,9 @@ class Member extends BaseComponent {
             .get(`/member.json?uuidRole=${uuidRole}&gender=${gender}&name=${name}&telephone=${telephone}&size=${size}&offset=${offset}`)
             .success((data, res) => {
             console.log('成功了');
-            console.log(data, 'data33');
                 this.setState({
-                    dataSource: data.map((item) => item.member),
-                    searchSource: data,
+                    dataSource: data.map((item) => {item.member.role = `${item.role.role}(${item.role.position})`; return item.member;}),
+                    searchSource: data.map((item) => {item.member.role = `${item.role.role}(${item.role.position})`; return item.member;}),
                     totalCount: res.body.totalCount,
                 });
             })
