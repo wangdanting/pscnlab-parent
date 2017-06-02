@@ -14,6 +14,9 @@ public interface TableService extends BaseService {
                                                Integer offset,
                                                Integer size);
 
+    //查询单个桌位
+    Table findOneByTableId(Integer tableId);
+
     //新增桌位
     void addTable(Table table);
 

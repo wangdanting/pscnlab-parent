@@ -14,6 +14,9 @@ import java.util.List;
 public interface ProjectService extends BaseService{
     void projectAddMember(Integer uuidProject, Integer memberUUId);
 
+    //删除项目
+    void deleteProject(Integer projectId);
+
     void projectDeleteMember(Integer uuidProject, Integer memberUUId);
 
     List<ProjectProgressPeopleDTO> findProjectMemberList(Integer uuid);

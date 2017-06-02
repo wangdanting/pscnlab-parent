@@ -22,6 +22,7 @@ public class TableServiceImpl extends BaseServiceImpl implements TableService {
     @Inject
     private TableDao tableDao;
 
+    //按条件查询桌位
     @Override
     public ResultsTotalDTO<Table> findListByCondition(String tableNum,
                                                       String userName,
@@ -33,6 +34,13 @@ public class TableServiceImpl extends BaseServiceImpl implements TableService {
         return ResultsTotalDTO.build(tablePage.getResults(),tablePage.getTotalCount());
     }
 
+    //查询单个桌位
+    @Override
+    public Table findOneByTableId(Integer tableId){
+
+        Table table = tableDao.findOneByTableId(tableId);
+        return table;
+    }
 
     //新增桌位
     @Override
