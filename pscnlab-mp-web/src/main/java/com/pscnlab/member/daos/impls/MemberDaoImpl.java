@@ -74,4 +74,12 @@ public class MemberDaoImpl extends BaseDao<Integer,Member> implements MemberDao 
         filterMap.in("uuidMember",memberIdsSet);
         return super.list(filterMap);
     }
+
+    @Override
+    public Member findByUUId(Integer memberUUId){
+        FilterMap filterMap = new FilterMap();
+        filterMap.eq("uuidMember",memberUUId);
+        return super.findOne(filterMap);
+
+    }
 }

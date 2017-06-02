@@ -28,6 +28,8 @@ public interface MemberSevice extends BaseService<Integer,Member> {
     Long countMemberByUuidRole(Integer uuidRole);
     Member findOneByTelephone(String telephone);
 
+    void deleteByUUId(Integer memberUUId);
+
     //通过成员ID查询成员列表
     Map<Integer,MemberPageDTO> findMemberWithRoleByIds(Set<Integer> memberIdsSet);
 

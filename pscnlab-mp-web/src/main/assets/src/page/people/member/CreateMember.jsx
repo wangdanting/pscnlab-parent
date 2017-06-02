@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs, Table, Col, Button, Form, Input, Row, Select, Radio, InputNumber} from 'antd';
+import { Tabs, Table, Col, Button, Form, Input, Row, Select, Radio, InputNumber, message} from 'antd';
 import {Link} from 'react-router';
 import { Page } from 'framework';
 import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
@@ -15,23 +15,14 @@ class CreateMember extends BaseComponent {
         isIgnoreIntercept: false, // 跳转页面时，是否忽略拦截
         isSubmitting: false,
         loading: true,
-        gender: 'boy',
-        age: 18,
+        uuidRole: -1,
+        gender: '男',
+        age: 0,
+        manage: 1,
         isUpdateMember: false,  //是否是更新成员
 
-        roleList: [
-            {
-                value: '',
-                label: '全部',
-            }, {
-                value: 1,
-                label: '午餐(00:00:00 - 15:00:00)',
-            }, {
-                value: 2,
-                label: '晚餐(15:00:01 - 23:59:59)',
-            },
-        ],
-
+        roleList: [],
+        roleChooseNum: '', //角色选择
     };
 
     // 判断用户是否输入了值
@@ -62,6 +53,25 @@ class CreateMember extends BaseComponent {
             this.state.isUpdateMembe = true;
             this.getMemberInfo(memberId);
         }
+        //获取角色列表
+        this.request()
+            .noMchId()
+            .noStoreId()
+            .get('/role/lists.json')
+            .success((data, res) => {
+                this.setState({
+                    roleList: data.map((item, index) => {
+                        item.value = item.uuidRole;
+                        item.label = `${item.role}(${item.position})`;
+                        if(index == 0) {
+                            item.checked = true;
+                        }
+                        return item;
+                    })
+                });
+            })
+            .end();
+
 
         this.setState({
             loading: false
@@ -72,21 +82,25 @@ class CreateMember extends BaseComponent {
     getMemberInfo = (memberId) => {
         const that = this;
         this.request()
-            .get(`/member/${memberId}.json`)
+            .get(`/member/tel/${memberId}.json`)
             .success((response) => {
                 let results = response;
                 that.setState({
                     loading: false,
                 });
                 let formvalue = {
-                    uuidRole: results.uuidRole,
                     name: results.name,
-                    gender: results.gender,
-                    age: results.age,
                     gradeClass: results.gradeClass,
                     telephone: results.telephone,
                     hobby: results.hobby
                 };
+                this.setState({
+                    uuidRole: results.uuidRole,
+                    roleChooseNum: results.uuidRole,
+                    gender: results.gender,
+                    age: results.age,
+                    manage: results.manage,
+                });
 
                 that.props.form.setFieldsValue(formvalue);
             })
@@ -124,10 +138,7 @@ class CreateMember extends BaseComponent {
         const {getFieldValue} = this.props.form;
 
         let validateFields = [
-            'uuidRole',
             'name',
-            'gender',
-            'age',
             'gradeClass',
             'telephone',
             'hobby'
@@ -139,8 +150,14 @@ class CreateMember extends BaseComponent {
     // 构建需要提交的数据
     createSubmitObj = (values) => {
         let submitData = {};
-        submitData.role = values.role;
-        submitData.position = values.position;
+        submitData.uuidRole = this.state.uuidRole;
+        submitData.name = values.name;
+        submitData.gender = this.state.gender;
+        submitData.age = this.state.age;
+        submitData.gradeClass = values.gradeClass;
+        submitData.telephone  = values.telephone;
+        submitData.hobby = values.hobby;
+        submitData.manage = this.state.manage;
 
         // 给 userLimit, userPerDayLimit 赋值
         return submitData;
@@ -149,66 +166,55 @@ class CreateMember extends BaseComponent {
     // 发送数据，根据不同的类型
     handleSendData = (submitData) => {
         let sendUrl;
-        // if(adId) { //更新
-        //     sendUrl = `/advertisements/${adId}.json`;
-        //     this.request()
-        //         .put(sendUrl)
-        //         .params(submitData)
-        //         .success(() => {
-        //             message.success('更新成功', 1);
-        //             this.setState({
-        //                 isIgnoreIntercept: true,
-        //             });
-        //             setTimeout(this.handleGoBack(), 500);
-        //         })
-        //         .error((err, res) => {
-        //             message.error(res && res.body && res.body.message || '未知系统错误', 1);
-        //             this.setState({
-        //                 isSubmitting: false,
-        //             });
-        //         })
-        //         .end();
-        // } else {   //创建
-        //     sendUrl = '/advertisements.json';
-        //     this.request()
-        //         .post(sendUrl)
-        //         .params(submitData)
-        //         .success(() => {
-        //             message.success('操作成功', 1);
-        //             this.setState({
-        //                 isIgnoreIntercept: true,
-        //             });
-        //             setTimeout(this.handleGoBack(), 500);
-        //         })
-        //         .error((err, res) => {
-        //             message.error(res && res.body && res.body.message || '未知系统错误', 1);
-        //             this.setState({
-        //                 isSubmitting: false,
-        //             });
-        //         })
-        //         .end();
-        // }
+        let memberId = this.props.params.id;
+        if(memberId) { //更新
+            sendUrl = `/member/update.json`;
+            submitData.uuidMember = memberId;
+            this.request()
+                .put(sendUrl)
+                .params(submitData)
+                .success(() => {
+                    message.success('更新成功', 1);
+                    this.setState({
+                        isIgnoreIntercept: true,
+                    });
+                    setTimeout(this.handleGoBack(), 500);
+                })
+                .error((err, res) => {
+                    message.error(res && res.body && res.body.message || '未知系统错误', 1);
+                    this.setState({
+                        isSubmitting: false,
+                    });
+                })
+                .end();
+        } else {   //创建
+            sendUrl = '/member/new.json';
+            this.request()
+                .post(sendUrl)
+                .params(submitData)
+                .success(() => {
+                    message.success('操作成功', 1);
+                    this.setState({
+                        isIgnoreIntercept: true,
+                    });
+                    setTimeout(this.handleGoBack(), 500);
+                })
+                .error((err, res) => {
+                    message.error(res && res.body && res.body.message || '未知系统错误', 1);
+                    this.setState({
+                        isSubmitting: false,
+                    });
+                })
+                .end();
+        }
     };
 
     //选择角色
     handleRoleChange = (value) => {
-        switch (value) {
-            case '1':
-            case '2':
-                this.setState({
-                    // timesDisabled: false,
-                    // timesValue: 1,
-                });
-                break;
-            default :
-                this.setState({
-                    // timesDisabled: true,
-                    // timesValue: null,
-                });
-        }
-
+        console.log(value, '0009');
         this.setState({
-            // ruleValue: value,
+            uuidRole: value,
+            roleChooseNum: value,
         });
     };
 
@@ -226,6 +232,13 @@ class CreateMember extends BaseComponent {
         });
     };
 
+    //是否是管理员修改
+    manageChange = (e) => {
+        this.setState({
+            manage: e.target.value
+        });
+    };
+
     //渲染角色select option
     renderRoleSelectOption = () => {
         const {roleList} = this.state;
@@ -235,18 +248,13 @@ class CreateMember extends BaseComponent {
     // 返回
     handleGoBack = () => {
         const {history} = this.props;
-        history.push(`/role`);
+        history.push(`/member`);
     };
 
     render() {
         let commonTrigger = ['onBlur', 'onChange'];
 
         const { getFieldProps } = this.props.form;
-
-        //角色
-        const roleProps = getFieldProps('role', {
-
-        });
 
         // 成员名称
         const nameProps = getFieldProps('name', {
@@ -309,7 +317,7 @@ class CreateMember extends BaseComponent {
                                     <Col span="4" className="label ant-form-item-required">角色：</Col>
                                     <Col span="12">
                                         <FormItem>
-                                            <Select {...roleProps} style={{ width: 220, marginRight: 10 }} onChange={this.handleRoleChange}>
+                                            <Select value={this.state.roleChooseNum} placeholder="请选择角色" style={{ width: 220, marginRight: 10 }} onChange={this.handleRoleChange}>
                                                 {this.renderRoleSelectOption()}
                                             </Select>
                                         </FormItem>
@@ -327,12 +335,23 @@ class CreateMember extends BaseComponent {
                                     </Col>
                                 </Row>
                                 <Row type="flex" className="form-row">
+                                    <Col span="4" className="label ant-form-item-required">定位：</Col>
+                                    <Col span="11">
+                                        <FormItem>
+                                            <RadioGroup onChange={this.manageChange} value={this.state.manage}>
+                                                <Radio key={1} value={1} checked={true} defaultChecked={true}>非管理员</Radio>
+                                                <Radio key={0} value={0} defaultChecked={false}>管理员</Radio>
+                                            </RadioGroup>
+                                        </FormItem>
+                                    </Col>
+                                </Row>
+                                <Row type="flex" className="form-row">
                                     <Col span="4" className="label ant-form-item-required">性别：</Col>
                                     <Col span="11">
                                         <FormItem>
                                             <RadioGroup onChange={this.genderChange} value={this.state.gender}>
-                                                <Radio key="girl" value={ 'boy' } checked={true} defaultChecked={true}>男</Radio>
-                                                <Radio key="boy" value={'girl' } defaultChecked={false}>女</Radio>
+                                                <Radio key="男" value={ '男' } checked={true} defaultChecked={true}>男</Radio>
+                                                <Radio key="女" value={'女' } defaultChecked={false}>女</Radio>
                                             </RadioGroup>
                                         </FormItem>
                                     </Col>

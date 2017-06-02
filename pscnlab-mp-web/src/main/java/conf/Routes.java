@@ -51,9 +51,13 @@ public class Routes implements ApplicationRoutes {
 
         //成员
         router.GET().route("/member.json").with(MemberApiController.class,"findPage");
+        router.POST().route("/member/new.json").with(MemberApiController.class,"newMember");
+        router.GET().route("/member/tel/{memberId}.json").with(MemberApiController.class,"findOneMember");
+        router.PUT().route("/member/update.json").with(MemberApiController.class,"updateMember");
+        router.DELETE().route("/member/delete.json").with(MemberApiController.class,"deleteMember");
 
         //成员查询
-        router.GET().route("/memeber/lists.json").with(MemberApiController.class,"memberList");
+        router.GET().route("/member/lists.json").with(MemberApiController.class,"memberList");
 
         //项目管理
         router.GET().route("/project/lists.json").with(ProjectApiController.class,"projectList");

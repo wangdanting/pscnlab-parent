@@ -124,7 +124,8 @@ class Role extends BaseComponent {
             .get(`/role.json?size=${size}&offset=${offset}&role=${data.role}&position=${data.position}`)
             .success((data, res) => {
                 this.setState({
-                    dataSource: data
+                    dataSource: data,
+                    totalCount: res.body.totalCount,
                 });
             })
             .end();

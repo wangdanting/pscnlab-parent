@@ -64,7 +64,7 @@ class CreateRole extends BaseComponent {
     getRoleInfo = (roleId) => {
         const that = this;
         this.request()
-            .get(`/role/${roleId}.json`)
+            .get(`/role/id/${roleId}.json`)
             .success((response) => {
                 let results = response;
                 that.setState({
@@ -178,7 +178,7 @@ class CreateRole extends BaseComponent {
     // 返回
     handleGoBack = () => {
         const {history} = this.props;
-        history.push(`/${Common.getMerchant().uuidMember}/role`);
+        history.push(`/role`);
     };
 
     render() {
