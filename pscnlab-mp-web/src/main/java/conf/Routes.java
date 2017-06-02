@@ -92,7 +92,7 @@ public class Routes implements ApplicationRoutes {
         //修改桌位
         router.POST().route("/desk/update_desks.json").with(DeskApiController.class,"updateDesk");
         //删除桌位
-        router.POST().route("/desk/id/{deskId}/delete_desks.json").with(DeskApiController.class,"deleteDesk");
+        router.POST().route("/desk/id/{deskId}/deletes.json").with(DeskApiController.class,"deleteDesk");
 
 
         //经费
