@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs, Table, Col, Button, Modal } from 'antd';
+import { Tabs, Table, Col, Button, Modal, message } from 'antd';
 import {Link} from 'react-router';
 import { Page } from 'framework';
 import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
@@ -8,21 +8,12 @@ const confirm = Modal.confirm;
 
 class Fund extends BaseComponent {
     state = {
-        dataSource: [{
-            event: '聚餐',
-            time: '2015-03-03',
-            money: {
-                income: 200,
-                spend: 0
-            }
-        }, {
-            event: '获奖',
-            time: '2015-03-03',
-            money: {
-                income: 0,
-                spend: 200
-            }
-        }],
+        dataSource: [],
+
+        //分页
+        currentPage: 1,
+        pageSize: 10,
+        totalCount: 0,
     };
 
     columns = [
@@ -32,27 +23,19 @@ class Fund extends BaseComponent {
             key: 'event',
         },
         {
-            title: '事件',
+            title: '时间',
             dataIndex: 'time',
             key: 'time',
         }, {
             title: '金额',
             dataIndex: 'money',
             key: 'money',
-            render(text) {
-                console.log(text, 'text');
-                if (text.income) {
-                    return <span>+ ¥ {text.income}</span>;
-                }
-                return <span>- ¥ {text.spend}</span>;
-            }
-
         },
         {
             title: '操作',
             dataIndex: 'uuidFund',
             key: 'uuidFund',
-            render(text) {
+            render:(text) => {
                 return (
                     <span>
                             <Link
@@ -61,59 +44,93 @@ class Fund extends BaseComponent {
                                 to={`fund/modify-fund/${text}`}>
                                 编辑
                             </Link>｜
-                            <Button onClick={() => {
-                                console.log(this, 'this');
-                                {/*this.showDeleteConfirm(text)*/}
-                            }}>删除</Button>
+                            <a>
+                                <span onClick={()=>this.showDeleteConfirm(text)}>删除</span>
+                            </a>
                     </span>
                 );
             },
         },
     ];
 
-    // //确认删除角色对话框
-    // showDeleteConfirm(id) {
-    //     confirm({
-    //         title: '你确定要删除该角色信息？',
-    //         content: '注意：如果有成员绑定改角色，该角色将删除失败！',
-    //         onOk() {
-    //             console.log('444');
-    //             this.request()
-    //                 .noStoreId()
-    //                 .get('/role/delete.json')
-    //                 .params({id: id})
-    //                 .success((data, res) => {
-    //                     console.log('dddd44');
-    //                 })
-    //                 .end();
-    //         },
-    //         onCancel() {},
-    //     })
-    // };
+    //确认删除角色对话框
+    showDeleteConfirm(id) {
+        confirm({
+            title: '你确定要删除该角色信息？',
+            content: '注意：如果有成员绑定改角色，该角色将删除失败！',
+            onOk:() => {
+                const {pageSize, currentPage} = this.state;
+                const params = {
+                    pageSize,
+                    currentPage,
+                };
+
+                console.log('444');
+                this.request()
+                    .noStoreId()
+                    .post(`fund/id/${id}/deletes.json`)
+                    .success((data, res) => {
+                        message.success('删除成功', 1);
+                        this.initTableData(params);
+                    })
+                    .end();
+            },
+            onCancel() {},
+        })
+    };
 
 
     componentDidMount() {
-        this.initTableData();
+        const {pageSize, currentPage} = this.state;
+        const params = {
+            pageSize,
+            currentPage,
+        };
+
+        this.initTableData(params);
     }
 
-    initTableData = () => {
-        this.setState({
-        });
+    initTableData = (params) => {
+        const size = params.pageSize;
+        const offset = (params.currentPage - 1) * size;
         this.request()
             .noMchId()
             .noStoreId()
-            .get(`/role.json`)
+            .get(`/fund/lists.json?size=${size}&offset=${offset}`)
             .success((data, res) => {
                 console.log(data, 'data');
                 this.setState({
                     dataSource: data,
+                    totalCount: res.body.totalCount,
                 });
             })
             .end();
     };
 
     render() {
-        let {dataSource} = this.state;
+        let {
+            pageSize,
+            currentPage,
+            totalCount,
+            dataSource} = this.state;
+
+        const paginationOptions = {
+            showQuickJumper: false, // 默认true
+            pageSize,
+            currentPage,
+            totalCount,
+            onChange: (current, size) => {
+                const params = {
+                    pageSize: size,
+                    currentPage: current,
+                };
+                this.initTableData(params);
+                this.setState({
+                    currentPage: current,
+                    pageSize: size,
+                });
+            },
+        };
 
         return (
             <Page header="auto" loading={this.state.loading}>
@@ -124,6 +141,7 @@ class Fund extends BaseComponent {
                     <Button type="primary" size="large" style={{marginBottom: 16}}>新增经费情况</Button>
                 </Link>
                 <Table columns={this.columns} rowKey={(record, index) => index} dataSource={dataSource} pagination={false}/>
+                <PaginationComponent options={paginationOptions}/>
             </Page>
         );
     }

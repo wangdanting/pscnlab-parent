@@ -62,7 +62,7 @@ class EditFund extends BaseComponent {
     getRoleInfo = (fundId) => {
         const that = this;
         this.request()
-            .get(`/role/${fundId}.json`)
+            .get(`/fund/id/${fundId}/infos.json`)
             .success((response) => {
                 let results = response;
                 that.setState({
@@ -71,8 +71,7 @@ class EditFund extends BaseComponent {
                 let formvalue = {
                     event: results.event,
                     time: results.time,
-                    income: results.income,
-                    spend: results.spend
+                    money: results.money,
                 };
 
                 that.props.form.setFieldsValue(formvalue);
@@ -113,8 +112,7 @@ class EditFund extends BaseComponent {
         let validateFields = [
             'event',
             'time',
-            'income',
-            'spend'
+            'money',
         ];
 
         return validateFields;
@@ -123,11 +121,10 @@ class EditFund extends BaseComponent {
     // 构建需要提交的数据
     createSubmitObj = (values) => {
         let submitData = {};
-        submitData.uuidRole = null;
+        submitData.uuidFund = null;
         submitData.event = values.event;
         submitData.time = values.time;
-        submitData.income = values.income;
-        submitData.spend = values.spend;
+        submitData.money = values.money;
 
         // 给 userLimit, userPerDayLimit 赋值
         return submitData;
@@ -136,12 +133,12 @@ class EditFund extends BaseComponent {
     // 发送数据，根据不同的类型
     handleSendData = (submitData) => {
         let sendUrl;
-        let roleId = this.props.params.id;
-        if(roleId) { //更新
-            sendUrl = `/role/update.json`;
-            submitData.uuidRole = roleId;
+        let fundId = this.props.params.id;
+        if(fundId) { //更新
+            sendUrl = `/fund/updates.json`;
+            submitData.uuidfund = fundId;
             this.request()
-                .put(sendUrl)
+                .post(sendUrl)
                 .params(submitData)
                 .success(() => {
                     message.success('更新成功', 1);
@@ -158,7 +155,7 @@ class EditFund extends BaseComponent {
                 })
                 .end();
         } else {   //创建
-            sendUrl = '/role/new.json';
+            sendUrl = '/fund/news.json';
             this.request()
                 .post(sendUrl)
                 .params(submitData)
@@ -205,16 +202,9 @@ class EditFund extends BaseComponent {
             ],
         });
         // 收入
-        const incomeProps = getFieldProps('income', {
+        const moneyProps = getFieldProps('money', {
             rules: [
                 {required: true, message: '请输入收入'},
-            ],
-            trigger: commonTrigger,
-        });
-        // 支出
-        const spendProps = getFieldProps('spend', {
-            rules: [
-                {required: true, message: '请输入支持'},
             ],
             trigger: commonTrigger,
         });
@@ -258,32 +248,21 @@ class EditFund extends BaseComponent {
                                     <Col span="4" className="label ant-form-item-required">时间：</Col>
                                     <Col span="11">
                                         <FormItem>
-                                            <DatePicker showTime format="yyyy-MM-dd HH:mm:ss"
+                                            <DatePicker showTime format="yyyy-MM-dd"
                                                         {...timeProps}
                                             />
                                         </FormItem>
                                     </Col>
                                 </Row>
                                 <Row type="flex" className="form-row">
-                                    <Col span="4" className="label ant-form-item-required">收入：</Col>
+                                    <Col span="4" className="label ant-form-item-required">金额：</Col>
                                     <Col span="11">
                                         <FormItem>
-                                            <Input type="number" {...incomeProps} placeholder="请输入收入金额"/>
+                                            <Input type="money" {...moneyProps} placeholder="请输入收入金额"/>
                                         </FormItem>
                                     </Col>
                                     <Col span="8" className="help-label">
-                                        收入与花销只能填一个，默认金额为0
-                                    </Col>
-                                </Row>
-                                <Row type="flex" className="form-row">
-                                    <Col span="4" className="label ant-form-item-required">花销：</Col>
-                                    <Col span="11">
-                                        <FormItem>
-                                            <Input type="number" {...spendProps} placeholder="请输入花销金额"/>
-                                        </FormItem>
-                                    </Col>
-                                    <Col span="8" className="help-label">
-                                        收入与花销只能填一个，默认金额为0
+
                                     </Col>
                                 </Row>
                             </div>
