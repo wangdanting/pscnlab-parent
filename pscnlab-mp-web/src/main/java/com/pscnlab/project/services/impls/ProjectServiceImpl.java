@@ -60,13 +60,15 @@ public class ProjectServiceImpl implements ProjectService{
         Map<Integer,MemberPageDTO> memberMap = memberSevice.findMemberWithRoleByIds(memberIdsSet);
 
 
+        Map<Integer,List<ProjectProgressPeople>> projectProgressPeopleListMap = projectProgressPeoples.stream().collect(Collectors.groupingBy(ProjectProgressPeople::getUuidProject));
         Map<Integer,Project> projectMap = Maps.newHashMap();
         List<ProjectQueryPageDTO> resultList = Lists.newArrayList();
         for(Project project :projectPage.getResults()){
             ProjectQueryPageDTO projectQueryPageDTO = ConvertUtils.convert(project,ProjectQueryPageDTO.class);
             //项目信息拼装项目成员
+            List<ProjectProgressPeople> peoples = projectProgressPeopleListMap.get(project.getUuid());
             List<ProjectProgressPeopleDTO> projectPepoles = Lists.newArrayList();
-            projectProgressPeoples.stream().forEach(p -> {
+            peoples.stream().forEach(p -> {
 
                 ProjectProgressPeopleDTO dto = new ProjectProgressPeopleDTO();
                 dto.setProgress(p.getProgress());
