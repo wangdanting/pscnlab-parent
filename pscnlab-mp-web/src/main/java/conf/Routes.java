@@ -48,13 +48,21 @@ public class Routes implements ApplicationRoutes {
         router.DELETE().route("/role/delete.json").with(RoleApiController.class,"deleteRole");
         router.GET().route("/role.json").with(RoleApiController.class,"researchRole");
 
+<<<<<<< Updated upstream
+=======
+        //成员
+        router.GET().route("/member.json").with(MemberApiController.class,"findPage");
+>>>>>>> Stashed changes
 
         //成员查询
         router.GET().route("/memeber/lists.json").with(MemberApiController.class,"memberList");
 
         //项目管理
         router.GET().route("/role/projects.json").with(ProjectApiController.class,"projectList");
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 
         //主页 就是角色管理
         router.GET().route("/.*").with(IndexController.class, "index"); //登录后并且选择商户

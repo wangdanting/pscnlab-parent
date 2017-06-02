@@ -16,7 +16,22 @@ class CreateMember extends BaseComponent {
         isSubmitting: false,
         loading: true,
         gender: 'boy',
-        age: 18
+        age: 18,
+        isUpdateMember: false,  //是否是更新成员
+
+        roleList: [
+            {
+                value: '',
+                label: '全部',
+            }, {
+                value: 1,
+                label: '午餐(00:00:00 - 15:00:00)',
+            }, {
+                value: 2,
+                label: '晚餐(15:00:01 - 23:59:59)',
+            },
+        ],
+
     };
 
     // 判断用户是否输入了值
@@ -42,45 +57,41 @@ class CreateMember extends BaseComponent {
 
     componentWillMount() {
         //判断是否是修改广告
-        // let adId = this.props.params.id;
-        // if(adId) {
-        //     this.state.isUpdateAd = true;
-        //     this.getAdInfo(adId);
-        // }
-        // this.request()
-        //     .noMchId()
-        //     .noStoreId()
-        //     .get(`/api/advertisements/scopes.json`)
-        //     .success((data) => {
-        //         this.setState({
-        //             scopes: data
-        //         });
-        //         if(!this.state.isUpdateAd) {
-        //             this.setState({
-        //                 loading: false
-        //             });
-        //         }
-        //     })
-        //     .end();
-
-        // const {route} = this.props;
-        // const {router} = this.context; // If contextTypes is not defined, then context will be an empty object.
-        // router.setRouteLeaveHook(route, (/* nextLocation */) => {
-        //     // 返回 false 会继续停留当前页面，
-        //     // 否则，返回一个字符串，会显示给用户，让其自己决定
-        //     if (this.isEnterSomeValue()) {
-        //         return '您有未保存的内容，确认要离开？';
-        //     }
-        //     return true;
-        // });
-        // this.setState({
-        //     activityType: this.props.activityType,
-        // });
+        let memberId = this.props.params.id;
+        if(memberId) {
+            this.state.isUpdateMembe = true;
+            this.getMemberInfo(memberId);
+        }
 
         this.setState({
             loading: false
         });
     }
+
+    //获取该成员信息 更新
+    getMemberInfo = (memberId) => {
+        const that = this;
+        this.request()
+            .get(`/member/${memberId}.json`)
+            .success((response) => {
+                let results = response;
+                that.setState({
+                    loading: false,
+                });
+                let formvalue = {
+                    uuidRole: results.uuidRole,
+                    name: results.name,
+                    gender: results.gender,
+                    age: results.age,
+                    gradeClass: results.gradeClass,
+                    telephone: results.telephone,
+                    hobby: results.hobby
+                };
+
+                that.props.form.setFieldsValue(formvalue);
+            })
+            .end();
+    };
 
     // 提交
     handleSubmit = (e) => {
@@ -113,8 +124,13 @@ class CreateMember extends BaseComponent {
         const {getFieldValue} = this.props.form;
 
         let validateFields = [
-            'role',
-            'position',
+            'uuidRole',
+            'name',
+            'gender',
+            'age',
+            'gradeClass',
+            'telephone',
+            'hobby'
         ];
 
         return validateFields;
@@ -210,6 +226,12 @@ class CreateMember extends BaseComponent {
         });
     };
 
+    //渲染角色select option
+    renderRoleSelectOption = () => {
+        const {roleList} = this.state;
+        return roleList.map(role => <Option value={role.value} key={role.value || 'all'}>{role.label}</Option>)
+    };
+
     // 返回
     handleGoBack = () => {
         const {history} = this.props;
@@ -220,6 +242,11 @@ class CreateMember extends BaseComponent {
         let commonTrigger = ['onBlur', 'onChange'];
 
         const { getFieldProps } = this.props.form;
+
+        //角色
+        const roleProps = getFieldProps('role', {
+
+        });
 
         // 成员名称
         const nameProps = getFieldProps('name', {
@@ -282,10 +309,8 @@ class CreateMember extends BaseComponent {
                                     <Col span="4" className="label ant-form-item-required">角色：</Col>
                                     <Col span="12">
                                         <FormItem>
-                                            <Select defaultValue={'1'} style={{ width: 220, marginRight: 10 }} onChange={this.handleRoleChange}>
-                                                <Option key={1}>老师(java开发)</Option>
-                                                <Option key={2}>老师(前端开发)</Option>
-                                                <Option key={3}>学生(前端开发)</Option>
+                                            <Select {...roleProps} style={{ width: 220, marginRight: 10 }} onChange={this.handleRoleChange}>
+                                                {this.renderRoleSelectOption()}
                                             </Select>
                                         </FormItem>
                                     </Col>

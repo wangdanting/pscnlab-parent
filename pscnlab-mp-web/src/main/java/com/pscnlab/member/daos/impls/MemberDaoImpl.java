@@ -36,8 +36,12 @@ public class MemberDaoImpl extends BaseDao<Integer,Member> implements MemberDao 
     public Page<Member> findPage(MemberPageQueryDTO query, Integer offset, Integer size) {
         FilterMap filterMap=new FilterMap();
         if(query!=null) {
-            filterMap.eq("uuidRole", query.getUuidRole());
-            filterMap.eq("gender", query.getGender());
+            if(query.getUuidRole()!=null){
+                filterMap.eq("uuidRole", query.getUuidRole());
+            }
+            if(StringUtils.isNotBlank(query.getGender())) {
+                filterMap.eq("gender", query.getGender());
+            }
             if(StringUtils.isNotEmpty(query.getName())) {
                 filterMap.like("name", "%"+query.getName()+"%");
             }

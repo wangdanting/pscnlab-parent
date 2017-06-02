@@ -95,8 +95,6 @@ class Role extends BaseComponent {
         const offset = (params.currentPage - 1) * size;
         const role = '';
         const position = '';
-        this.setState({
-        });
         this.request()
             .noMchId()
             .noStoreId()
@@ -113,10 +111,6 @@ class Role extends BaseComponent {
 
     // 查询数据
     handleSearch(data, currentPage) {
-        this.setState({
-            refundDataList: [],
-            refundDataTotal: 0,
-        });
 
         let currentPagee = currentPage.currentPage;
         let pageSizee = this.state.pageSize;
