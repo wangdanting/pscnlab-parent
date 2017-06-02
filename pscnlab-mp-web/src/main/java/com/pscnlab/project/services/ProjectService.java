@@ -22,5 +22,8 @@ public interface ProjectService extends BaseService{
 
     void saveProject(Project project);
 
+    //查询单个项目信息
+    ProjectQueryPageDTO findOneProjectInfo(Integer projectId, Integer memberUUId);
+
     ResultsTotalDTO<ProjectQueryPageDTO> findPageProject(String state, Integer offset, Integer size, Integer memberUUId);
 }

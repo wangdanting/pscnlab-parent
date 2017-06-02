@@ -26,6 +26,13 @@ public class ProjectApiController {
     @Inject
     private ProjectService projectService;
 
+    public Result projectInfo(@PathParam("projectId") Integer projectId,
+                              @Param("memberUUId") Integer memberUUId){
+
+        ProjectQueryPageDTO dto = projectService.findOneProjectInfo(projectId,memberUUId);
+        return Results.ok().render(dto);
+    }
+
     /**
      * 查询项目列表
      * @param state    状态：未开始 进行中 已完成

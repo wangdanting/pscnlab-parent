@@ -64,6 +64,8 @@ public class Routes implements ApplicationRoutes {
         //项目管理
         //项目查询
         router.GET().route("/project/lists.json").with(ProjectApiController.class,"projectList");
+        //查询某一个项目
+        router.GET().route("/project/id/{projectId}/infos.json").with(ProjectApiController.class,"projectInfo");
         //新增项目
         router.POST().route("/project/news.json").with(ProjectApiController.class,"projectNew");
         //编辑项目

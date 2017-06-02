@@ -2,6 +2,7 @@ package com.pscnlab.project.services.impls;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.jiabangou.core.beans.ConvertUtils;
 import com.jiabangou.core.dtos.ResultsTotalDTO;
@@ -116,6 +117,27 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
         projectDao.save(project);
     }
 
+    //查询单个项目信息
+    @Override
+    public ProjectQueryPageDTO findOneProjectInfo(Integer projectId, Integer memberUUId){
+
+        //查询项目列表
+        Project project = projectDao.findOneByUUId(projectId);
+        if(project==null){
+            return new ProjectQueryPageDTO();
+        }
+
+        //查询项目成员
+        List<ProjectProgressPeople> projectProgressPeoples = projectProgessPeopleDao.findListByProjectIdsSet(Sets.newHashSet(projectId));
+        if(CollectionUtils.isEmpty(projectProgressPeoples)){
+            ProjectQueryPageDTO projectQueryPageDTO = ConvertUtils.convert(project,ProjectQueryPageDTO.class);
+            return projectQueryPageDTO;
+        }
+
+        ProjectQueryPageDTO projectQueryPageDTO = this.assembleProjectPeople(project,projectProgressPeoples,memberUUId);
+
+        return projectQueryPageDTO;
+    }
 
     //查询项目
     @Override
@@ -132,6 +154,7 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
         List<ProjectProgressPeople> projectProgressPeoples = projectProgessPeopleDao.findListByProjectIdsSet(projectIdsSet);
         if(CollectionUtils.isEmpty(projectProgressPeoples)){
             List<ProjectQueryPageDTO> projectQueryPageDTOList = ConvertUtils.converts(projectPage.getResults(),ProjectQueryPageDTO.class);
+            projectQueryPageDTOList.stream().forEach(o->{o.setIsInProject(Boolean.FALSE);});
             return ResultsTotalDTO.build(projectQueryPageDTOList,projectPage.getTotalCount());
         }
 
@@ -171,8 +194,9 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
                 dto.setProgressInfo(people.getProgressInfo());
                 MemberPageDTO memberPageDTO = memberMap.get(people.getUuidMember());
                 dto.setMemberName(memberPageDTO.getMember().getName());
-                dto.setPosition(memberPageDTO.getRole().getPosition());
                 dto.setRoleName(memberPageDTO.getRole().getRole());
+                dto.setPosition(memberPageDTO.getRole().getPosition());
+                dto.setUuidMember(memberPageDTO.getMember().getUuidMember());
                 projectPepoles.add(dto);
 
                 if(memberPageDTO.getMember().getUuidMember().equals(memberUUId)){
@@ -187,6 +211,49 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
 
         return resultList;
     }
+
+    //拼装项目成员
+    public ProjectQueryPageDTO assembleProjectPeople(Project project,List<ProjectProgressPeople> projectProgressPeoples,Integer memberUUId){
+
+        //查询成员信息
+        Set<Integer> memberIdsSet = projectProgressPeoples.stream().map(p->p.getUuidMember()).collect(Collectors.toSet());
+        Map<Integer,MemberPageDTO> memberMap = memberSevice.findMemberWithRoleByIds(memberIdsSet);
+
+        //成员分组
+
+        ProjectQueryPageDTO projectQueryPageDTO = ConvertUtils.convert(project,ProjectQueryPageDTO.class);
+        //项目信息拼装项目成员
+        List<ProjectProgressPeopleDTO> projectPepoles = Lists.newArrayList();
+
+        //项目没有成员
+        if(CollectionUtils.isEmpty(projectProgressPeoples)){
+            projectQueryPageDTO.setProjectPepoles(projectPepoles);
+            return projectQueryPageDTO;
+        }
+        Boolean isInProject = Boolean.FALSE;
+        //项目有成员
+        for(ProjectProgressPeople people:projectProgressPeoples){
+            ProjectProgressPeopleDTO dto = new ProjectProgressPeopleDTO();
+            dto.setProgress(people.getProgress());
+            dto.setProgressInfo(people.getProgressInfo());
+            MemberPageDTO memberPageDTO = memberMap.get(people.getUuidMember());
+            dto.setUuidMember(memberPageDTO.getMember().getUuidMember());
+            dto.setMemberName(memberPageDTO.getMember().getName());
+            dto.setPosition(memberPageDTO.getRole().getPosition());
+            dto.setRoleName(memberPageDTO.getRole().getRole());
+            projectPepoles.add(dto);
+
+            if(memberPageDTO.getMember().getUuidMember().equals(memberUUId)){
+                isInProject = Boolean.TRUE;
+            }
+        }
+
+        projectQueryPageDTO.setIsInProject(isInProject);
+        projectQueryPageDTO.setProjectPepoles(projectPepoles);
+
+        return projectQueryPageDTO;
+    }
+
 
     @Override
     protected IBaseDao getBaseDao() {
