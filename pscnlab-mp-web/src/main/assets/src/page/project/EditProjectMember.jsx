@@ -149,8 +149,24 @@ class EditProjectMember extends BaseComponent {
             wrapperCol: {span: '14'},
         };
 
+        const header = {
+            back: { // 头部得返回按钮
+                title: '返回列表页',
+                // onClick: this.handleGoBack,
+            },
+            title: [
+                {
+                    text: '项目信息',
+                    path: `/project`,
+                }, {
+                    text: '添加项目成员',
+                },
+            ],
+            breadcrumbItems: 'auto',
+        };
+
         return (
-            <Page header="auto" loading={this.state.loading}>
+            <Page header={header} loading={this.state.loading}>
                 <Form horizontal form={this.props.form}>
                     <Panel
                         header="邀请成员加入项目"

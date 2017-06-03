@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs, Table, Col, Button, Form, Input, Row, messag, DatePicker, Select, InputNumber} from 'antd';
+import { Tabs, Table, Col, Button, Form, Input, Row, message, DatePicker, Select, InputNumber} from 'antd';
 import {Link} from 'react-router';
 import { Page } from 'framework';
 import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
@@ -14,8 +14,11 @@ class CreateRecruit extends BaseComponent {
         isSubmitting: false,
         loading: true,
         isUpdateRole: false,  //是否是更新角色
-        post: '', //招聘岗位
-        number: -1, //招聘人数
+        position: '', //招聘岗位
+        number: 0, //招聘人数
+        roleChooseNum: '', //角色选择
+        roleList: [],
+
     };
 
     // 判断用户是否输入了值
@@ -42,19 +45,27 @@ class CreateRecruit extends BaseComponent {
         // 判断是否是修改
         let recruitId = this.props.params.id;
         if(recruitId) {
-            this.state.isUpdateRole = true;
             this.getRoleInfo(recruitId);
         }
-        // const {route} = this.props;
-        // const {router} = this.context; // If contextTypes is not defined, then context will be an empty object.
-        // router.setRouteLeaveHook(route, (/* nextLocation */) => {
-        //     // 返回 false 会继续停留当前页面，
-        //     // 否则，返回一个字符串，会显示给用户，让其自己决定
-        //     if (this.isEnterSomeValue()) {
-        //         return '您有未保存的内容，确认要离开？';
-        //     }
-        //     return true;
-        // });
+
+        //获取角色列表
+        this.request()
+            .noMchId()
+            .noStoreId()
+            .get('/role/lists.json')
+            .success((data, res) => {
+                this.setState({
+                    roleList: data.map((item, index) => {
+                        item.value = item.uuidRole;
+                        item.label = `${item.role}(${item.position})`;
+                        if(index == 0) {
+                            item.checked = true;
+                        }
+                        return item;
+                    })
+                });
+            })
+            .end();
 
         this.setState({
             loading: false
@@ -65,19 +76,23 @@ class CreateRecruit extends BaseComponent {
     getRoleInfo = (recruitId) => {
         const that = this;
         this.request()
-            .get(`/train/${recruitId}.json`)
+            .get(`/recruit/id/${recruitId}/infos.json`)
             .success((response) => {
                 let results = response;
+
+                let formvalue = {
+                    uuid: results.uuid,
+                    condition: results.condition,
+                    responsePerson: results.responsePerson,
+                    telephone: results.telephone,
+                };
+
                 that.setState({
+                    position: results.position,
+                    number: results.number,
+                    roleChooseNum: results.position,
                     loading: false,
                 });
-                let formvalue = {
-                    post: results.title,
-                    number: results.speaker,
-                    condition: results.speakerTelphone,
-                    responseName: results.time,
-                    telephone: results.place,
-                };
 
                 that.props.form.setFieldsValue(formvalue);
             })
@@ -116,7 +131,7 @@ class CreateRecruit extends BaseComponent {
 
         let validateFields = [
             'condition',
-            'responseName',
+            'responsePerson',
             'telephone',
         ];
 
@@ -126,11 +141,11 @@ class CreateRecruit extends BaseComponent {
     // 构建需要提交的数据
     createSubmitObj = (values) => {
         let submitData = {};
-        submitData.uuidTrain = null;
-        submitData.post= this.state.post;
+        submitData.uuid = null;
+        submitData.position= this.state.position;
         submitData.number = this.state.number;
         submitData.condition = values.condition;
-        submitData.responseName = values.responseName;
+        submitData.responsePerson = values.responsePerson;
         submitData.telephone = values.telephone;
 
         // 给 userLimit, userPerDayLimit 赋值
@@ -142,10 +157,10 @@ class CreateRecruit extends BaseComponent {
         let sendUrl;
         let roleId = this.props.params.id;
         if(roleId) { //更新
-            sendUrl = `/role/update.json`;
-            submitData.uuidRole = roleId;
+            sendUrl = `/recruit/updates.json`;
+            submitData.uuid = parseInt(roleId);
             this.request()
-                .put(sendUrl)
+                .post(sendUrl)
                 .params(submitData)
                 .success(() => {
                     message.success('更新成功', 1);
@@ -162,7 +177,7 @@ class CreateRecruit extends BaseComponent {
                 })
                 .end();
         } else {   //创建
-            sendUrl = '/role/new.json';
+            sendUrl = '/recruit/news.json';
             this.request()
                 .post(sendUrl)
                 .params(submitData)
@@ -183,13 +198,27 @@ class CreateRecruit extends BaseComponent {
         }
     };
 
-    //修改岗位
-    postChange = (value) => {
-
-    };
     //修改招聘人数
     numberChange = (value) => {
+        console.log(value);
+        this.setState({
+            number: value
+        });
+    };
 
+    //选择角色
+    handleRoleChange = (value) => {
+        console.log(value, '0009');
+        this.setState({
+            position: value,
+            roleChooseNum: value
+        });
+    };
+
+    //渲染角色select option
+    renderRoleSelectOption = () => {
+        const {roleList} = this.state;
+        return roleList.map(role => <Option value={role.label} key={role.label || 'all'}>{role.label}</Option>)
     };
 
     // 返回
@@ -212,7 +241,7 @@ class CreateRecruit extends BaseComponent {
             trigger: commonTrigger,
         });
         // 负责人
-        const responseNameProps = getFieldProps('responseName', {
+        const responsePersonProps = getFieldProps('responsePerson', {
             rules: [
                 {required: true, message: '请输入负责人'},
                 {max: 13, message: '最多13个汉字'},
@@ -255,10 +284,8 @@ class CreateRecruit extends BaseComponent {
                                     <Col span="4" className="label ant-form-item-required">招聘岗位：</Col>
                                     <Col span="11">
                                         <FormItem>
-                                            <Select defaultValue={'1'} style={{ width: 220, marginRight: 10 }} onChange={this.postChange}>
-                                                <Option key={1}>每个用户最多可以参加次数</Option>
-                                                <Option key={2}>每个用户每天最多可以参加次数</Option>
-                                                <Option key={3}>不限制</Option>
+                                            <Select value={this.state.roleChooseNum} placeholder="请选择角色" style={{ width: 220, marginRight: 10 }} onChange={this.handleRoleChange}>
+                                                {this.renderRoleSelectOption()}
                                             </Select>
                                         </FormItem>
                                     </Col>
@@ -278,7 +305,7 @@ class CreateRecruit extends BaseComponent {
                                     <Col span="4" className="label ant-form-item-required">招聘条件：</Col>
                                     <Col span="11">
                                         <FormItem>
-                                            <Input type="textarea" row="5" {...conditionProps} placeholder="请输入主讲人联系电话"/>
+                                            <Input type="textarea" rows="5" {...conditionProps} placeholder="请输入主讲人联系电话"/>
                                         </FormItem>
                                     </Col>
                                 </Row>
@@ -286,7 +313,7 @@ class CreateRecruit extends BaseComponent {
                                     <Col span="4" className="label ant-form-item-required">负责人：</Col>
                                     <Col span="11">
                                         <FormItem>
-                                            <Input {...responseNameProps} placeholder="请输入负责人"/>
+                                            <Input {...responsePersonProps} placeholder="请输入负责人"/>
                                         </FormItem>
                                     </Col>
                                 </Row>

@@ -1,38 +1,25 @@
 import React, { Component } from 'react';
-import { Tabs, Table, Col, Button, DatePicker, TimePicker, } from 'antd';
+import { Tabs, Table, Col, Button, DatePicker, TimePicker, Modal, message} from 'antd';
 import {Link} from 'react-router';
 import { Page } from 'framework';
 import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
+
+const confirm = Modal.confirm;
 
 class Recruit extends BaseComponent {
     state = {
         currentPage: 1,
         pageSize: 10,
         totalCount: 0,
-        recruitData: [
-            {
-                uuidTrain: 1,
-                post: '学生(前端开发)',
-                number: 1,
-                condition: '1.长的好看；2.长的好看；2.长的好看；2.长的好看；2.长的好看；2.长的好看；2.长的好看；',
-                responseName: '王丹婷',
-                telephone: '18875082742',
-            }, {
-                uuidTrain: 2,
-                post: '学生(java开发)',
-                number: 1,
-                condition: '1.长的好看；2.长的好看；2.长的好看；2.长的好看；2.长的好看；2.长的好看；2.长的好看；',
-                responseName: '王丹婷',
-                telephone: '18875082742',
-            },
-        ],
+        recruitData: [],
+        roleList:[],
     };
 
     columns = [
         {
             title: '招聘岗位',
-            dataIndex: 'post',
-            key: 'post',
+            dataIndex: 'position',
+            key: 'position',
             width: 150,
         }, {
             title: '招聘人数',
@@ -46,8 +33,8 @@ class Recruit extends BaseComponent {
             width: 500,
         }, {
             title: '负责人',
-            dataIndex: 'responseName',
-            key: 'responseName',
+            dataIndex: 'responsePerson',
+            key: 'responsePerson',
             width: 100,
         }, {
             title: '联系电话',
@@ -56,10 +43,10 @@ class Recruit extends BaseComponent {
             width: 150,
         }, {
             title: '操作',
-            dataIndex: 'uuidTrain',
-            key: 'uuidTrain',
+            dataIndex: 'uuid',
+            key: 'uuid',
             width: 200,
-            render(text) {
+            render:(text) => {
                 return (
                     <span>
                         <Link
@@ -68,42 +55,102 @@ class Recruit extends BaseComponent {
                             to={`recruit/modify-recruit/${text}`}>
                             编辑
                         </Link>｜
-                        <Button>删除</Button>
+                        <a>
+                            <span onClick={()=>this.showDeleteConfirm(text)}>删除角色</span>
+                        </a>
                     </span>
                 );
             },
         }];
 
+    //确认删除角色对话框
+    showDeleteConfirm(id) {
+        confirm({
+            title: '你确定要删除该招聘信息？',
+            content: '注意！注意！',
+            onOk:() => {
+                const {pageSize, currentPage} = this.state;
+                const params = {
+                    pageSize,
+                    currentPage,
+                };
+
+                this.request()
+                    .noStoreId()
+                    .post(`/recruit/id/${id}/deletes.json`)
+                    .success((data, res) => {
+                        message.success('删除成功', 1);
+                        this.initTableData(params);
+                    })
+                    .end();
+            },
+            onCancel() {},
+        })
+    };
+
     // 查询数据
-    handleSearch(queryData = this.state.queryData) {
-        this.setState({
-            refundDataList: [],
-            refundDataTotal: 0,
-        });
+    handleSearch(data, currentPage)  {
+        console.log(data, 'data');
 
-        const currentPage = queryData.currentPage;
-        const pageSize = queryData.pageSize;
+        let currentPagee = currentPage.currentPage;
+        let pageSizee = this.state.pageSize;
 
-        const sendData = {
-
-            // auditStatus: queryData.status,
-            // offset: (currentPage - 1) * (pageSize),
-            // size: pageSize,
-            // mchOrStore: this.handleCheckIsStore() ? 'store' : 'mch',
-        };
+        let offset = (currentPagee - 1) * (pageSizee);
+        let size = pageSizee;
 
         this.request()
             .noStoreId()
-            .get('/refunds.json')
-            .params(sendData)
+            .get(`/recruit/lists.json?position=${data.uuidRole}&size=${size}&offset=${offset}`)
             .success((data, res) => {
                 this.setState({
-                    refundDataList: res.body.results || [],
-                    refundDataTotal: res.body.totalCount || 0,
+                    recruitData: data,
+                    totalCount: res.body.totalCount,
                 });
             })
             .end();
     }
+
+    queryTermsOptions = {
+        showSearchBtn: true,
+        resultDateToString: true,
+        getAllOptions: (callBack) => {
+            this.request()
+                .noMchId()
+                .noStoreId()
+                .get('/role/lists.json')
+                .success((data, res) => {
+                    this.setState({
+                        roleList: data.map((item, index) => {
+                            item.value = `${item.role}(${item.position})`;
+                            item.label = `${item.role}(${item.position})`;
+                            if(index == 0) {
+                                item.checked = true;
+                            }
+                            return item;
+                        })
+                    });
+                })
+                .end();
+
+            setTimeout(() => {
+                let allRoleOptions =  this.state.roleList;
+                callBack({uuidRole: allRoleOptions});
+            }, 1000);
+        },
+        onSubmit: (data) => {
+            this.handleSearch(data, {currentPage: 1});
+        },
+        items: [
+            {
+                type: 'select',
+                label: '角色',
+                name: 'uuidRole',
+                initialValue: '',
+                searchOnChange: false,
+                labelWidth: 40,
+            },
+        ],
+    };
 
     componentDidMount() {
         const {pageSize, currentPage} = this.state;
@@ -118,22 +165,19 @@ class Recruit extends BaseComponent {
     initTableData = (params) => {
         const size = params.pageSize;
         const offset = (params.currentPage - 1) * size;
-        const dishName = params.dishName;
-        const isOnLined = params.isOnLined;
-        this.setState({
-            totalCount: 16,
-        });
-        // this.request()
-        //     .noMchId()
-        //     .noStoreId()
-        //     .get(`/api/dish/balances.json?size=${size}&offset=${offset}&mchId=${mchId}&storeId=${storeId}&dishName=${dishName}&isOnLined=${isOnLined}`)
-        //     .success((data, res) => {
-        //         this.getHandledData(data);
-        //         this.setState({
-        //             totalCount: res.body.totalCount,
-        //         });
-        //     })
-        //     .end();
+        const position = '';
+
+        this.request()
+            .noMchId()
+            .noStoreId()
+            .get(`/recruit/lists.json?size=${size}&position=${position}&offset=${offset}`)
+            .success((data, res) => {
+                this.setState({
+                    recruitData: data,
+                    totalCount: res.body.totalCount,
+                });
+            })
+            .end();
     };
 
     render() {
@@ -142,39 +186,6 @@ class Recruit extends BaseComponent {
             currentPage,
             totalCount,
             recruitData} = this.state;
-
-        const queryTermsOptions = {
-            showSearchBtn: true,
-            onSubmit: (data) => {
-                let queryData = Object.assign({}, this.state.queryData, data, {currentPage: 1});
-                this.setState({
-                    queryData,
-                });
-                this.handleSearch(queryData);
-            },
-            onComplete: (data) => {
-                let queryData = Object.assign({}, this.state.queryData, data, {currentPage: 1});
-                this.setState({
-                    queryData,
-                    loadFilter: false,
-                });
-                this.handleSearch(queryData);
-            },
-            items: [
-                [
-                    {
-                        type: 'selectSearch',
-                        name: 'post',
-                        format: 'yyyy-MM-dd',
-                        fieldWidth: 300,
-                        label: '岗位',
-                        initialValue: '',
-                        searchOnChange: true,
-                        labelWidth: 40,
-                    }
-                ],
-            ],
-        };
 
         const paginationOptions = {
             showQuickJumper: false, // 默认true
@@ -205,7 +216,7 @@ class Recruit extends BaseComponent {
                     <Button type="primary" size="large" style={{marginBottom: 16}}>新增招聘</Button>
                 </Link>
                 <Col>
-                    <QueryTerms options={queryTermsOptions}/>
+                    <QueryTerms options={this.queryTermsOptions}/>
                 </Col>
                 <Table
                     columns={this.columns}

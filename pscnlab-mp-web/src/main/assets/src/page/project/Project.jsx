@@ -12,7 +12,7 @@ class Project extends BaseComponent {
     state = {
         //分页
         currentPage: 1,
-        pageSize: 10,
+        pageSize: 5,
         totalCount: 0,
 
         projectData: [],
@@ -52,10 +52,12 @@ class Project extends BaseComponent {
             key: 'projectPepoles',
             width: 250,
             render(text) {
-                let projectPeople = text.map((item, index) => {
-                    return (<span>{item.position}&nbsp;&nbsp;{item.memberName}&nbsp;&nbsp;&nbsp;&nbsp;<br/></span>);
-                });
-                return <div>{projectPeople}</div>;
+                if(text) {
+                    let projectPeople = text.map((item, index) => {
+                        return (<span>{item.position}&nbsp;&nbsp;{item.memberName}&nbsp;&nbsp;&nbsp;&nbsp;<br/></span>);
+                    });
+                    return <div>{projectPeople}</div>;
+                }
             },
         }, {
             title: '操作',
@@ -72,45 +74,44 @@ class Project extends BaseComponent {
                                 to={`project/modify-project/${text}`}>
                                 编辑项目
                             </Link>｜
+                            <a>
+                                 <span onClick={()=>this.showDeleteConfirm(text)}>删除项目</span>
+                             </a>｜
                             <Link
                                 style={{color: '#57c5f7'}}
                                 activeStyle={{color: 'red'}}
                                 to={`project/add-member/${text}`}>
                                 编辑成员
-                            </Link>｜
-                            <Link
-                                style={{color: '#57c5f7'}}
-                                activeStyle={{color: 'red'}}
-                                to={`project/all-progress/${text}`}>
-                                查看总进度
-                            </Link>｜
-                             <a>
-                                 <span onClick={()=>this.showDeleteConfirm(text)}>删除项目</span>
-                             </a>｜
-                                <Link
-                                    style={{color: '#57c5f7'}}
-                                    activeStyle={{color: 'red'}}
-                                    to={`project/one-progress/${text}`}>
-                                    编辑进度
-                                </Link>
+                            </Link>
                         </span>
                     </span>
                 );
             },
         },
-        // {
-        //     title: '编辑进度',
-        //     dataIndex: 'isInProject',
-        //     key: 'isInProject',
-        //     width: 250,
-        //     render:(text) => {
-        //         console.log(text, 'text');
-        //         // {/*<span style={{display: (text?'block': 'none')}}>*/}
-        //         return (
-        //
-        //         );
-        //     },
-        // }
+        {
+            title: '进度',
+            dataIndex: 'uuid2',
+            key: 'uuid2',
+            width: 250,
+            render:(text) => {
+                return (
+                    <span>
+                         <Link
+                             style={{color: '#57c5f7'}}
+                             activeStyle={{color: 'red'}}
+                             to={`project/all-progress/${text}`}>
+                                查看总进度
+                            </Link>｜
+                            <Link
+                                style={{color: '#57c5f7'}}
+                                activeStyle={{color: 'red'}}
+                                to={`project/one-progress/${text}`}>
+                                编辑进度
+                            </Link>
+                    </span>
+                );
+            },
+        }
     ];
 
     //确认删除角色对话框
@@ -145,19 +146,6 @@ class Project extends BaseComponent {
         };
         this.initTableData(params);
 
-        // this.request()
-        //     .noMchId()
-        //     .noStoreId()
-        //     .get(`/project/lists.json?state=${state}&offset=${offset}&size=${size}`)
-        //     .success((data, res) => {
-        //         console.log("成功了");
-        //         console.log(data, 'data33');
-        //         this.setState({
-        //
-        //         });
-        //     })
-        //     .end();
-
     }
 
 
@@ -170,8 +158,6 @@ class Project extends BaseComponent {
             .noStoreId()
             .get(`/project/lists.json?state=${state}&offset=${offset}&size=${size}`)
             .success((data, res) => {
-            console.log("成功了");
-            console.log(data, 'data33');
                 this.setState({
                     projectData: data.map((item, index) => {
                         item.projectInfo = {
@@ -182,6 +168,7 @@ class Project extends BaseComponent {
                             startEnd: item.startEnd,
                             startTime: item.startTime,
                         };
+                        item.uuid2 = item.uuid;
                         return item;
                     }),
                     totalCount: res.body.totalCount,
@@ -191,35 +178,67 @@ class Project extends BaseComponent {
     };
 
     // 查询数据
-    handleSearch(queryData = this.state.queryData) {
-        this.setState({
-            refundDataList: [],
-            refundDataTotal: 0,
-        });
+    handleSearch(data, currentPage) {
 
-        const currentPage = queryData.currentPage;
-        const pageSize = queryData.pageSize;
+        let currentPagee = currentPage.currentPage;
+        let pageSizee = this.state.pageSize;
 
-        const sendData = {
+        let offset = (currentPagee - 1) * (pageSizee);
+        let size = pageSizee;
 
-            // auditStatus: queryData.status,
-            // offset: (currentPage - 1) * (pageSize),
-            // size: pageSize,
-            // mchOrStore: this.handleCheckIsStore() ? 'store' : 'mch',
-        };
-
-        // this.request()
-        //     .noStoreId()
-        //     .get('/refunds.json')
-        //     .params(sendData)
-        //     .success((data, res) => {
-        //         this.setState({
-        //             refundDataList: res.body.results || [],
-        //             refundDataTotal: res.body.totalCount || 0,
-        //         });
-        //     })
-        //     .end();
+        this.request()
+            .noStoreId()
+            .get(`/project/lists.json?state=${data.project}&offset=${offset}&size=${size}`)
+            .success((data, res) => {
+                this.setState({
+                    projectData: data.map((item, index) => {
+                        item.projectInfo = {
+                            title: item.title,
+                            state: item.state,
+                            responsiblePersonName: item.responsiblePersonName,
+                            responsiblePersonTelephone: item.responsiblePersonTelephone,
+                            startEnd: item.startEnd,
+                            startTime: item.startTime,
+                        };
+                        item.uuid2 = item.uuid;
+                        return item;
+                    }),
+                    totalCount: res.body.totalCount,
+                });
+            })
+            .end();
     }
+
+    queryTermsOptions = {
+        showSearchBtn: true,
+        resultDateToString: true,
+        onSubmit: (data) => {
+            this.handleSearch(data, {currentPage: 1});
+        },
+        items: [
+            {
+                type: 'select',
+                label: '项目状态',
+                name: 'project',
+                initialValue: '',
+                searchOnChange: false,
+                labelWidth: 60,
+                options: [
+                    {
+                        value: '未开始',
+                        label: '未开始',
+                        checked: true
+                    }, {
+                        value: '执行中',
+                        label: '执行中'
+                    }, {
+                        value: '已完成',
+                        label: '已完成'
+                    }
+                ]
+            }
+        ]
+    };
 
     render() {
         let {
@@ -227,38 +246,6 @@ class Project extends BaseComponent {
             currentPage,
             totalCount,
             projectData} = this.state;
-
-        const queryTermsOptions = {
-            showSearchBtn: true,
-            onSubmit: (data) => {
-                let queryData = Object.assign({}, this.state.queryData, data, {currentPage: 1});
-                this.setState({
-                    queryData,
-                });
-                this.handleSearch(queryData);
-            },
-            onComplete: (data) => {
-                let queryData = Object.assign({}, this.state.queryData, data, {currentPage: 1});
-                this.setState({
-                    queryData,
-                    loadFilter: false,
-                });
-                this.handleSearch(queryData);
-            },
-            items: [
-                [
-                    {
-                        type: 'selectSearch',
-                        name: '项目状态',
-                        fieldWidth: 300,
-                        label: '项目状态',
-                        initialValue: '',
-                        searchOnChange: true,
-                        labelWidth: 70,
-                    }
-                ],
-            ],
-        };
 
         const paginationOptions = {
             showQuickJumper: false, // 默认true
@@ -281,13 +268,13 @@ class Project extends BaseComponent {
         return (
             <Page header="auto" loading={this.state.loading}>
                 <Link
-                    style={{color: 'white'}}
+                    style={{color: 'white', display: (manage?'none': 'block')}}
                     activeStyle={{color: 'red'}}
                     to={`/project/add-project`}>
                     <Button type="primary" size="large" style={{marginBottom: 16}}>新增项目</Button>
                 </Link>
                 <Col>
-                    <QueryTerms options={queryTermsOptions}/>
+                    <QueryTerms options={this.queryTermsOptions}/>
                 </Col>
                 <Table
                     columns={this.columns}
