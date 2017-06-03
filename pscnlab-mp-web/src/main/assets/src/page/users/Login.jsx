@@ -191,7 +191,7 @@ class Login extends React.Component {
                     </div>
                     <div className="admin-login-row admin-login-padding-left-right admin-login-other-operate">
                         <a href="/password_find" className="pull-left admin-login-forget" title="忘记密码">忘记密码</a>
-                        <a href="/users/new" className="pull-right admin-login-register" title="立即注册">修改密码</a>
+                        <a href="/password_find" className="pull-right admin-login-register" title="立即注册">修改密码</a>
                     </div>
                     <div className="admin-login-row admin-login-padding-left-right">
                         <button className="admin-login-button" onClick={this::this.login}>登录</button>

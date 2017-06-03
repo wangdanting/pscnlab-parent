@@ -31,7 +31,7 @@ class Project extends BaseComponent {
                         <span>状态:&nbsp;&nbsp;{text.state || '暂无'}</span><br/>
                         <span>负责人:&nbsp;&nbsp;{text.responsiblePersonName || '暂无'}</span><br/>
                         <span>负责人联系电话:&nbsp;&nbsp;{text.responsiblePersonTelephone || '暂无'}</span><br/>
-                        <span>预计时间:&nbsp;&nbsp;{text.startTime}-{text.startEnd}</span><br/>
+                        <span>预计时间:&nbsp;&nbsp;{text.startTime} - {text.startEnd}</span><br/>
                     </div>
 
                 );

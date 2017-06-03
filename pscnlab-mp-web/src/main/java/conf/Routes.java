@@ -36,6 +36,8 @@ public class Routes implements ApplicationRoutes {
         // 登录
         router.GET().route("/login").with(LoginController.class, "index");
         router.POST().route("/login.json").with(LoginApiController.class, "login");
+
+        //修改密码
         router.POST().route("/user/update_passwd.json").with(LoginApiController.class,"updatePasswd");
 
         //找回密码
@@ -136,9 +138,6 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/train/id/{trainId}/add_members.json").with(TrainApiController.class,"trainAddMember");
         //退出培训
         router.POST().route("/train/id/{trainId}/delete_members.json").with(TrainApiController.class,"trainDeleteMember");
-
-
-
 
         //主页 就是角色管理
         router.GET().route("/.*").with(IndexController.class, "index"); //登录后并且选择商户

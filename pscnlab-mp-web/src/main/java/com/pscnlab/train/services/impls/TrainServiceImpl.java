@@ -11,7 +11,6 @@
 
 package com.pscnlab.train.services.impls;
 
-import com.google.common.collect.Lists;
 import com.jiabangou.core.dtos.ResultsTotalDTO;
 import com.jiabangou.core.exceptions.ServiceException;
 import com.jiabangou.guice.persist.jpa.IBaseDao;
@@ -78,6 +77,9 @@ public class TrainServiceImpl extends BaseServiceImpl<Integer,Train> implements 
         }
         if(StringUtils.isNotBlank(newTrain.getTitle())) {
             train.setTitle(newTrain.getTitle());
+        }
+        if(StringUtils.isNotBlank(newTrain.getTelephone())) {
+            train.setTelephone(newTrain.getTelephone());
         }
         trainDao.update(train);
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs, Table, Col, Button, Form, Input, Row, messag, DatePicker,Radio, } from 'antd';
+import { Tabs, Table, Col, Button, Form, Input, Row, message, DatePicker,Radio, } from 'antd';
 import {Link} from 'react-router';
 import { Page } from 'framework';
 import {QueryTerms, PaginationComponent, BaseComponent} from 'component';
@@ -74,7 +74,7 @@ class CreateRole extends BaseComponent {
                 let formvalue = {
                     title: results.title,
                     speaker: results.speaker,
-                    speakerTelphone: results.speakerTelphone,
+                    telephone: results.telephone,
                     time: results.time,
                     place: results.place,
                 };
@@ -117,7 +117,7 @@ class CreateRole extends BaseComponent {
         let validateFields = [
             'title',
             'speaker',
-            'speakerTelphone',
+            'telephone',
             'time',
             'place',
         ];
@@ -131,7 +131,7 @@ class CreateRole extends BaseComponent {
         submitData.uuidTrain = null;
         submitData.title = values.title;
         submitData.speaker = values.speaker;
-        submitData.speakerTelphone = values.speakerTelphone;
+        submitData.telephone = values.telephone;
         submitData.time = values.time;
         submitData.place = values.place;
 
@@ -164,7 +164,7 @@ class CreateRole extends BaseComponent {
                 })
                 .end();
         } else {   //创建
-            sendUrl = '/role/new.json';
+            sendUrl = '/train/news.json';
             this.request()
                 .post(sendUrl)
                 .params(submitData)
@@ -183,13 +183,6 @@ class CreateRole extends BaseComponent {
                 })
                 .end();
         }
-    };
-
-    //修改项目状态
-    getProjectState = (e) => {
-        this.setState({
-            isProjectState: e.target.value
-        });
     };
 
     // 返回
@@ -220,7 +213,7 @@ class CreateRole extends BaseComponent {
             trigger: commonTrigger,
         });
         // 主讲人联系电话
-        const speakerTelephoneProps = getFieldProps('speakerTelephone', {
+        const telephoneProps = getFieldProps('telephone', {
             rules: [
                 {required: true, message: '请输入主讲人联系电话'},
                 {max: 13, message: '最多11个数字'},
@@ -290,7 +283,7 @@ class CreateRole extends BaseComponent {
                                     <Col span="4" className="label ant-form-item-required">主讲人联系电话：</Col>
                                     <Col span="11">
                                         <FormItem>
-                                            <Input {...speakerTelephoneProps} placeholder="请输入主讲人联系电话"/>
+                                            <Input {...telephoneProps} placeholder="请输入主讲人联系电话"/>
                                         </FormItem>
                                     </Col>
                                 </Row>

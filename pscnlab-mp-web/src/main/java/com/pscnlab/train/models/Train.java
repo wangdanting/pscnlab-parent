@@ -25,6 +25,7 @@ public class Train {
     private String time;
     private String place;
     private Integer number;
+    private String telephone;
 
     @Id
     @Column(name = "uuid_train")
@@ -87,6 +88,12 @@ public class Train {
         this.number = number;
     }
 
+    @Basic
+    @Column(name = "telephone")
+    public String getTelephone() {return telephone;}
+
+    public void setTelephone(String telephone) {this.telephone = telephone;}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -100,7 +107,7 @@ public class Train {
         if (time != null ? !time.equals(train.time) : train.time != null) return false;
         if (place != null ? !place.equals(train.place) : train.place != null) return false;
         if (number != null ? !number.equals(train.number) : train.number != null) return false;
-
+        if (telephone != null ? !telephone.equals(train.telephone) : train.telephone != null) return false;
         return true;
     }
 
@@ -112,6 +119,7 @@ public class Train {
         result = 31 * result + (time != null ? time.hashCode() : 0);
         result = 31 * result + (place != null ? place.hashCode() : 0);
         result = 31 * result + (number != null ? number.hashCode() : 0);
+        result = 31 * result + (telephone != null ? telephone.hashCode() : 0);
         return result;
     }
 }

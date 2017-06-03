@@ -315,12 +315,15 @@ class CreateMember extends BaseComponent {
                             <div className="content" style={{width: '100%'}}>
                                 <Row type="flex" className="form-row">
                                     <Col span="4" className="label ant-form-item-required">角色：</Col>
-                                    <Col span="12">
+                                    <Col span="9">
                                         <FormItem>
                                             <Select value={this.state.roleChooseNum} placeholder="请选择角色" style={{ width: 220, marginRight: 10 }} onChange={this.handleRoleChange}>
                                                 {this.renderRoleSelectOption()}
                                             </Select>
                                         </FormItem>
+                                    </Col>
+                                    <Col span="8" className="help-label">
+                                        如果没有选择，请先添加角色
                                     </Col>
                                 </Row>
                                 <Row type="flex" className="form-row">
