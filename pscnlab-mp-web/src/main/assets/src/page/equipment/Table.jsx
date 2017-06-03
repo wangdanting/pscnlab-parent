@@ -12,7 +12,7 @@ class Tablew extends BaseComponent {
     state = {
         //分页
         currentPage: 1,
-        pageSize: 10,
+        pageSize: 30,
         totalCount: 0,
 
         table: [],
@@ -29,7 +29,6 @@ class Tablew extends BaseComponent {
                     .noStoreId()
                     .post(`/desk/id/${id}/delete_desks.json`)
                     .success((data, res) => {
-                        console.log('dddd44');
                         const {pageSize, currentPage} = this.state;
                         const params = {
                             pageSize,
@@ -127,13 +126,13 @@ class Tablew extends BaseComponent {
         return tables.map((value, index) => {
             return (
                 <div className="table-list">
-                    <div className="table-title">{value.num}</div>
+                    <div className="table-title" style={{backgroundColor: value.state==='使用中'? 'rgb(103, 197, 12)' : '#e6e6e6'}}>{value.num}</div>
                     <div className="table-body">
                         <div className="user-image">
                             <img src={defeatHeadImg}/>
                         </div>
                         <div className="user-info">
-                            <p>{value.userName}</p>
+                            <p>{value.userName? value.userName : '闲置'}</p>
                             <p>{value.userTelephone}</p>
                         </div>
                     </div>

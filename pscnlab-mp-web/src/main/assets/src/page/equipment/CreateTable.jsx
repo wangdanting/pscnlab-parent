@@ -89,6 +89,7 @@ class CreateTable extends BaseComponent {
                     state: results.state,
                     userName: results.userName,
                     telephoneChooseNum: results.userTelephone,
+                    isProjectState: results.state,
                     loading: false,
                 });
 
@@ -199,6 +200,12 @@ class CreateTable extends BaseComponent {
         this.setState({
             isProjectState: e.target.value
         });
+        if(e.target.value === '空闲') {
+
+            this.setState({
+                userName : ''
+            });
+        }
     };
 
     // 返回
@@ -283,7 +290,7 @@ class CreateTable extends BaseComponent {
                                         </FormItem>
                                     </Col>
                                     <Col span="8" className="help-label">
-                                        最多13个汉字
+                                        例如：五号桌
                                     </Col>
                                 </Row>
                                 <Row type="flex" className="form-row">
@@ -298,15 +305,15 @@ class CreateTable extends BaseComponent {
                                     </Col>
                                 </Row>
                                 <Row type="flex" className="form-row">
-                                    <Col span="4" className="label ant-form-item-required">使用人姓名：</Col>
+                                    <Col span="4" className="label">使用人姓名：</Col>
                                     <Col span="11">
                                         <FormItem>
-                                            <Input onChange={this.memberNameChange} style={{marginTop: 1}} maxLength="10" placeholder="请输入成员姓名"/>
+                                            <Input  value={this.state.userName} onChange={this.memberNameChange} style={{marginTop: 1}} maxLength="10" placeholder="请输入成员姓名"/>
                                         </FormItem>
                                     </Col>
                                 </Row>
                                 <Row type="flex" className="form-row">
-                                    <Col span="4" className="label ant-form-item-required">使用人联系电话：</Col>
+                                    <Col span="4" className="label">使用人联系电话：</Col>
                                     <Col span="11">
                                         <FormItem>
                                             <Select value={this.state.telephoneChooseNum} placeholder="请选择联系电话" style={{ width: 220, marginRight: 10 }} onChange={this.handleTelephoneChange}>

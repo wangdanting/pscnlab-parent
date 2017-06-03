@@ -148,7 +148,6 @@ class Project extends BaseComponent {
 
     }
 
-
     initTableData = (params) => {
         const size = params.pageSize;
         const offset = (params.currentPage - 1) * size;
