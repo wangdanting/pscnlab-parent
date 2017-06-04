@@ -14,9 +14,6 @@ package com.pscnlab.base.services;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 public interface BaseService<ID, T> {
     T findOne(ID var1);
 

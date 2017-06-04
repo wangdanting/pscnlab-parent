@@ -23,9 +23,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 public class RoleDaoImpl extends BaseDao<Integer,Role> implements RoleDao {
 
 

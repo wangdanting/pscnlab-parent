@@ -29,9 +29,6 @@ import javax.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 public class MemberSeviceImpl extends BaseServiceImpl<Integer,Member> implements MemberSevice {
     @Inject
     private MemberDao memberDao;

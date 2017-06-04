@@ -16,9 +16,6 @@ import com.pscnlab.member.models.Role;
 
 import java.io.Serializable;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 public class MemberPageDTO implements Serializable {
     private Member member;
     private Role role;

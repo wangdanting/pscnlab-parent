@@ -19,9 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 public interface RoleService extends BaseService<Integer,Role> {
     Map<Integer,Role> findMapByRoleIds(Set<Integer> roleIdsSet);
 

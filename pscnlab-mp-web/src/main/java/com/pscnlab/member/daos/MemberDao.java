@@ -21,9 +21,6 @@ import com.pscnlab.member.services.dtos.MemberPageQueryDTO;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 @ImplementedBy(MemberDaoImpl.class)
 public interface MemberDao extends IBaseDao<Integer,Member> {
     Long countMemberByUuidRole(Integer uuidRole);

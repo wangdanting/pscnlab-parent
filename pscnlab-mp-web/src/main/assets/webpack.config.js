@@ -14,10 +14,6 @@ if (!process.env.NODE_ENV) {
 
 const DEPLOY_PROFILE = process.env.DEPLOY_PROFILE;
 
-// if (process.env.NODE_ENV === 'production' && DEPLOY_PROFILE !== 'xyg' && DEPLOY_PROFILE !== 'jbg') {
-//     throw '未获取到平台(小鸭哥或者加班狗)';
-// }
-
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const copyFile = {

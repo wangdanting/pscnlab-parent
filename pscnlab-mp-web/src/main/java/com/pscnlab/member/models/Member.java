@@ -13,9 +13,6 @@ package com.pscnlab.member.models;
 
 import javax.persistence.*;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 @Entity
 public class Member {
     private Integer uuidMember;

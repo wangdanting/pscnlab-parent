@@ -21,9 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 public interface MemberSevice extends BaseService<Integer,Member> {
     Long countMemberByUuidRole(Integer uuidRole);
     Member findOneByTelephone(String telephone);

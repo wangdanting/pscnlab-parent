@@ -22,9 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 public class MemberDaoImpl extends BaseDao<Integer,Member> implements MemberDao {
     @Override
     public Long countMemberByUuidRole(Integer uuidRole) {

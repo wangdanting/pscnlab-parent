@@ -13,9 +13,6 @@ package com.pscnlab.member.services.dtos;
 
 import java.io.Serializable;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 public class MemberPageQueryDTO implements Serializable {
     private Integer uuidRole;
     private String gender;

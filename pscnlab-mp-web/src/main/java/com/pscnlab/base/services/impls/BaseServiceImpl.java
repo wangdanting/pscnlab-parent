@@ -17,9 +17,6 @@ import com.pscnlab.base.services.BaseService;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 public abstract class BaseServiceImpl<ID, T> implements BaseService<ID, T>  {
 
     protected abstract IBaseDao<ID,T> getBaseDao();
