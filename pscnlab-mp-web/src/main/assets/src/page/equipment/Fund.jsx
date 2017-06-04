@@ -14,6 +14,8 @@ class Fund extends BaseComponent {
         currentPage: 1,
         pageSize: 10,
         totalCount: 0,
+
+        hasMoney: 0
     };
 
     columns = [
@@ -64,8 +66,6 @@ class Fund extends BaseComponent {
                     pageSize,
                     currentPage,
                 };
-
-                console.log('444');
                 this.request()
                     .noStoreId()
                     .post(`fund/id/${id}/deletes.json`)
@@ -98,10 +98,20 @@ class Fund extends BaseComponent {
             .noStoreId()
             .get(`/fund/lists.json?size=${size}&offset=${offset}`)
             .success((data, res) => {
-                console.log(data, 'data');
                 this.setState({
                     dataSource: data,
                     totalCount: res.body.totalCount,
+                });
+            })
+            .end();
+
+        this.request()
+            .noMchId()
+            .noStoreId()
+            .get(`/fund/counts.json`)
+            .success((data, res) => {
+                this.setState({
+                    hasMoney: data,
                 });
             })
             .end();
@@ -140,6 +150,7 @@ class Fund extends BaseComponent {
                     to={`/fund/add-fund`}>
                     <Button type="primary" size="large" style={{marginBottom: 16}}>新增经费情况</Button>
                 </Link>
+                <div style={{float: 'right', marginRight: 100, }}><span style={{fontSize: 20, fontWeight: 600}}>剩余经费</span>:<span style={{fontSize: 25, fontWeight: 600, marginLeft: 10}}>¥ {this.state.hasMoney}</span></div>
                 <Table columns={this.columns} rowKey={(record, index) => index} dataSource={dataSource} pagination={false}/>
                 <PaginationComponent options={paginationOptions}/>
             </Page>

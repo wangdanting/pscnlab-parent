@@ -70,7 +70,7 @@ class EditFund extends BaseComponent {
                 });
                 let formvalue = {
                     event: results.event,
-                    time: results.time,
+                    time: new Date(results.time),
                     money: results.money,
                 };
 
@@ -248,7 +248,7 @@ class EditFund extends BaseComponent {
                                     <Col span="4" className="label ant-form-item-required">时间：</Col>
                                     <Col span="11">
                                         <FormItem>
-                                            <DatePicker showTime format="yyyy-MM-dd"
+                                            <DatePicker format="yyyy-MM-dd"
                                                         {...timeProps}
                                             />
                                         </FormItem>
@@ -262,7 +262,7 @@ class EditFund extends BaseComponent {
                                         </FormItem>
                                     </Col>
                                     <Col span="8" className="help-label">
-
+                                        例如：收入的输入（100），支出的输入（－100）
                                     </Col>
                                 </Row>
                             </div>
