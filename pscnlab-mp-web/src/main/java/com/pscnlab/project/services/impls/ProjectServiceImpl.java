@@ -24,9 +24,6 @@ import org.apache.commons.collections.CollectionUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Created by zengyh on 2017/5/15.
- */
 public class ProjectServiceImpl extends BaseServiceImpl implements ProjectService{
 
     @Inject

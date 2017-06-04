@@ -23,9 +23,6 @@ import org.apache.commons.lang.StringUtils;
 
 import javax.inject.Inject;
 
-/**
- * Created by xiong on 2017/5/16 .
- */
 public class RecruitServiceImpl extends BaseServiceImpl<Integer,Recruit> implements RecruitService {
     @Inject
     private RecruitDao recruitDao;

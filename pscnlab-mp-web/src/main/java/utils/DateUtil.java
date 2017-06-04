@@ -9,9 +9,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by apple on 15/12/15.
- */
 public class DateUtil {
 
     public static final String yyyyMM = "yyyyMM";

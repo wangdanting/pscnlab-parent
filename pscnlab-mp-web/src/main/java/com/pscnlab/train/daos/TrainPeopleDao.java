@@ -18,9 +18,6 @@ import com.pscnlab.train.models.TrainPeople;
 
 import java.util.List;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 @ImplementedBy(TrainPeopleDaoImpl.class)
 public interface TrainPeopleDao extends IBaseDao<Integer,TrainPeople> {
 

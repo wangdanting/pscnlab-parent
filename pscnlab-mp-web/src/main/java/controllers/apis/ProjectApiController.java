@@ -17,9 +17,6 @@ import ninja.params.PathParam;
 
 import java.util.List;
 
-/**
- * Created by zengyh on 2017/6/1.
- */
 @FilterWith(JsonAndJsonpResult.class)
 public class ProjectApiController {
 

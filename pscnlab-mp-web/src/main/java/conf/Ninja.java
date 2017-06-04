@@ -9,10 +9,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * 拦截异常错误异常
- * Created by freeway on 15/12/17.
- */
 public class Ninja extends NinjaDefault {
 
 

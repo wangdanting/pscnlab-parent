@@ -14,9 +14,6 @@ import ninja.params.PathParam;
 import javax.inject.Inject;
 import java.util.List;
 
-/**
- * Created by wangdanting on 17/5/18.
- */
 @FilterWith(JsonAndJsonpResult.class)
 public class RoleApiController {
     @Inject

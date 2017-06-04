@@ -15,9 +15,6 @@ import com.jiabangou.core.dtos.ResultsTotalDTO;
 import com.pscnlab.base.services.BaseService;
 import com.pscnlab.recruit.models.Recruit;
 
-/**
- * Created by xiong on 2017/5/16 .
- */
 public interface RecruitService extends BaseService<Integer,Recruit> {
     //查询招聘列表
     ResultsTotalDTO<Recruit> findPageByCondition(String position, Integer offset, Integer size);

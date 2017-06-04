@@ -1,6 +1,4 @@
-/**
- * Created by peach on 16-6-3.
- */
+
 import React from 'react';
 import OrderTable from './OrderTable.jsx';
 

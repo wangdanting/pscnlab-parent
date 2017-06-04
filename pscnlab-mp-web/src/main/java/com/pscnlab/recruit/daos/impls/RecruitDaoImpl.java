@@ -18,10 +18,8 @@ import com.pscnlab.recruit.daos.RecruitDao;
 import com.pscnlab.recruit.models.Recruit;
 import org.apache.commons.lang.StringUtils;
 
-import java.util.List;
-
 /**
- * Created by xiong on 2017/5/16 .
+ * Created by wang on 2017/5/16 .
  */
 public class RecruitDaoImpl extends BaseDao<Integer,Recruit> implements RecruitDao {
 

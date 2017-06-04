@@ -17,9 +17,6 @@ import com.pscnlab.train.models.TrainPeople;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 public interface TrainPeopleService  extends BaseService<Integer,TrainPeople> {
 
     List<TrainPeople> findListByTrainIds(List<Integer> es);

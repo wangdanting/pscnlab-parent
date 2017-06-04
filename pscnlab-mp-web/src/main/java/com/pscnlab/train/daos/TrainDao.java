@@ -17,9 +17,6 @@ import com.jiabangou.guice.persist.jpa.util.Page;
 import com.pscnlab.train.daos.impls.TrainDaoImpl;
 import com.pscnlab.train.models.Train;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 @ImplementedBy(TrainDaoImpl.class)
 public interface TrainDao extends IBaseDao<Integer,Train>{
     Page<Train> findPage(Long  startTime,Long endTime, Integer offset, Integer size);

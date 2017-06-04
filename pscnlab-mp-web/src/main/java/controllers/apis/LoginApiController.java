@@ -13,9 +13,6 @@ import ninja.params.Param;
 
 import javax.inject.Inject;
 
-/**
- * Created by wangdanting on 17/5/15.
- */
 @Singleton
 @FilterWith(JsonAndJsonpResult.class)
 public class LoginApiController {

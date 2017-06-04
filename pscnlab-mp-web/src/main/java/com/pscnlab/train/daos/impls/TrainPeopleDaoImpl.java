@@ -18,9 +18,6 @@ import com.pscnlab.train.models.TrainPeople;
 
 import java.util.List;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 public class TrainPeopleDaoImpl  extends BaseDao<Integer,TrainPeople> implements TrainPeopleDao {
 
     @Override

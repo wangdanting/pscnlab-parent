@@ -18,9 +18,7 @@ import ninja.params.PathParam;
 
 import javax.inject.Inject;
 import java.util.List;
-/**
- * Created by zengyh on 2017/6/1.
- */
+
 @FilterWith(JsonAndJsonpResult.class)
 public class MemberApiController {
 

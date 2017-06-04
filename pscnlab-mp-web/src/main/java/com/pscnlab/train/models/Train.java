@@ -13,9 +13,6 @@ package com.pscnlab.train.models;
 
 import javax.persistence.*;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 @Entity
 @Table(name = "train")
 public class Train {

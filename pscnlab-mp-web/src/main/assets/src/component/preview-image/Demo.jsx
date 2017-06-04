@@ -1,6 +1,4 @@
-/**
- * Created by peach on 16-5-31.
- */
+
 import React from 'react';
 import PreviewImage from './PreviewImage';
 class Demo extends React.Component {

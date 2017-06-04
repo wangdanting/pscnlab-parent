@@ -28,9 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 public class TrainPeopleServiceImpl  extends BaseServiceImpl<Integer,TrainPeople> implements TrainPeopleService {
     @Inject
     private TrainPeopleDao trainPeopleDao;

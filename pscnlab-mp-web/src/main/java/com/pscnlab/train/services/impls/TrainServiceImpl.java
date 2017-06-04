@@ -34,9 +34,6 @@ import javax.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 public class TrainServiceImpl extends BaseServiceImpl<Integer,Train> implements TrainService {
     @Inject
     private TrainDao trainDao;

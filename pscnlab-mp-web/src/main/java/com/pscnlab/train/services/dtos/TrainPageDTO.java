@@ -17,9 +17,6 @@ import com.pscnlab.train.models.Train;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by xiong on 2017/5/16 .
- */
 public class TrainPageDTO implements Serializable {
     private Train train;
     private List<Member> members;

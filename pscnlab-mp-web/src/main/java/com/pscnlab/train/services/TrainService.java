@@ -17,9 +17,6 @@ import com.pscnlab.base.services.BaseService;
 import com.pscnlab.train.models.Train;
 import com.pscnlab.train.services.dtos.TrainPageDTO;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 public interface TrainService extends BaseService<Integer,Train>{
     //新增培训
     void saveTrain(Train train);

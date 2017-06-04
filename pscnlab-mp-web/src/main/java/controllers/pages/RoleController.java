@@ -3,9 +3,6 @@ package controllers.pages;
 import ninja.Result;
 import ninja.Results;
 
-/**
- * Created by wangdanting on 17/5/18.
- */
 public class RoleController {
     /**
      *

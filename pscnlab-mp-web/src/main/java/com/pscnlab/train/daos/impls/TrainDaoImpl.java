@@ -18,9 +18,6 @@ import com.pscnlab.train.daos.TrainDao;
 import com.pscnlab.train.models.Train;
 import org.apache.commons.lang.StringUtils;
 
-/**
- * Created by xiong on 2017/5/15 .
- */
 public class TrainDaoImpl  extends BaseDao<Integer,Train> implements TrainDao {
     @Override
     public Page<Train> findPage(Long  startTime,Long endTime, Integer offset, Integer size) {

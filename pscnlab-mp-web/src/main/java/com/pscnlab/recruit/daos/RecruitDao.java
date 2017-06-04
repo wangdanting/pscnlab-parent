@@ -17,9 +17,6 @@ import com.jiabangou.guice.persist.jpa.util.Page;
 import com.pscnlab.recruit.daos.impls.RecruitDaoImpl;
 import com.pscnlab.recruit.models.Recruit;
 
-/**
- * Created by xiong on 2017/5/16 .
- */
 @ImplementedBy(RecruitDaoImpl.class)
 public interface RecruitDao extends IBaseDao<Integer,Recruit>{
     Page<Recruit> findPageByCondition(String position, Integer offset, Integer size);

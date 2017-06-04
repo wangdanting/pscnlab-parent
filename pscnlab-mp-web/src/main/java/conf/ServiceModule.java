@@ -18,10 +18,6 @@ import com.pscnlab.train.services.TrainService;
 import com.pscnlab.train.services.impls.TrainPeopleServiceImpl;
 import com.pscnlab.train.services.impls.TrainServiceImpl;
 
-
-/**
- * Created by freeway on 15/12/16.
- */
 public class ServiceModule extends AbstractModule {
 
 

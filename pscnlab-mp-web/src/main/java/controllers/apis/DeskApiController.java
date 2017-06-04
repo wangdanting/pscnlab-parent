@@ -11,9 +11,6 @@ import ninja.Results;
 import ninja.params.Param;
 import ninja.params.PathParam;
 
-/**
- * Created by zengyh on 2017/6/2.
- */
 @FilterWith(JsonAndJsonpResult.class)
 public class DeskApiController {
 

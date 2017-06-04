@@ -2,9 +2,6 @@ package com.pscnlab.recruit.models;
 
 import javax.persistence.*;
 
-/**
- * Created by zengyh on 2017/6/3.
- */
 @Entity
 @javax.persistence.Table(name = "recruit")
 public class Recruit {
