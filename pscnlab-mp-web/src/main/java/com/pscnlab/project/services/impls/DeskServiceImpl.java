@@ -10,9 +10,6 @@ import com.pscnlab.project.daos.DeskDao;
 import com.pscnlab.project.models.Desk;
 import com.pscnlab.project.services.DeskService;
 
-/**
- * Created by zengyh on 2017/6/2.
- */
 public class DeskServiceImpl extends BaseServiceImpl implements DeskService {
 
 

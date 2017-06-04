@@ -8,9 +8,6 @@ import com.pscnlab.project.daos.DeskDao;
 import com.pscnlab.project.models.Desk;
 import org.apache.commons.lang.StringUtils;
 
-/**
- * Created by zengyh on 2017/6/2.
- */
 @Singleton
 public class DeskDaoImpl extends BaseDao<Integer,Desk> implements DeskDao {
 

@@ -2,9 +2,6 @@ package com.pscnlab.project.services.dtos;
 
 import java.io.Serializable;
 
-/**
- * Created by zengyh on 2017/5/15.
- */
 public class ProjectProgressPeopleDTO implements Serializable {
 
     private Integer uuidMember; //成员ID

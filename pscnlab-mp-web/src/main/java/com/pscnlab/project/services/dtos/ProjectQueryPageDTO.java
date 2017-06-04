@@ -3,9 +3,6 @@ package com.pscnlab.project.services.dtos;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by zengyh on 2017/5/15.
- */
 public class ProjectQueryPageDTO implements Serializable {
 
     private Integer uuid;        //项目ID

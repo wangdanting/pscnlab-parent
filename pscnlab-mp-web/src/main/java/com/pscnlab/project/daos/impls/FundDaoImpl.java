@@ -9,9 +9,6 @@ import com.pscnlab.project.models.Funds;
 
 import java.util.List;
 
-/**
- * Created by zengyh on 2017/6/3.
- */
 @Singleton
 public class FundDaoImpl extends BaseDao<Integer,Funds> implements FundDao{
 

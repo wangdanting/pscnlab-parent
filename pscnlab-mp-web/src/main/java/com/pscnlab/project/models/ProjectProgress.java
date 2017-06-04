@@ -2,9 +2,6 @@ package com.pscnlab.project.models;
 
 import javax.persistence.*;
 
-/**
- * Created by zengyh on 2017/5/15.
- */
 @Entity
 @javax.persistence.Table(name = "project_progress")
 public class ProjectProgress {

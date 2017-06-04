@@ -4,9 +4,6 @@ import com.jiabangou.core.dtos.ResultsTotalDTO;
 import com.pscnlab.base.services.BaseService;
 import com.pscnlab.project.models.Funds;
 
-/**
- * Created by zengyh on 2017/6/3.
- */
 public interface FundService extends BaseService{
     //统计经费余额
     Integer countAllFund();

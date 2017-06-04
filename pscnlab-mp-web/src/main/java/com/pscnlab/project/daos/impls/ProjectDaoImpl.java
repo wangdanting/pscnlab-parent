@@ -8,9 +8,6 @@ import com.pscnlab.project.daos.ProjectDao;
 import com.pscnlab.project.models.Project;
 import org.apache.commons.lang3.StringUtils;
 
-/**
- * Created by zengyh on 2017/5/15.
- */
 @Singleton
 public class ProjectDaoImpl extends BaseDao<Long,Project> implements ProjectDao {
 

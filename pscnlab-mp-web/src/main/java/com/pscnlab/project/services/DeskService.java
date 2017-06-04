@@ -4,9 +4,6 @@ import com.jiabangou.core.dtos.ResultsTotalDTO;
 import com.pscnlab.base.services.BaseService;
 import com.pscnlab.project.models.Desk;
 
-/**
- * Created by zengyh on 2017/6/2.
- */
 public interface DeskService extends BaseService {
     ResultsTotalDTO<Desk> findListByCondition(String tableNum,
                                               String userName,

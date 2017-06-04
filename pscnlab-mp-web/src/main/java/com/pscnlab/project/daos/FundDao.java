@@ -8,9 +8,6 @@ import com.pscnlab.project.models.Funds;
 
 import java.util.List;
 
-/**
- * Created by zengyh on 2017/6/3.
- */
 @ImplementedBy(FundDaoImpl.class)
 public interface FundDao extends IBaseDao<Integer,Funds>{
     Page<Funds> findPageByCondition(Integer offset, Integer size);

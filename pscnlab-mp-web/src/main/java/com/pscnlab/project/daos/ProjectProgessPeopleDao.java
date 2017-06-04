@@ -8,9 +8,6 @@ import com.pscnlab.project.models.ProjectProgressPeople;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by zengyh on 2017/5/15.
- */
 @ImplementedBy(ProjectProgressPeopleDaoImpl.class)
 public interface ProjectProgessPeopleDao extends IBaseDao<Long,ProjectProgressPeople>{
     List<ProjectProgressPeople> findListByProjectIdsSet(Set<Integer> projectIdsSet);

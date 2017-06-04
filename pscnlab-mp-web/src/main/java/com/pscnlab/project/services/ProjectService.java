@@ -9,9 +9,6 @@ import com.pscnlab.project.services.dtos.ProjectQueryPageDTO;
 
 import java.util.List;
 
-/**
- * Created by zengyh on 2017/5/15.
- */
 public interface ProjectService extends BaseService{
     //查询成员项目进度
     ProjectProgressPeople findProjectProgress(Integer projectId, Integer memberId);

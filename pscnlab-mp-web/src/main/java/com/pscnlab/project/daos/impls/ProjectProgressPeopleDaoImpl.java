@@ -9,9 +9,6 @@ import com.pscnlab.project.models.ProjectProgressPeople;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by zengyh on 2017/5/15.
- */
 @Singleton
 public class ProjectProgressPeopleDaoImpl extends BaseDao<Long,ProjectProgressPeople> implements ProjectProgessPeopleDao{
 
